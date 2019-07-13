@@ -1,0 +1,5 @@
+.env
+tags
+
+/target
+**/*.rs.bk
