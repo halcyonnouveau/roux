@@ -21,5 +21,3 @@ dotenv = "0.14.0"
 
 [badges]
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
-is-it-maintained-issue-resolution = { repository = "halcyonnouveau/roux.rs" }
-is-it-maintained-open-issues = { repository = "halcyonnouveau/roux.rs" }
