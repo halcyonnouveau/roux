@@ -2,6 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/halcyonnouveau/roux.rs.svg?style=svg)](https://circleci.com/gh/halcyonnouveau/roux.rs)
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
+![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.rs.svg)
 
 A simple Reddit API wrapper implemented in Rust.
 
