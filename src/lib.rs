@@ -1,20 +1,17 @@
 use serde::Deserialize;
 
-extern crate reqwest;
 use reqwest::Client;
 use reqwest::header::USER_AGENT;
 
+pub mod util;
+
+mod config;
+mod me;
 pub mod subreddit;
 pub mod user;
 
-pub mod util;
-use util::RouxError;
-
-mod config;
-use config::Config;
-
 pub struct Reddit {
-    config: Config,
+    config: config::Config,
     client: Client,
 }
 
@@ -26,7 +23,7 @@ pub struct AuthData {
 impl Reddit {
     pub fn new(client_id: &str, client_secret: &str) -> Reddit {
         Reddit {
-            config: Config::new(&client_id, &client_secret),
+            config: config::Config::new(&client_id, &client_secret),
             client: Client::new(),
         }
     }
@@ -41,29 +38,28 @@ impl Reddit {
         self
     }
 
-    pub fn login(mut self) -> Result<Reddit, RouxError> {
+    pub fn login(self) -> Result<me::Me, util::RouxError> {
         let url = "https://www.reddit.com/api/v1/access_token";
-
-        let body = format!(
-            "grant_type=password&username={}&password={}",
-            &self.config.username.to_owned().unwrap(),
-            &self.config.password.to_owned().unwrap()
-        );
+        let form = [
+            ("grant_type", "password"),
+            ("username", &self.config.username.to_owned().unwrap()),
+            ("password", &self.config.password.to_owned().unwrap()),
+        ];
 
         let request = self.client
             .post(url)
-            .header(USER_AGENT, "Reqwest")
+            // TODO get agent from env vars
+            .header(USER_AGENT, "script:roux:v0.1.0 (by /u/beanpup_py)")
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
-            .body(body);
+            .form(&form);
 
-        let mut result = request.send().unwrap();
+        let mut response = request.send().unwrap();
 
-        if result.status() == 200 {
-            let auth_data = result.json::<AuthData>().unwrap();
-            self.config.access_token = Some(auth_data.access_token);
-            Ok(self)
+        if response.status() == 200 {
+            let auth_data = response.json::<AuthData>().unwrap();
+            Ok(me::Me::new(&auth_data.access_token, self.config))
         } else {
-            Err(RouxError::Status(result.status()))
+            Err(util::RouxError::Status(response.status()))
         }
     }
 }
