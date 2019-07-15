@@ -5,7 +5,7 @@ use serde_json;
 pub enum RouxError {
     Network(reqwest::Error),
     Parse(serde_json::Error),
-    Status(reqwest::StatusCode),
+    Status(reqwest::Response),
 }
 
 impl From<reqwest::Error> for RouxError {

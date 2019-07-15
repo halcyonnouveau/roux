@@ -4,8 +4,8 @@ extern crate serde_json;
 use reqwest::Client;
 
 pub mod structures;
-use structures::Moderators;
 use crate::util::RouxError;
+use structures::Moderators;
 
 pub struct Subreddit {
     pub subreddit: String,
@@ -21,16 +21,13 @@ impl Subreddit {
     }
 
     pub fn moderators(&self) -> Result<Moderators, RouxError> {
-        match self.client
+        Ok(self.client
             .get(&format!(
                 "https://www.reddit.com/r/{}/about/moderators/.json",
                 self.subreddit
             ))
-            .send()
-        {
-            Ok(mut res) => Ok(res.json::<Moderators>().unwrap()),
-            Err(e) => Err(e.into()),
-        }
+            .send()?
+            .json::<Moderators>()?)
     }
 }
 

@@ -36,7 +36,7 @@ mod tests {
 
         let me = me_result.unwrap();
 
-        assert!(me.get().is_ok());
+        assert!(me.me().is_ok());
         assert!(me.logout().is_ok());
     }
 }

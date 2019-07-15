@@ -1,14 +1,16 @@
 use serde::Deserialize;
 
-use reqwest::Client;
 use reqwest::header::USER_AGENT;
+use reqwest::Client;
 
 pub mod util;
+pub mod subreddit;
+pub mod user;
 
 mod config;
 mod me;
-pub mod subreddit;
-pub mod user;
+
+use util::url;
 
 pub struct Reddit {
     config: config::Config,
@@ -39,7 +41,7 @@ impl Reddit {
     }
 
     pub fn login(self) -> Result<me::Me, util::RouxError> {
-        let url = "https://www.reddit.com/api/v1/access_token";
+        let url = &url::build_url("api/v1/access_token")[..];
         let form = [
             ("grant_type", "password"),
             ("username", &self.config.username.to_owned().unwrap()),
@@ -49,17 +51,17 @@ impl Reddit {
         let request = self.client
             .post(url)
             // TODO get agent from env vars
-            .header(USER_AGENT, "script:roux:v0.1.0 (by /u/beanpup_py)")
+            .header(USER_AGENT, "script:roux:v0.1.2 (by /u/beanpup_py)")
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form);
 
-        let mut response = request.send().unwrap();
+        let mut response = request.send()?;
 
         if response.status() == 200 {
             let auth_data = response.json::<AuthData>().unwrap();
             Ok(me::Me::new(&auth_data.access_token, self.config))
         } else {
-            Err(util::RouxError::Status(response.status()))
+            Err(util::RouxError::Status(response))
         }
     }
 }

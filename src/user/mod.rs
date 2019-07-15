@@ -4,8 +4,8 @@ extern crate serde_json;
 use reqwest::Client;
 
 pub mod structures;
-use structures::{Comments, Overview, Submitted};
 use crate::util::RouxError;
+use structures::{Comments, Overview, Submitted};
 
 pub struct User {
     pub user: String,
@@ -21,43 +21,31 @@ impl User {
     }
 
     pub fn overview(&self) -> Result<Overview, RouxError> {
-        match self.client
+        Ok(self.client
             .get(&format!(
                 "https://www.reddit.com/user/{}/overview/.json",
                 self.user
             ))
-            .send()
-        {
-            Ok(mut res) => Ok(res.json::<Overview>().unwrap()),
-            Err(e) => Err(e.into()),
-        }
-
+            .send()?
+            .json::<Overview>()?)
     }
 
     pub fn submitted(&self) -> Result<Submitted, RouxError> {
-        match self.client
-            .get(&format!(
+        Ok(self.client.get(&format!(
                 "https://www.reddit.com/user/{}/submitted/.json",
                 self.user
             ))
-            .send()
-        {
-            Ok(mut res) => Ok(res.json::<Submitted>().unwrap()),
-            Err(e) => Err(e.into()),
-        }
+            .send()?
+            .json::<Submitted>()?)
     }
 
     pub fn comments(&self) -> Result<Comments, RouxError> {
-        match self.client
-            .get(&format!(
+        Ok(self.client.get(&format!(
                 "https://www.reddit.com/user/{}/comments/.json",
                 self.user
             ))
-            .send()
-        {
-            Ok(mut res) => Ok(res.json::<Comments>().unwrap()),
-            Err(e) => Err(e.into()),
-        }
+            .send()?
+            .json::<Comments>()?)
     }
 }
 
