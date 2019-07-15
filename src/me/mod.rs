@@ -22,7 +22,12 @@ impl Me {
 
         headers.insert(
             header::AUTHORIZATION,
-            header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap(),
+            header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap()
+        );
+
+        headers.insert(
+            header::USER_AGENT,
+            header::HeaderValue::from_str(&config.user_agent[..]).unwrap()
         );
 
         let client = Client::builder().default_headers(headers).build().unwrap();

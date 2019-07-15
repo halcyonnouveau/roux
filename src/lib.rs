@@ -23,9 +23,9 @@ pub struct AuthData {
 }
 
 impl Reddit {
-    pub fn new(client_id: &str, client_secret: &str) -> Reddit {
+    pub fn new(user_agent: &str, client_id: &str, client_secret: &str) -> Reddit {
         Reddit {
-            config: config::Config::new(&client_id, &client_secret),
+            config: config::Config::new(&user_agent, &client_id, &client_secret),
             client: Client::new(),
         }
     }
@@ -50,8 +50,7 @@ impl Reddit {
 
         let request = self.client
             .post(url)
-            // TODO get agent from env vars
-            .header(USER_AGENT, "script:roux:v0.1.2 (by /u/beanpup_py)")
+            .header(USER_AGENT, &self.config.user_agent[..])
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form);
 

@@ -5,6 +5,8 @@ extern crate roux;
 mod tests {
     use roux::Reddit;
 
+    static USER_AGENT: &str = "macos:roux:v0.1.2 (by /u/beanpup_py)";
+
     #[test]
     fn test_oauth_wrong() {
         let client_id = "XXXXXXXX";
@@ -12,7 +14,7 @@ mod tests {
         let username = "jim_pickens";
         let password = "password123";
 
-        let client = Reddit::new(&client_id, &client_secret)
+        let client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
             .username(&username)
             .password(&password)
             .login();
@@ -27,14 +29,14 @@ mod tests {
         let username = dotenv::var("USERNAME").unwrap();
         let password = dotenv::var("PASSWORD").unwrap();
 
-        let me_result = Reddit::new(&client_id, &client_secret)
+        let client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
             .username(&username)
             .password(&password)
             .login();
 
-        assert!(me_result.is_ok());
+        assert!(client.is_ok());
 
-        let me = me_result.unwrap();
+        let me = client.unwrap();
 
         assert!(me.me().is_ok());
         assert!(me.logout().is_ok());
