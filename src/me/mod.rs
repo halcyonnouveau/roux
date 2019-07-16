@@ -7,7 +7,7 @@ use serde::Serialize;
 use crate::config::Config;
 use crate::util::{RouxError, url};
 
-pub mod responses;
+mod responses;
 use responses::MeData;
 
 pub struct Me {

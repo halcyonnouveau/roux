@@ -19,7 +19,7 @@ pub struct Reddit {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct AuthData {
+struct AuthData {
     pub access_token: String,
 }
 

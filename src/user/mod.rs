@@ -2,9 +2,9 @@ extern crate reqwest;
 extern crate serde_json;
 
 use reqwest::Client;
-
-pub mod responses;
 use crate::util::RouxError;
+
+mod responses;
 use responses::{Comments, Overview, Submitted};
 
 pub struct User {
