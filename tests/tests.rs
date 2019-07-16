@@ -8,22 +8,7 @@ mod tests {
     static USER_AGENT: &str = "macos:roux:v0.1.2 (by /u/beanpup_py)";
 
     #[test]
-    fn test_oauth_wrong() {
-        let client_id = "XXXXXXXX";
-        let client_secret = "XXXXXXXXXX";
-        let username = "jim_pickens";
-        let password = "password123";
-
-        let client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
-            .username(&username)
-            .password(&password)
-            .login();
-
-        assert!(!client.is_ok());
-    }
-
-    #[test]
-    fn test_oauth_correct() {
+    fn test_oauth() {
         let client_id = dotenv::var("CLIENT_ID").unwrap();
         let client_secret = dotenv::var("CLIENT_SECRET").unwrap();
         let username = dotenv::var("USERNAME").unwrap();

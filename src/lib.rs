@@ -4,6 +4,7 @@ use reqwest::header::USER_AGENT;
 use reqwest::Client;
 
 pub mod util;
+pub mod responses;
 pub mod subreddit;
 pub mod user;
 

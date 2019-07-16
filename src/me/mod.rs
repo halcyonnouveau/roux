@@ -7,8 +7,8 @@ use serde::Serialize;
 use crate::config::Config;
 use crate::util::{RouxError, url};
 
-pub mod structures;
-use structures::MeData;
+pub mod responses;
+use responses::MeData;
 
 pub struct Me {
     pub access_token: String,
