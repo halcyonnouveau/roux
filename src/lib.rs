@@ -1,7 +1,8 @@
 #![deny(missing_docs)]
 
 //! # roux.rs
-//! This crate provides simple access to he Reddit API.
+//! This crate provides simple access to the Reddit API.
+//!
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```rust,no_run
@@ -18,6 +19,36 @@
 //! `platform:program:version (by /u/yourname)`, e.g. `linux:rawr:v0.0.1 (by /u/Aurora0001)`.
 //!
 //! This will authticate you as the user given in the username function.
+//!
+//! ## Usage
+//! Using the OAuth client, you can:
+//!
+//! ### Submit A Text Post
+//! ```rust,no_run
+//! use roux::Reddit;
+//!
+//! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .username("USERNAME")
+//!     .password("PASSWORD")
+//!     .login();
+//!
+//! let me = client.unwrap();
+//!
+//! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
+//! ```
+//! ### Submit A Link Post
+//! ```rust,no_run
+//! use roux::Reddit;
+//!
+//! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .username("USERNAME")
+//!     .password("PASSWORD")
+//!     .login();
+//!
+//! let me = client.unwrap();
+//!
+//! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+//! ```
 
 use serde::Deserialize;
 
