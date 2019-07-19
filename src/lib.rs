@@ -24,15 +24,13 @@ use serde::Deserialize;
 use reqwest::header::USER_AGENT;
 use reqwest::Client;
 
-/// Utilities.
-pub mod util;
-/// Deserialized API responses.
-pub mod responses;
 /// Read only subreddit.
 pub mod subreddit;
 /// Read only user.
 pub mod user;
 
+mod util;
+mod responses;
 mod config;
 mod me;
 
