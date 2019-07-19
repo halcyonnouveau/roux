@@ -1,11 +1,16 @@
 use reqwest;
 use serde_json;
 
+/// Error type that occurs when an API request fails for some reason.
 #[derive(Debug)]
 pub enum RouxError {
-    Network(reqwest::Error),
-    Parse(serde_json::Error),
+    /// Occurs when the API has returned a non-success error code.
     Status(reqwest::Response),
+    /// Occurs if the HTTP response from Reddit was corrupt and
+    /// reqwest could not parse it.
+    Network(reqwest::Error),
+    /// Occurs if serde could not Deserialize the response.
+    Parse(serde_json::Error),
 }
 
 impl From<reqwest::Error> for RouxError {
