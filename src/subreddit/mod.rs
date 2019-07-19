@@ -1,3 +1,26 @@
+//! A read-only `Subreddit` class.
+//! # Usage
+//! ```rust,ignore
+//! use roux::Subreddit;
+//! let subreddit = Subreddit::new("subreddt_name");
+//! ```
+//! # Get Moderators
+//! ```rust,ignore
+//! let moderators = subreddit.moderators();
+//! ```
+//! # Get Hot Posts
+//! ```rust,ignore
+//! let hot = subreddit.hot();
+//! ```
+//! # Get Rising Posts
+//! ```rust,ignore
+//! let rising = subreddit.rising();
+//! ```
+//! # Get Top Posts
+//! ```rust,ignore
+//! let top = subreddit.top();
+//! ```
+
 extern crate reqwest;
 extern crate serde_json;
 
@@ -7,13 +30,16 @@ use crate::util::RouxError;
 mod responses;
 use responses::{Moderators, Submissions};
 
+/// Subreddit.
 pub struct Subreddit {
+    /// Name of subreddit.
     pub name: String,
     url: String,
     client: Client,
 }
 
 impl Subreddit {
+    /// Create a new `Subreddit` instance.
     pub fn new(name: &str) -> Subreddit {
         let subreddit_url = format!("https://www.reddit.com/r/{}", name);
 
@@ -24,6 +50,7 @@ impl Subreddit {
         }
     }
 
+    /// Get moderators.
     pub fn moderators(&self) -> Result<Moderators, RouxError> {
         Ok(self.client
             .get(&format!("{}/about/moderators/.json", self.url))
@@ -38,14 +65,17 @@ impl Subreddit {
             .json::<Submissions>()?)
     }
 
+    /// Get hot posts.
     pub fn hot(&self, limit: u32) -> Result<Submissions, RouxError> {
         self.get_feed("hot", limit)
     }
 
+    /// Get rising posts.
     pub fn rising(&self, limit: u32) -> Result<Submissions, RouxError> {
         self.get_feed("rising", limit)
     }
 
+    /// Get top posts.
     pub fn top(&self, limit: u32) -> Result<Submissions, RouxError> {
         // TODO: time filter
         self.get_feed("top", limit)

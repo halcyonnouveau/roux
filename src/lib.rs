@@ -5,6 +5,8 @@
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```rust,no_run
+//! use roux::Reddit;
+//!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
