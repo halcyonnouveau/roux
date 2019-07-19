@@ -1,7 +1,7 @@
 #![deny(missing_docs)]
 
 //! # roux.rs
-//! This crate simple access to he Reddit API
+//! This crate provides simple access to he Reddit API.
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```rust,no_run
@@ -24,10 +24,12 @@ use serde::Deserialize;
 use reqwest::header::USER_AGENT;
 use reqwest::Client;
 
-/// Read only subreddit.
+/// Subreddit module.
 pub mod subreddit;
-/// Read only user.
+pub use subreddit::Subreddit;
+/// User module.
 pub mod user;
+pub use user::User;
 
 mod util;
 mod responses;

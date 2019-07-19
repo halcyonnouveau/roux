@@ -1,24 +1,18 @@
-//! A read-only `Subreddit` class.
+//! # Subreddit
+//! A read-only module to read data from a specific subreddit.
 //! # Usage
-//! ```rust,ignore
+//! ```rust,no_run
 //! use roux::Subreddit;
 //! let subreddit = Subreddit::new("subreddt_name");
-//! ```
-//! # Get Moderators
-//! ```rust,ignore
+//! // Now you are able to:
+//! // Get moderators.
 //! let moderators = subreddit.moderators();
-//! ```
-//! # Get Hot Posts
-//! ```rust,ignore
-//! let hot = subreddit.hot();
-//! ```
-//! # Get Rising Posts
-//! ```rust,ignore
-//! let rising = subreddit.rising();
-//! ```
-//! # Get Top Posts
-//! ```rust,ignore
-//! let top = subreddit.top();
+//! // Get hot posts with limit = 25.
+//! let hot = subreddit.hot(25);
+//! // Get rising posts with limit = 30.
+//! let rising = subreddit.rising(30);
+//! // Get top posts with limi = 10.
+//! let top = subreddit.top(10);
 //! ```
 
 extern crate reqwest;

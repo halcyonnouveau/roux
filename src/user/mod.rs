@@ -1,19 +1,15 @@
-//! A read-only `User` class.
+//! # User
+//! A read-only module to read data from for a specific user.
 //! # Usage
-//! ```rust,ignore
+//! ```rust,no_run
 //! use roux::User;
 //! let user = User::new("user_name");
-//! ```
-//! # Get Overview
-//! ```rust,ignore
+//! // Now you are able to:
+//! // Get overview
 //! let overview = user.overview();
-//! ```
-//! # Get Submitted Posts
-//! ```rust,ignore
+//! // Get submitted posts.
 //! let submitted = user.submitted();
-//! ```
-//! # Get Comments
-//! ```rust,ignore
+//! // Get comments.
 //! let comments = user.comments();
 //! ```
 
