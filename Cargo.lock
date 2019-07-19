@@ -934,7 +934,7 @@ dependencies = [
 
 [[package]]
 name = "roux"
-version = "0.2.0"
+version = "0.2.1-alpha.0"
 dependencies = [
  "dotenv 0.14.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest 0.9.18 (registry+https://github.com/rust-lang/crates.io-index)",
