@@ -11,7 +11,7 @@
 //! let hot = subreddit.hot(25);
 //! // Get rising posts with limit = 30.
 //! let rising = subreddit.rising(30);
-//! // Get top posts with limi = 10.
+//! // Get top posts with limit = 10.
 //! let top = subreddit.top(10);
 //! ```
 
