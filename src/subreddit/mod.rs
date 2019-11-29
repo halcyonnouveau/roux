@@ -74,6 +74,11 @@ impl Subreddit {
         // TODO: time filter
         self.get_feed("top", limit)
     }
+
+    /// Get latest posts.
+    pub fn latest(&self, limit: u32) -> Result<Submissions, RouxError> {
+        self.get_feed("new", limit)
+    }
 }
 
 #[cfg(test)]
