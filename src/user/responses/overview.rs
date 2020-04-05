@@ -1,20 +1,19 @@
+use crate::{responses::BasicListing, util::defaults::default_string};
 use serde::Deserialize;
-use crate::util::defaults::default_string;
-use crate::responses::BasicListing;
 
 #[derive(Debug, Deserialize)]
 pub struct OverviewData {
-    author: String,
-    likes: Option<i32>,
-    score: i32,
-    subreddit: String,
-    created: f64,
+    pub author: String,
+    pub likes: Option<i32>,
+    pub score: i32,
+    pub subreddit: String,
+    pub created: f64,
     #[serde(default = "default_string")]
-    body: String,
+    pub body: String,
     #[serde(default = "default_string")]
-    link_title: String,
+    pub link_title: String,
     #[serde(default = "default_string")]
-    link_url: String,
+    pub link_url: String,
 }
 
-pub type Overview  = BasicListing<OverviewData>;
+pub type Overview = BasicListing<OverviewData>;

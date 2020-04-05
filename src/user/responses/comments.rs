@@ -1,14 +1,14 @@
-use serde::Deserialize;
 use crate::responses::BasicListing;
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct CommentsData {
-    body: String,
-    body_html: String,
-    link_title: String,
-    link_url: String,
-    subreddit: String,
-    created: f64,
+    pub body: String,
+    pub body_html: String,
+    pub link_title: String,
+    pub link_url: String,
+    pub subreddit: String,
+    pub created: f64,
 }
 
 pub type Comments = BasicListing<CommentsData>;

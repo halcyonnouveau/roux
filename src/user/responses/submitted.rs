@@ -1,15 +1,15 @@
-use serde::Deserialize;
 use crate::responses::BasicListing;
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct SubmittedData {
-    subreddit: String,
-    title: String,
-    thumbnail: String,
-    score: i32,
-    created: f64,
-    domain: String,
-    is_self: bool,
+    pub subreddit: String,
+    pub title: String,
+    pub thumbnail: String,
+    pub score: i32,
+    pub created: f64,
+    pub domain: String,
+    pub is_self: bool,
 }
 
 pub type Submitted = BasicListing<SubmittedData>;
