@@ -16,7 +16,7 @@
 //! let me = client.unwrap();
 //! ```
 //! It is important that you pick a good user agent. The ideal format is
-//! `platform:program:version (by /u/yourname)`, e.g. `linux:rawr:v0.0.1 (by /u/Aurora0001)`.
+//! `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
 //!
 //! This will authticate you as the user given in the username function.
 //!

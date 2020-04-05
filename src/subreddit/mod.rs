@@ -1,5 +1,6 @@
 //! # Subreddit
 //! A read-only module to read data from a specific subreddit.
+//!
 //! # Usage
 //! ```rust,no_run
 //! use roux::Subreddit;

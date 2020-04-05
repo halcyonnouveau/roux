@@ -5,7 +5,7 @@ extern crate roux;
 mod tests {
     use roux::Reddit;
 
-    static USER_AGENT: &str = "macos:roux:v0.1.2 (by /u/beanpup_py)";
+    static USER_AGENT: &str = "macos:roux:v0.3.0 (by /u/beanpup_py)";
 
     #[test]
     fn test_oauth() {

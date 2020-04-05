@@ -1,5 +1,6 @@
 //! # User
 //! A read-only module to read data from for a specific user.
+//!
 //! # Usage
 //! ```rust,no_run
 //! use roux::User;
