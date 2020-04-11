@@ -23,11 +23,7 @@ use crate::util::RouxError;
 use reqwest::Client;
 
 mod responses;
-<<<<<<< HEAD
 use responses::{Comments, Moderators, Submissions};
-=======
-use responses::{Moderators, Submissions, Comments};
->>>>>>> add get_comment_feed
 
 /// Subreddit.
 pub struct Subreddit {
