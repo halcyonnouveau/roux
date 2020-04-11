@@ -90,7 +90,7 @@ impl Subreddit {
     
     /// Get latest comments.
     pub fn latest_comments(&self, limit: u32) -> Result<Comments, RouxError> {
-        self.get_feed("comments", limit)
+        self.get_comment_feed("comments", limit)
     }
 }
 
