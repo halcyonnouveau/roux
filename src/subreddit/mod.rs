@@ -23,7 +23,7 @@ use reqwest::Client;
 use crate::util::RouxError;
 
 mod responses;
-use responses::{Moderators, Submissions};
+use responses::{Moderators, Submissions, Comments};
 
 /// Subreddit.
 pub struct Subreddit {
@@ -59,6 +59,13 @@ impl Subreddit {
             .send()?
             .json::<Submissions>()?)
     }
+    
+    fn get_comment_feed(&self, ty: &str, limit: u32) -> Result<Comments, RouxError> {
+        Ok(self.client
+            .get(&format!("{}/{}.json?limit={}", self.url, ty, limit))
+            .send()?
+            .json::<Comments>()?)
+    }
 
     /// Get hot posts.
     pub fn hot(&self, limit: u32) -> Result<Submissions, RouxError> {
@@ -82,7 +89,7 @@ impl Subreddit {
     }
     
     /// Get latest comments.
-    pub fn latest_comments(&self, limit: u32) -> Result<Submissions, RouxError> {
+    pub fn latest_comments(&self, limit: u32) -> Result<Comments, RouxError> {
         self.get_feed("comments", limit)
     }
 }
