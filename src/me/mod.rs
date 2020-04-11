@@ -5,7 +5,7 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::util::{RouxError, url};
+use crate::util::{url, RouxError};
 
 mod responses;
 use responses::MeData;
@@ -22,12 +22,12 @@ impl Me {
 
         headers.insert(
             header::AUTHORIZATION,
-            header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap()
+            header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap(),
         );
 
         headers.insert(
             header::USER_AGENT,
-            header::HeaderValue::from_str(&config.user_agent[..]).unwrap()
+            header::HeaderValue::from_str(&config.user_agent[..]).unwrap(),
         );
 
         let client = Client::builder().default_headers(headers).build().unwrap();
@@ -75,6 +75,21 @@ impl Me {
         self.post("api/submit", &form)
     }
 
+    pub fn private_message(
+        &self,
+        username: &str,
+        subject: &str,
+        body: &str,
+    ) -> Result<Response, RouxError> {
+        let form = [
+            ("api_type", "json"),
+            ("subject", subject),
+            ("text", body),
+            ("to", username),
+        ];
+        self.post("api/compose", &form)
+    }
+
     pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
         let form = [
             ("kind", "self"),
@@ -91,7 +106,8 @@ impl Me {
 
         let form = [("access_token", self.access_token.to_owned())];
 
-        let response = self.client
+        let response = self
+            .client
             .post(url)
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form)
