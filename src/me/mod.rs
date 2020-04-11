@@ -105,7 +105,7 @@ impl Me {
     }
 
     pub fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
-        let form = [("text", text), ("parent", parent)];
+        let form = [("text", text), ("thing_id", parent)];
         self.post("api/editusertext", &form)
     }
 
