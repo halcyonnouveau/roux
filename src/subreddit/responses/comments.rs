@@ -43,7 +43,11 @@ pub struct CommentsData {
     pub downs: i32,
     pub is_submitter: bool,
     pub body_html: String,
+<<<<<<< HEAD
     pub distinguished: Option<String>,
+=======
+    pub distinguished: Option<bool>,
+>>>>>>> fixed a few that I missed
     pub stickied: bool,
     pub author_premium: bool,
     pub can_gild: bool,
