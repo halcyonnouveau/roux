@@ -5,7 +5,7 @@ use serde_json::Value;
 #[derive(Debug, Deserialize)]
 pub struct CommentsData {
     pub total_awards_received: i32,
-    pub approved_at_utc: i32,
+    pub approved_at_utc: Option<i32>,
     pub edited: bool,
     pub link_id: String,
     pub author_flair_template_id: String,
