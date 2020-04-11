@@ -99,6 +99,11 @@ impl Me {
             .json::<BasicListing<InboxItem>>()?)
     }
 
+    pub fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+        let form = [("text", text), ("parent", parent)];
+        self.post("api/comment", &form)
+    }
+
     pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
         let form = [
             ("kind", "self"),
