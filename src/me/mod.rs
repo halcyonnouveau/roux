@@ -104,6 +104,11 @@ impl Me {
         self.post("api/comment", &form)
     }
 
+    pub fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+        let form = [("text", text), ("parent", parent)];
+        self.post("api/editusertext", &form)
+    }
+
     pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
         let form = [
             ("kind", "self"),
