@@ -9,12 +9,16 @@ use serde_json::Value;
 pub struct CommentsData {
     pub total_awards_received: i32,
 <<<<<<< HEAD
+<<<<<<< HEAD
     pub approved_at_utc: Option<f64>,
     pub edited: bool,
     pub link_id: String,
     pub author_flair_template_id: Option<String>,
 =======
     pub approved_at_utc: i32,
+=======
+    pub approved_at_utc: Option<i32>,
+>>>>>>> fix more mistakes in CommentsData
     pub edited: bool,
     pub link_id: String,
     pub author_flair_template_id: String,
