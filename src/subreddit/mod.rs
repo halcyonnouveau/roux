@@ -4,7 +4,7 @@
 //! # Usage
 //! ```rust,no_run
 //! use roux::Subreddit;
-//! let subreddit = Subreddit::new("subreddt_name");
+//! let subreddit = Subreddit::new("rust");
 //! // Now you are able to:
 //! // Get moderators.
 //! let moderators = subreddit.moderators();
@@ -20,7 +20,6 @@
 //! // Get comments from a submission.
 //! let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
 //! let article_comments = subreddit.article_comments(article_id, None, Some(25));
-//! assert!(article_comments.is_ok());
 //! ```
 
 extern crate reqwest;

@@ -75,7 +75,18 @@ impl Me {
         self.post("api/submit", &form)
     }
 
-    pub fn private_message(
+    pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
+        let form = [
+            ("kind", "self"),
+            ("title", title),
+            ("text", text),
+            ("sr", sr),
+        ];
+
+        self.post("api/submit", &form)
+    }
+
+    pub fn compose_message(
         &self,
         username: &str,
         subject: &str,
@@ -87,18 +98,8 @@ impl Me {
             ("text", body),
             ("to", username),
         ];
+
         self.post("api/compose", &form)
-    }
-
-    pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
-        let form = [
-            ("kind", "self"),
-            ("title", title),
-            ("text", text),
-            ("sr", sr),
-        ];
-
-        self.post("api/submit", &form)
     }
 
     pub fn logout(self) -> Result<(), RouxError> {

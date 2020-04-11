@@ -4,7 +4,7 @@
 //! # Usage
 //! ```rust,no_run
 //! use roux::User;
-//! let user = User::new("user_name");
+//! let user = User::new("beanpup_py");
 //! // Now you are able to:
 //! // Get overview
 //! let overview = user.overview();
