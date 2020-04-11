@@ -1,7 +1,7 @@
 /// Defaults for serde.
 pub mod defaults;
-/// Url building.
-pub mod url;
 /// Error responses.
 pub mod error;
+/// Url building.
+pub mod url;
 pub use error::RouxError;

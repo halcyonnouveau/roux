@@ -1,6 +1,6 @@
-use serde_json::Value;
-use serde::Deserialize;
 use crate::responses::BasicListing;
+use serde::Deserialize;
+use serde_json::Value;
 
 #[derive(Debug, Deserialize)]
 pub struct SubmissionsData {
@@ -127,7 +127,7 @@ pub struct SubmissionsData {
     // This is `true` if the user has visited this link.
     pub visited: bool,
     // The number of reports, if the user is a moderator of this subreddit.
-    pub num_reports: Option<u64>
+    pub num_reports: Option<u64>,
 }
 
 pub type Submissions = BasicListing<SubmissionsData>;

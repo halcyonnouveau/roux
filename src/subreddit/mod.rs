@@ -69,18 +69,27 @@ impl Subreddit {
             .json::<Submissions>()?)
     }
 
-    fn get_comment_feed(&self, ty: &str, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+    fn get_comment_feed(
+        &self,
+        ty: &str,
+        depth: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<Comments, RouxError> {
         let url = &mut format!("{}/{}.json?", self.url, ty);
 
         if !depth.is_none() {
-           url.push_str(&mut format!("&depth={}", depth.unwrap()));
+            url.push_str(&mut format!("&depth={}", depth.unwrap()));
         }
 
         if !limit.is_none() {
-           url.push_str(&mut format!("&limit={}", limit.unwrap()));
+            url.push_str(&mut format!("&limit={}", limit.unwrap()));
         }
 
-        Ok(self.client.get(&url.to_owned()).send()?.json::<Comments>()?)
+        Ok(self
+            .client
+            .get(&url.to_owned())
+            .send()?
+            .json::<Comments>()?)
     }
 
     /// Get hot posts.
@@ -105,12 +114,21 @@ impl Subreddit {
     }
 
     /// Get latest comments.
-    pub fn latest_comments(&self, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+    pub fn latest_comments(
+        &self,
+        depth: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<Comments, RouxError> {
         self.get_comment_feed("comments", depth, limit)
     }
 
     /// Get comments from article.
-    pub fn article_comments(&self, article: &str, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+    pub fn article_comments(
+        &self,
+        article: &str,
+        depth: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<Comments, RouxError> {
         self.get_comment_feed(&format!("comments/{}", article), depth, limit)
     }
 }

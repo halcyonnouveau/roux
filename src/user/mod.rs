@@ -17,8 +17,8 @@
 extern crate reqwest;
 extern crate serde_json;
 
-use reqwest::Client;
 use crate::util::RouxError;
+use reqwest::Client;
 
 mod responses;
 use responses::{Comments, Overview, Submitted};
@@ -41,7 +41,8 @@ impl User {
 
     /// Get user's overview.
     pub fn overview(&self) -> Result<Overview, RouxError> {
-        Ok(self.client
+        Ok(self
+            .client
             .get(&format!(
                 "https://www.reddit.com/user/{}/overview/.json",
                 self.user
@@ -52,7 +53,9 @@ impl User {
 
     /// Get user's submitted posts.
     pub fn submitted(&self) -> Result<Submitted, RouxError> {
-        Ok(self.client.get(&format!(
+        Ok(self
+            .client
+            .get(&format!(
                 "https://www.reddit.com/user/{}/submitted/.json",
                 self.user
             ))
@@ -62,7 +65,9 @@ impl User {
 
     /// Get user's submitted comments.
     pub fn comments(&self) -> Result<Comments, RouxError> {
-        Ok(self.client.get(&format!(
+        Ok(self
+            .client
+            .get(&format!(
                 "https://www.reddit.com/user/{}/comments/.json",
                 self.user
             ))

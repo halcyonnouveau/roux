@@ -62,10 +62,10 @@ pub use subreddit::Subreddit;
 pub mod user;
 pub use user::User;
 
-mod util;
-mod responses;
 mod config;
 mod me;
+mod responses;
+mod util;
 
 use util::url;
 
@@ -110,7 +110,8 @@ impl Reddit {
             ("password", &self.config.password.to_owned().unwrap()),
         ];
 
-        let request = self.client
+        let request = self
+            .client
             .post(url)
             .header(USER_AGENT, &self.config.user_agent[..])
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
