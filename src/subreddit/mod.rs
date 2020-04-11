@@ -80,6 +80,11 @@ impl Subreddit {
     pub fn latest(&self, limit: u32) -> Result<Submissions, RouxError> {
         self.get_feed("new", limit)
     }
+    
+    /// Get latest comments.
+    pub fn latest_comments(&self, limit: u32) -> Result<Submissions, RouxError> {
+        self.get_feed("comments", limit)
+    }
 }
 
 #[cfg(test)]
