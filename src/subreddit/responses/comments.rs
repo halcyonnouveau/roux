@@ -34,7 +34,6 @@ pub struct CommentsData {
     pub is_submitter: bool,
     pub body_html: String,
     pub distinguished: Option<bool>,
-    pub associated_award: null,
     pub stickied: bool,
     pub author_premium: bool,
     pub can_gild: bool,
