@@ -85,11 +85,25 @@ impl Subreddit {
             url.push_str(&mut format!("&limit={}", limit.unwrap()));
         }
 
-        Ok(self
-            .client
-            .get(&url.to_owned())
-            .send()?
-            .json::<Comments>()?)
+        // This is one of the dumbest API I've ever seen.
+        // The comments for a subreddit are stored in a normal hash map
+        // but for posts the comments are in an array with the ONLY item
+        // being same hash map as the one for subreddits...
+        if url.contains("comments/") {
+            let mut comments = self
+                .client
+                .get(&url.to_owned())
+                .send()?
+                .json::<Vec<Comments>>()?;
+
+            Ok(comments.pop().unwrap())
+        } else {
+            Ok(self
+                .client
+                .get(&url.to_owned())
+                .send()?
+                .json::<Comments>()?)
+        }
     }
 
     /// Get hot posts.
