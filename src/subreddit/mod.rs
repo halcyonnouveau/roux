@@ -26,11 +26,11 @@
 extern crate reqwest;
 extern crate serde_json;
 
-use reqwest::Client;
 use crate::util::RouxError;
+use reqwest::Client;
 
 mod responses;
-use responses::{Moderators, Submissions, Comments};
+use responses::{Comments, Moderators, Submissions};
 
 /// Subreddit.
 pub struct Subreddit {
@@ -54,14 +54,16 @@ impl Subreddit {
 
     /// Get moderators.
     pub fn moderators(&self) -> Result<Moderators, RouxError> {
-        Ok(self.client
+        Ok(self
+            .client
             .get(&format!("{}/about/moderators/.json", self.url))
             .send()?
             .json::<Moderators>()?)
     }
 
     fn get_feed(&self, ty: &str, limit: u32) -> Result<Submissions, RouxError> {
-        Ok(self.client
+        Ok(self
+            .client
             .get(&format!("{}/{}.json?limit={}", self.url, ty, limit))
             .send()?
             .json::<Submissions>()?)
