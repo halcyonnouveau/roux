@@ -5,9 +5,11 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
+use crate::responses::BasicListing;
 use crate::util::{url, RouxError};
 
 mod responses;
+use responses::InboxItem;
 use responses::MeData;
 
 pub struct Me {
@@ -88,6 +90,13 @@ impl Me {
             ("to", username),
         ];
         self.post("api/compose", &form)
+    }
+
+    /// Get user's submitted posts.
+    pub fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+        Ok(self
+            .get("message/inbox")?
+            .json::<BasicListing<InboxItem>>()?)
     }
 
     pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {

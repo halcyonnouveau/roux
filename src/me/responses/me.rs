@@ -19,3 +19,22 @@ pub struct MeData {
     pub is_gold: bool,
     pub icon_img: String,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct InboxItem {
+    id: String,
+    subject: String,
+    was_comment: bool,
+    author: String,
+    parent_id: Option<String>,
+    subreddit_name_prefixed: Option<String>,
+    new: bool,
+    r#type: String,
+    body: String,
+    dest: String,
+    body_html: String,
+    name: String,
+    created: f64,
+    created_utc: f64,
+    context: String,
+}
