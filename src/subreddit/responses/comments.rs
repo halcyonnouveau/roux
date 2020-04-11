@@ -1,13 +1,17 @@
 use crate::responses::BasicListing;
 use serde::Deserialize;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 use serde_json::Value;
 >>>>>>> Made the comment data accurate
+=======
+>>>>>>> Fixed CommentsData
 
 #[derive(Debug, Deserialize)]
 pub struct CommentsData {
     pub total_awards_received: i32,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     pub approved_at_utc: Option<f64>,
@@ -23,6 +27,12 @@ pub struct CommentsData {
     pub link_id: String,
     pub author_flair_template_id: String,
 >>>>>>> Made the comment data accurate
+=======
+    pub approved_at_utc: Option<f64>,
+    pub edited: bool,
+    pub link_id: String,
+    pub author_flair_template_id: Option<String>,
+>>>>>>> Fixed CommentsData
     pub likes: Option<bool>,
     pub saved: bool,
     pub id: String,
@@ -48,10 +58,14 @@ pub struct CommentsData {
     pub is_submitter: bool,
     pub body_html: String,
 <<<<<<< HEAD
+<<<<<<< HEAD
     pub distinguished: Option<String>,
 =======
     pub distinguished: Option<bool>,
 >>>>>>> fixed a few that I missed
+=======
+    pub distinguished: Option<String>,
+>>>>>>> Fixed CommentsData
     pub stickied: bool,
     pub author_premium: bool,
     pub can_gild: bool,
