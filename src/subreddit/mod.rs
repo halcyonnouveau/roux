@@ -14,6 +14,13 @@
 //! let rising = subreddit.rising(30);
 //! // Get top posts with limit = 10.
 //! let top = subreddit.top(10);
+//! // Get latest comments.
+//! // `depth` and `limit` are optional.
+//! let latest_comments = subreddit.latest_comments(None, Some(25));
+//! // Get comments from a submission.
+//! let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
+//! let article_comments = subreddit.article_comments(article_id, None, Some(25));
+//! assert!(article_comments.is_ok());
 //! ```
 
 extern crate reqwest;
@@ -59,12 +66,19 @@ impl Subreddit {
             .send()?
             .json::<Submissions>()?)
     }
-    
-    fn get_comment_feed(&self, ty: &str, limit: u32) -> Result<Comments, RouxError> {
-        Ok(self.client
-            .get(&format!("{}/{}.json?limit={}", self.url, ty, limit))
-            .send()?
-            .json::<Comments>()?)
+
+    fn get_comment_feed(&self, ty: &str, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+        let url = &mut format!("{}/{}.json?", self.url, ty);
+
+        if !depth.is_none() {
+           url.push_str(&mut format!("&depth={}", depth.unwrap()));
+        }
+
+        if !limit.is_none() {
+           url.push_str(&mut format!("&limit={}", limit.unwrap()));
+        }
+
+        Ok(self.client.get(&url.to_owned()).send()?.json::<Comments>()?)
     }
 
     /// Get hot posts.
@@ -87,10 +101,15 @@ impl Subreddit {
     pub fn latest(&self, limit: u32) -> Result<Submissions, RouxError> {
         self.get_feed("new", limit)
     }
-    
+
     /// Get latest comments.
-    pub fn latest_comments(&self, limit: u32) -> Result<Comments, RouxError> {
-        self.get_comment_feed("comments", limit)
+    pub fn latest_comments(&self, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+        self.get_comment_feed("comments", depth, limit)
+    }
+
+    /// Get comments from article.
+    pub fn article_comments(&self, article: &str, depth: Option<u32>, limit: Option<u32>) -> Result<Comments, RouxError> {
+        self.get_comment_feed(&format!("comments/{}", article), depth, limit)
     }
 }
 
@@ -113,5 +132,10 @@ mod tests {
         assert!(rising.is_ok());
         let top = subreddit.top(25);
         assert!(top.is_ok());
+        let latest_comments = subreddit.latest_comments(None, Some(25));
+        assert!(latest_comments.is_ok());
+        let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
+        let article_comments = subreddit.article_comments(article_id, None, Some(25));
+        assert!(article_comments.is_ok());
     }
 }
