@@ -40,7 +40,6 @@ pub struct CommentsData {
     pub archived: bool,
     pub no_follow: bool,
     pub author: String,
-    pub num_comments: i32,
     pub can_mod_post: bool,
     pub created_utc: f64,
     pub send_replies: bool,
