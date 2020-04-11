@@ -18,7 +18,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
     .login();
-//!
+
 let me = client.unwrap();
 ```
 It is important that you pick a good user agent. The ideal format is

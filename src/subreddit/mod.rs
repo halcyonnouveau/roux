@@ -84,7 +84,7 @@ impl Subreddit {
             url.push_str(&mut format!("&limit={}", limit.unwrap()));
         }
 
-        // This is one of the dumbest API I've ever seen.
+        // This is one of the dumbest APIs I've ever seen.
         // The comments for a subreddit are stored in a normal hash map
         // but for posts the comments are in an array with the ONLY item
         // being same hash map as the one for subreddits...
