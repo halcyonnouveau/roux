@@ -25,7 +25,7 @@ pub struct InboxItem {
     pub id: String,
     pub subject: String,
     pub was_comment: bool,
-    pub author: String,
+    pub author: Option<String>,
     pub parent_id: Option<String>,
     pub subreddit_name_prefixed: Option<String>,
     pub new: bool,
