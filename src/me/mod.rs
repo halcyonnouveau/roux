@@ -5,9 +5,11 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
+use crate::responses::BasicListing;
 use crate::util::{url, RouxError};
 
 mod responses;
+use responses::InboxItem;
 use responses::MeData;
 
 pub struct Me {
@@ -100,6 +102,23 @@ impl Me {
         ];
 
         self.post("api/compose", &form)
+    }
+
+    /// Get user's submitted posts.
+    pub fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+        Ok(self
+            .get("message/inbox")?
+            .json::<BasicListing<InboxItem>>()?)
+    }
+
+    pub fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+        let form = [("text", text), ("parent", parent)];
+        self.post("api/comment", &form)
+    }
+
+    pub fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+        let form = [("text", text), ("thing_id", parent)];
+        self.post("api/editusertext", &form)
     }
 
     pub fn logout(self) -> Result<(), RouxError> {
