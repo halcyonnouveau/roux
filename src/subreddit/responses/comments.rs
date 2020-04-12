@@ -6,8 +6,6 @@ use serde::Deserialize;
 pub struct CommentsData {
     pub total_awards_received: Option<i32>,
     pub approved_at_utc: Option<f64>,
-    // TODO: `edited` is sometimes a bool and somtimes i32 :/
-    // pub edited: i32,
     pub link_id: Option<String>,
     pub author_flair_template_id: Option<String>,
     pub likes: Option<bool>,
