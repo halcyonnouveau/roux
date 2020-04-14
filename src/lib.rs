@@ -62,10 +62,11 @@ pub use subreddit::Subreddit;
 pub mod user;
 pub use user::User;
 
+/// Utils for requests.
+pub mod util;
 mod config;
 mod me;
 mod responses;
-mod util;
 
 use util::url;
 
