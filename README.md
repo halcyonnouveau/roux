@@ -35,6 +35,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
     .login();
+
 let me = client.unwrap();
 me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 ```
@@ -46,6 +47,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
     .login();
+
 let me = client.unwrap();
 me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 ```
