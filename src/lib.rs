@@ -49,7 +49,6 @@
 //!
 //! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 //! ```
-
 use serde::Deserialize;
 
 use reqwest::header::USER_AGENT;
@@ -103,7 +102,7 @@ impl Reddit {
     }
 
     /// Login as a user.
-    pub fn login(self) -> Result<me::Me, util::RouxError> {
+    pub async fn login(self) -> Result<me::Me, util::RouxError> {
         let url = &url::build_url("api/v1/access_token")[..];
         let form = [
             ("grant_type", "password"),
@@ -118,10 +117,10 @@ impl Reddit {
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form);
 
-        let mut response = request.send()?;
+        let response = request.send().await?;
 
         if response.status() == 200 {
-            let auth_data = response.json::<AuthData>().unwrap();
+            let auth_data = response.json::<AuthData>().await.unwrap();
             Ok(me::Me::new(&auth_data.access_token, self.config))
         } else {
             Err(util::RouxError::Status(response))

@@ -69,15 +69,15 @@ impl Subreddit {
     }
 
     /// Get moderators.
-    pub fn moderators(&self) -> Result<Moderators, RouxError> {
+    pub async fn moderators(&self) -> Result<Moderators, RouxError> {
         Ok(self
             .client
             .get(&format!("{}/about/moderators/.json", self.url))
-            .send()?
-            .json::<Moderators>()?)
+            .send().await?
+            .json::<Moderators>().await?)
     }
 
-    fn get_feed(
+    async fn get_feed(
         &self,
         ty: &str,
         limit: u32,
@@ -105,11 +105,11 @@ impl Subreddit {
         Ok(self
             .client
             .get(&url.to_owned())
-            .send()?
-            .json::<Submissions>()?)
+            .send().await?
+            .json::<Submissions>().await?)
     }
 
-    fn get_comment_feed(
+    async fn get_comment_feed(
         &self,
         ty: &str,
         depth: Option<u32>,
@@ -133,65 +133,65 @@ impl Subreddit {
             let mut comments = self
                 .client
                 .get(&url.to_owned())
-                .send()?
-                .json::<Vec<Comments>>()?;
+                .send().await?
+                .json::<Vec<Comments>>().await?;
 
             Ok(comments.pop().unwrap())
         } else {
             Ok(self
                 .client
                 .get(&url.to_owned())
-                .send()?
-                .json::<Comments>()?)
+                .send().await?
+                .json::<Comments>().await?)
         }
     }
 
     /// Get hot posts.
-    pub fn hot(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
-        self.get_feed("hot", limit, options)
+    pub async fn hot(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+        self.get_feed("hot", limit, options).await
     }
 
     /// Get rising posts.
-    pub fn rising(
+    pub async fn rising(
         &self,
         limit: u32,
         options: Option<FeedOption>,
     ) -> Result<Submissions, RouxError> {
-        self.get_feed("rising", limit, options)
+        self.get_feed("rising", limit, options).await
     }
 
     /// Get top posts.
-    pub fn top(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+    pub async fn top(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
         // TODO: time filter
-        self.get_feed("top", limit, options)
+        self.get_feed("top", limit, options).await
     }
 
     /// Get latest posts.
-    pub fn latest(
+    pub async fn latest(
         &self,
         limit: u32,
         options: Option<FeedOption>,
     ) -> Result<Submissions, RouxError> {
-        self.get_feed("new", limit, options)
+        self.get_feed("new", limit, options).await
     }
 
     /// Get latest comments.
-    pub fn latest_comments(
+    pub async fn latest_comments(
         &self,
         depth: Option<u32>,
         limit: Option<u32>,
     ) -> Result<Comments, RouxError> {
-        self.get_comment_feed("comments", depth, limit)
+        self.get_comment_feed("comments", depth, limit).await
     }
 
     /// Get comments from article.
-    pub fn article_comments(
+    pub async fn article_comments(
         &self,
         article: &str,
         depth: Option<u32>,
         limit: Option<u32>,
     ) -> Result<Comments, RouxError> {
-        self.get_comment_feed(&format!("comments/{}", article), depth, limit)
+        self.get_comment_feed(&format!("comments/{}", article), depth, limit).await
     }
 }
 
@@ -199,37 +199,38 @@ impl Subreddit {
 mod tests {
     use super::FeedOption;
     use super::Subreddit;
+    use tokio::test;
 
-    #[test]
-    fn test_no_auth() {
+    #[tokio::test]
+    async fn test_no_auth() {
         let subreddit = Subreddit::new("rust");
 
         // Test moderators
-        let moderators = subreddit.moderators();
+        let moderators = subreddit.moderators().await;
         assert!(moderators.is_ok());
 
         // Test feeds
-        let hot = subreddit.hot(25, None);
+        let hot = subreddit.hot(25, None).await;
         assert!(hot.is_ok());
 
-        let rising = subreddit.rising(25, None);
+        let rising = subreddit.rising(25, None).await;
         assert!(rising.is_ok());
 
-        let top = subreddit.top(25, None);
+        let top = subreddit.top(25, None).await;
         assert!(top.is_ok());
 
-        let latest_comments = subreddit.latest_comments(None, Some(25));
+        let latest_comments = subreddit.latest_comments(None, Some(25)).await;
         assert!(latest_comments.is_ok());
 
         let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
-        let article_comments = subreddit.article_comments(article_id, None, Some(25));
+        let article_comments = subreddit.article_comments(article_id, None, Some(25)).await;
         assert!(article_comments.is_ok());
 
         // Test with feed options
         let after = top.unwrap().data.after.unwrap();
         let options = FeedOption::new().after(&after);
 
-        let next_top = subreddit.top(25, Some(options));
+        let next_top = subreddit.top(25, Some(options)).await;
         assert!(next_top.is_ok());
     }
 }

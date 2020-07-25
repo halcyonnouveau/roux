@@ -1,6 +1,6 @@
 [package]
 name = "roux"
-version = "0.4.1-alpha.0"
+version = "0.5.0"
 authors = ["Justin Duch <justin@justinduch.com>"]
 edition = "2018"
 license = "MIT"
@@ -12,12 +12,13 @@ categories = ["authentication", "api-bindings", "network-programming"]
 exclude = [".circle/*", ".gitignore"]
 
 [dependencies]
-reqwest = "0.9.18"
+reqwest = {version = "0.10.7", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
 [dev-dependencies]
 dotenv = "0.14.0"
+tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 
 [badges]
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
