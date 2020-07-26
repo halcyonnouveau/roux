@@ -5,19 +5,20 @@
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
 ![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.rs.svg)
 
-A simple Reddit API wrapper implemented in Rust.
+A simple, asynchronous Reddit API wrapper implemented in Rust.
 
 ## Usage
 
 ### Using OAuth
 
 To create an OAuth client with the Reddit API, use the `Reddit` class.
-```rust,no_run
+```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
-    .login();
+    .login()
+    .await;
 
 let me = client.unwrap();
 ```
@@ -29,24 +30,26 @@ This will authticate you as the user given in the username function.
 Using the OAuth client, you can:
 
 #### Submit A Text Post
-```rust,no_run
+```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
-    .login();
+    .login()
+    .await;
 
 let me = client.unwrap();
 me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 ```
 
 #### Submit A Link Post
-```rust,no_run
+```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .username("USERNAME")
     .password("PASSWORD")
-    .login();
+    .login()
+    .await;
 
 let me = client.unwrap();
 me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
