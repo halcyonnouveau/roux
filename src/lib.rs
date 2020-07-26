@@ -5,13 +5,14 @@
 //!
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //! ```
@@ -24,31 +25,34 @@
 //! Using the OAuth client, you can:
 //!
 //! ### Submit A Text Post
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //!
 //! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 //! ```
 //! ### Submit A Link Post
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //!
 //! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 //! ```
+
 use serde::Deserialize;
 
 use reqwest::header::USER_AGENT;
@@ -61,11 +65,11 @@ pub use subreddit::Subreddit;
 pub mod user;
 pub use user::User;
 
-/// Utils for requests.
-pub mod util;
 mod config;
 mod me;
 mod responses;
+/// Utils for requests.
+pub mod util;
 
 use util::url;
 

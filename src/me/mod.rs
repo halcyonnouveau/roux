@@ -52,7 +52,7 @@ impl Me {
 
     pub async fn me(&self) -> Result<MeData, RouxError> {
         match self.get("api/v1/me").await {
-            Ok(mut res) => Ok(res.json::<MeData>().await?),
+            Ok(res) => Ok(res.json::<MeData>().await?),
             Err(e) => Err(e.into()),
         }
     }
@@ -66,7 +66,12 @@ impl Me {
         }
     }
 
-    pub async fn submit_link(&self, title: &str, link: &str, sr: &str) -> Result<Response, RouxError> {
+    pub async fn submit_link(
+        &self,
+        title: &str,
+        link: &str,
+        sr: &str,
+    ) -> Result<Response, RouxError> {
         let form = [
             ("kind", "link"),
             ("title", title),
@@ -77,7 +82,12 @@ impl Me {
         self.post("api/submit", &form).await
     }
 
-    pub async fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
+    pub async fn submit_text(
+        &self,
+        title: &str,
+        text: &str,
+        sr: &str,
+    ) -> Result<Response, RouxError> {
         let form = [
             ("kind", "self"),
             ("title", title),
@@ -107,8 +117,10 @@ impl Me {
     // Get user's submitted posts.
     pub async fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
         Ok(self
-            .get("message/inbox").await?
-            .json::<BasicListing<InboxItem>>().await?)
+            .get("message/inbox")
+            .await?
+            .json::<BasicListing<InboxItem>>()
+            .await?)
     }
 
     pub async fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
@@ -131,7 +143,8 @@ impl Me {
             .post(url)
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form)
-            .send().await?;
+            .send()
+            .await?;
 
         if response.status() == 204 {
             Ok(())

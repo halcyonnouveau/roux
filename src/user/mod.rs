@@ -2,16 +2,16 @@
 //! A read-only module to read data from for a specific user.
 //!
 //! # Usage
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::User;
 //! let user = User::new("beanpup_py");
 //! // Now you are able to:
 //! // Get overview
-//! let overview = user.overview();
+//! let overview = user.overview().await;
 //! // Get submitted posts.
-//! let submitted = user.submitted();
+//! let submitted = user.submitted().await;
 //! // Get comments.
-//! let comments = user.comments();
+//! let comments = user.comments().await;
 //! ```
 
 extern crate reqwest;
@@ -47,8 +47,10 @@ impl User {
                 "https://www.reddit.com/user/{}/overview/.json",
                 self.user
             ))
-            .send().await?
-            .json::<Overview>().await?)
+            .send()
+            .await?
+            .json::<Overview>()
+            .await?)
     }
 
     /// Get user's submitted posts.
@@ -59,8 +61,10 @@ impl User {
                 "https://www.reddit.com/user/{}/submitted/.json",
                 self.user
             ))
-            .send().await?
-            .json::<Submitted>().await?)
+            .send()
+            .await?
+            .json::<Submitted>()
+            .await?)
     }
 
     /// Get user's submitted comments.
@@ -71,15 +75,17 @@ impl User {
                 "https://www.reddit.com/user/{}/comments/.json",
                 self.user
             ))
-            .send().await?
-            .json::<Comments>().await?)
+            .send()
+            .await?
+            .json::<Comments>()
+            .await?)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::User;
-    use tokio::test;
+    use tokio;
 
     #[tokio::test]
     async fn test_no_auth() {

@@ -1,12 +1,14 @@
 extern crate dotenv;
 extern crate roux;
+
 #[cfg(test)]
 extern crate tokio;
+
 #[cfg(test)]
 mod tests {
 
     use roux::Reddit;
-    use tokio::test;
+    use tokio;
 
     static USER_AGENT: &str = "macos:roux:v0.3.0 (by /u/beanpup_py)";
 
@@ -20,7 +22,8 @@ mod tests {
         let client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
             .username(&username)
             .password(&password)
-            .login().await;
+            .login()
+            .await;
 
         assert!(client.is_ok());
 

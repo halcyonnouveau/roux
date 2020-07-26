@@ -2,41 +2,41 @@
 //! A read-only module to read data from a specific subreddit.
 //!
 //! # Basic Usage
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Subreddit;
 //! let subreddit = Subreddit::new("rust");
 //! // Now you are able to:
 //! // Get moderators.
-//! let moderators = subreddit.moderators();
+//! let moderators = subreddit.moderators().await;
 //! // Get hot posts with limit = 25.
-//! let hot = subreddit.hot(25, None);
+//! let hot = subreddit.hot(25, None).await;
 //! // Get rising posts with limit = 30.
-//! let rising = subreddit.rising(30, None);
+//! let rising = subreddit.rising(30, None).await;
 //! // Get top posts with limit = 10.
-//! let top = subreddit.top(10, None);
+//! let top = subreddit.top(10, None).await;
 //! // Get latest comments.
 //! // `depth` and `limit` are optional.
-//! let latest_comments = subreddit.latest_comments(None, Some(25));
+//! let latest_comments = subreddit.latest_comments(None, Some(25)).await;
 //! // Get comments from a submission.
 //! let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
 //! let article_comments = subreddit.article_comments(article_id, None, Some(25));
 //! ```
 //! # Usage with feed options
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Subreddit;
 //! use roux::util::FeedOption;
 //!
 //! let subreddit = Subreddit::new("astolfo");
 //!
 //! // Gets top 10
-//! let top = subreddit.top(10, None);
+//! let top = subreddit.top(10, None).await;
 //!
 //! // Get after param from `top`
 //! let after = top.unwrap().data.after.unwrap();
 //! let options = FeedOption::new().after(&after);
 //!
 //! // Gets next 25
-//! let next_top = subreddit.top(25, Some(options));
+//! let next_top = subreddit.top(25, Some(options)).await;
 //! ```
 
 extern crate reqwest;
@@ -73,8 +73,10 @@ impl Subreddit {
         Ok(self
             .client
             .get(&format!("{}/about/moderators/.json", self.url))
-            .send().await?
-            .json::<Moderators>().await?)
+            .send()
+            .await?
+            .json::<Moderators>()
+            .await?)
     }
 
     async fn get_feed(
@@ -105,8 +107,10 @@ impl Subreddit {
         Ok(self
             .client
             .get(&url.to_owned())
-            .send().await?
-            .json::<Submissions>().await?)
+            .send()
+            .await?
+            .json::<Submissions>()
+            .await?)
     }
 
     async fn get_comment_feed(
@@ -133,21 +137,29 @@ impl Subreddit {
             let mut comments = self
                 .client
                 .get(&url.to_owned())
-                .send().await?
-                .json::<Vec<Comments>>().await?;
+                .send()
+                .await?
+                .json::<Vec<Comments>>()
+                .await?;
 
             Ok(comments.pop().unwrap())
         } else {
             Ok(self
                 .client
                 .get(&url.to_owned())
-                .send().await?
-                .json::<Comments>().await?)
+                .send()
+                .await?
+                .json::<Comments>()
+                .await?)
         }
     }
 
     /// Get hot posts.
-    pub async fn hot(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+    pub async fn hot(
+        &self,
+        limit: u32,
+        options: Option<FeedOption>,
+    ) -> Result<Submissions, RouxError> {
         self.get_feed("hot", limit, options).await
     }
 
@@ -161,7 +173,11 @@ impl Subreddit {
     }
 
     /// Get top posts.
-    pub async fn top(&self, limit: u32, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+    pub async fn top(
+        &self,
+        limit: u32,
+        options: Option<FeedOption>,
+    ) -> Result<Submissions, RouxError> {
         // TODO: time filter
         self.get_feed("top", limit, options).await
     }
@@ -191,19 +207,19 @@ impl Subreddit {
         depth: Option<u32>,
         limit: Option<u32>,
     ) -> Result<Comments, RouxError> {
-        self.get_comment_feed(&format!("comments/{}", article), depth, limit).await
+        self.get_comment_feed(&format!("comments/{}", article), depth, limit)
+            .await
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::FeedOption;
     use super::Subreddit;
-    use tokio::test;
+    use tokio;
 
     #[tokio::test]
     async fn test_no_auth() {
-        let subreddit = Subreddit::new("rust");
+        let subreddit = Subreddit::new("astolfo");
 
         // Test moderators
         let moderators = subreddit.moderators().await;
@@ -225,12 +241,5 @@ mod tests {
         let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
         let article_comments = subreddit.article_comments(article_id, None, Some(25)).await;
         assert!(article_comments.is_ok());
-
-        // Test with feed options
-        let after = top.unwrap().data.after.unwrap();
-        let options = FeedOption::new().after(&after);
-
-        let next_top = subreddit.top(25, Some(options)).await;
-        assert!(next_top.is_ok());
     }
 }
