@@ -5,13 +5,14 @@
 //!
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //! ```
@@ -24,26 +25,28 @@
 //! Using the OAuth client, you can:
 //!
 //! ### Submit A Text Post
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //!
 //! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 //! ```
 //! ### Submit A Link Post
-//! ```rust,no_run
+//! ```should_fail
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
-//!     .login();
+//!     .login()
+//!     .await;
 //!
 //! let me = client.unwrap();
 //!
@@ -62,11 +65,11 @@ pub use subreddit::Subreddit;
 pub mod user;
 pub use user::User;
 
-/// Utils for requests.
-pub mod util;
 mod config;
 mod me;
 mod responses;
+/// Utils for requests.
+pub mod util;
 
 use util::url;
 
@@ -103,7 +106,7 @@ impl Reddit {
     }
 
     /// Login as a user.
-    pub fn login(self) -> Result<me::Me, util::RouxError> {
+    pub async fn login(self) -> Result<me::Me, util::RouxError> {
         let url = &url::build_url("api/v1/access_token")[..];
         let form = [
             ("grant_type", "password"),
@@ -118,10 +121,10 @@ impl Reddit {
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form);
 
-        let mut response = request.send()?;
+        let response = request.send().await?;
 
         if response.status() == 200 {
-            let auth_data = response.json::<AuthData>().unwrap();
+            let auth_data = response.json::<AuthData>().await.unwrap();
             Ok(me::Me::new(&auth_data.access_token, self.config))
         } else {
             Err(util::RouxError::Status(response))

@@ -41,32 +41,37 @@ impl Me {
         }
     }
 
-    pub fn get(&self, url: &str) -> Result<Response, RouxError> {
+    pub async fn get(&self, url: &str) -> Result<Response, RouxError> {
         let get_url = url::build_oauth(url);
 
-        match self.client.get(&get_url[..]).send() {
+        match self.client.get(&get_url[..]).send().await {
             Ok(response) => Ok(response),
             Err(e) => Err(e.into()),
         }
     }
 
-    pub fn me(&self) -> Result<MeData, RouxError> {
-        match self.get("api/v1/me") {
-            Ok(mut res) => Ok(res.json::<MeData>()?),
+    pub async fn me(&self) -> Result<MeData, RouxError> {
+        match self.get("api/v1/me").await {
+            Ok(res) => Ok(res.json::<MeData>().await?),
             Err(e) => Err(e.into()),
         }
     }
 
-    pub fn post<T: Serialize>(&self, url: &str, form: T) -> Result<Response, RouxError> {
+    pub async fn post<T: Serialize>(&self, url: &str, form: T) -> Result<Response, RouxError> {
         let post_url = url::build_oauth(url).to_owned();
 
-        match self.client.post(&post_url[..]).form(&form).send() {
+        match self.client.post(&post_url[..]).form(&form).send().await {
             Ok(response) => Ok(response),
             Err(e) => Err(e.into()),
         }
     }
 
-    pub fn submit_link(&self, title: &str, link: &str, sr: &str) -> Result<Response, RouxError> {
+    pub async fn submit_link(
+        &self,
+        title: &str,
+        link: &str,
+        sr: &str,
+    ) -> Result<Response, RouxError> {
         let form = [
             ("kind", "link"),
             ("title", title),
@@ -74,10 +79,15 @@ impl Me {
             ("sr", sr),
         ];
 
-        self.post("api/submit", &form)
+        self.post("api/submit", &form).await
     }
 
-    pub fn submit_text(&self, title: &str, text: &str, sr: &str) -> Result<Response, RouxError> {
+    pub async fn submit_text(
+        &self,
+        title: &str,
+        text: &str,
+        sr: &str,
+    ) -> Result<Response, RouxError> {
         let form = [
             ("kind", "self"),
             ("title", title),
@@ -85,10 +95,10 @@ impl Me {
             ("sr", sr),
         ];
 
-        self.post("api/submit", &form)
+        self.post("api/submit", &form).await
     }
 
-    pub fn compose_message(
+    pub async fn compose_message(
         &self,
         username: &str,
         subject: &str,
@@ -101,27 +111,29 @@ impl Me {
             ("to", username),
         ];
 
-        self.post("api/compose", &form)
+        self.post("api/compose", &form).await
     }
 
-    /// Get user's submitted posts.
-    pub fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+    // Get user's submitted posts.
+    pub async fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
         Ok(self
-            .get("message/inbox")?
-            .json::<BasicListing<InboxItem>>()?)
+            .get("message/inbox")
+            .await?
+            .json::<BasicListing<InboxItem>>()
+            .await?)
     }
 
-    pub fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+    pub async fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("parent", parent)];
-        self.post("api/comment", &form)
+        self.post("api/comment", &form).await
     }
 
-    pub fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
+    pub async fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("thing_id", parent)];
-        self.post("api/editusertext", &form)
+        self.post("api/editusertext", &form).await
     }
 
-    pub fn logout(self) -> Result<(), RouxError> {
+    pub async fn logout(self) -> Result<(), RouxError> {
         let url = "https://www.reddit.com/api/v1/revoke_token";
 
         let form = [("access_token", self.access_token.to_owned())];
@@ -131,7 +143,8 @@ impl Me {
             .post(url)
             .basic_auth(&self.config.client_id, Some(&self.config.client_secret))
             .form(&form)
-            .send()?;
+            .send()
+            .await?;
 
         if response.status() == 204 {
             Ok(())
