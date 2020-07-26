@@ -59,5 +59,5 @@ me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 
 There are also read-only modules that don't need authentication:
 
-* [Subreddits](https://halcyonnouveau.github.io/roux.rs/roux/subreddit/index.html)
-* [Users](https://halcyonnouveau.github.io/roux.rs/roux/user/index.html)
+* [Subreddits](https://docs.rs/roux/1.0.0/roux/subreddit/index.html)
+* [Users](https://docs.rs/roux/1.0.0/roux/user/index.html)
