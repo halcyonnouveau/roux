@@ -1,10 +1,10 @@
 [package]
 name = "roux"
-version = "0.5.0"
+version = "1.0.0"
 authors = ["Justin Duch <justin@justinduch.com>"]
 edition = "2018"
 license = "MIT"
-description = "Simple Reddit API Wrapper"
+description = "Simple Async Reddit API Wrapper"
 readme = "README.md"
 repository = "https://github.com/halcyonnouveau/roux.rs"
 keywords = ["reddit", "api"]
