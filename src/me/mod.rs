@@ -139,7 +139,7 @@ impl Me {
     }
     
     /// Mark messages as unread
-    pub async fn mark_read(&self, ids: &str) -> Result<Response, RouxError> {
+    pub async fn mark_unread(&self, ids: &str) -> Result<Response, RouxError> {
         let form = [("id", ids)];
         self.post("api/unread_message", &form).await
     }
