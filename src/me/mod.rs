@@ -123,6 +123,20 @@ impl Me {
             .await?)
     }
 
+    ///  Get users unread messages
+    pub async fn unread(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+        Ok(self
+            .get("message/unread")
+            .await?
+            .json::<BasicListing<InboxItem>>()
+            .await?)
+    }
+
+    pub async fn mark_read(&self, ids: &str) -> Result<Response, RouxError> {
+        let form = [("id", ids)];
+        self.post("api/read_message", &form).await
+    }
+
     pub async fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("parent", parent)];
         self.post("api/comment", &form).await
