@@ -1,11 +1,11 @@
-# roux.rs
+# Roux
 
-[![CircleCI](https://circleci.com/gh/halcyonnouveau/roux.rs.svg?style=svg)](https://circleci.com/gh/halcyonnouveau/roux.rs)
+[![CircleCI](https://circleci.com/gh/halcyonnouveau/roux.svg?style=svg)](https://circleci.com/gh/halcyonnouveau/roux)
 [![Documentation](https://img.shields.io/badge/documentation-available-green.svg)](https://docs.rs/roux)
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
-![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.rs.svg)
+![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.svg)
 
-A simple, asynchronous Reddit API wrapper implemented in Rust.
+Roux is a simple, asynchronous Reddit API wrapper implemented in Rust.
 
 ## Usage
 
