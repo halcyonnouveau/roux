@@ -2,10 +2,10 @@
 use crate::responses::BasicListing;
 use serde::Deserialize;
 
-/// CommentsData
+/// SubredditCommentsData
 /// Everything is an option to deal with both `latest_comments` and `article_comments`
 #[derive(Debug, Deserialize)]
-pub struct CommentsData {
+pub struct SubredditCommentsData {
     /// Total awards
     pub total_awards_received: Option<i32>,
     /// Approved at (UTC)
@@ -104,5 +104,5 @@ pub struct CommentsData {
     pub ups: Option<i32>,
 }
 
-/// Comments
-pub type Comments = BasicListing<CommentsData>;
+/// SubredditComments
+pub type SubredditComments = BasicListing<SubredditCommentsData>;

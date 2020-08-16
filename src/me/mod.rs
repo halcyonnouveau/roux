@@ -12,7 +12,7 @@ use crate::responses::BasicListing;
 use crate::util::{url, RouxError};
 
 pub mod responses;
-use responses::InboxItem;
+use responses::Inbox;
 use responses::MeData;
 
 /// Me
@@ -125,7 +125,7 @@ impl Me {
     }
 
     /// Get user's submitted posts.
-    pub async fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+    pub async fn inbox(&self) -> Result<Inbox, RouxError> {
         Ok(self
             .get("message/inbox")
             .await?
@@ -134,7 +134,7 @@ impl Me {
     }
 
     /// Get users unread messages
-    pub async fn unread(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+    pub async fn unread(&self) -> Result<Inbox, RouxError> {
         Ok(self
             .get("message/unread")
             .await?

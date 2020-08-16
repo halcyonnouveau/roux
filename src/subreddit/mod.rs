@@ -46,7 +46,7 @@ use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
 pub mod responses;
-use responses::{Comments, Moderators, Submissions};
+use responses::{SubredditComments, Moderators, Submissions};
 
 /// Subreddit.
 pub struct Subreddit {
@@ -118,7 +118,7 @@ impl Subreddit {
         ty: &str,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<Comments, RouxError> {
+    ) -> Result<SubredditComments, RouxError> {
         let url = &mut format!("{}/{}.json?", self.url, ty);
 
         if !depth.is_none() {
@@ -139,7 +139,7 @@ impl Subreddit {
                 .get(&url.to_owned())
                 .send()
                 .await?
-                .json::<Vec<Comments>>()
+                .json::<Vec<SubredditComments>>()
                 .await?;
 
             Ok(comments.pop().unwrap())
@@ -149,7 +149,7 @@ impl Subreddit {
                 .get(&url.to_owned())
                 .send()
                 .await?
-                .json::<Comments>()
+                .json::<SubredditComments>()
                 .await?)
         }
     }
@@ -196,7 +196,7 @@ impl Subreddit {
         &self,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<Comments, RouxError> {
+    ) -> Result<SubredditComments, RouxError> {
         self.get_comment_feed("comments", depth, limit).await
     }
 
@@ -206,7 +206,7 @@ impl Subreddit {
         article: &str,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<Comments, RouxError> {
+    ) -> Result<SubredditComments, RouxError> {
         self.get_comment_feed(&format!("comments/{}", article), depth, limit)
             .await
     }

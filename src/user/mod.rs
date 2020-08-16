@@ -21,7 +21,7 @@ use crate::util::RouxError;
 use reqwest::Client;
 
 pub mod responses;
-use responses::{Comments, Overview, Submitted};
+use responses::{UserComments, Overview, Submitted};
 
 /// User.
 pub struct User {
@@ -68,7 +68,7 @@ impl User {
     }
 
     /// Get user's submitted comments.
-    pub async fn comments(&self) -> Result<Comments, RouxError> {
+    pub async fn comments(&self) -> Result<UserComments, RouxError> {
         Ok(self
             .client
             .get(&format!(
@@ -77,7 +77,7 @@ impl User {
             ))
             .send()
             .await?
-            .json::<Comments>()
+            .json::<UserComments>()
             .await?)
     }
 }

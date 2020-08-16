@@ -2,9 +2,9 @@
 use crate::responses::BasicListing;
 use serde::Deserialize;
 
-/// CommentsData
+/// UserCommentsData
 #[derive(Debug, Deserialize)]
-pub struct CommentsData {
+pub struct UserCommentsData {
     /// Body
     pub body: String,
     /// Body HTML
@@ -19,5 +19,5 @@ pub struct CommentsData {
     pub created: f64,
 }
 
-/// Comments
-pub type Comments = BasicListing<CommentsData>;
+/// UserComments
+pub type UserComments = BasicListing<UserCommentsData>;
