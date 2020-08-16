@@ -1,3 +1,6 @@
+//! # Responses
+//! Base responses
+
 use serde::Deserialize;
 
 /// Basic structure of a Reddit response.

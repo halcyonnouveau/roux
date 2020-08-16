@@ -1,3 +1,6 @@
+//! # Me
+//! Me module.
+
 extern crate reqwest;
 extern crate serde_json;
 
@@ -5,20 +8,21 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::responses::BasicListing;
 use crate::util::{url, RouxError};
 
-mod responses;
-use responses::InboxItem;
-use responses::MeData;
+pub mod responses;
+use responses::{MeData, Inbox};
 
+/// Me
 pub struct Me {
+    /// Access token
     pub access_token: String,
     client: Client,
     config: Config,
 }
 
 impl Me {
+    /// Create a new `me`
     pub fn new(access_token: &str, config: Config) -> Me {
         let mut headers = header::HeaderMap::new();
 
@@ -36,12 +40,12 @@ impl Me {
 
         Me {
             access_token: access_token.to_owned(),
-            config: config,
-            client: client,
+            config,
+            client,
         }
     }
 
-    pub async fn get(&self, url: &str) -> Result<Response, RouxError> {
+    async fn get(&self, url: &str) -> Result<Response, RouxError> {
         let get_url = url::build_oauth(url);
 
         match self.client.get(&get_url[..]).send().await {
@@ -50,14 +54,7 @@ impl Me {
         }
     }
 
-    pub async fn me(&self) -> Result<MeData, RouxError> {
-        match self.get("api/v1/me").await {
-            Ok(res) => Ok(res.json::<MeData>().await?),
-            Err(e) => Err(e.into()),
-        }
-    }
-
-    pub async fn post<T: Serialize>(&self, url: &str, form: T) -> Result<Response, RouxError> {
+    async fn post<T: Serialize>(&self, url: &str, form: T) -> Result<Response, RouxError> {
         let post_url = url::build_oauth(url).to_owned();
 
         match self.client.post(&post_url[..]).form(&form).send().await {
@@ -66,6 +63,15 @@ impl Me {
         }
     }
 
+    /// Get me
+    pub async fn me(&self) -> Result<MeData, RouxError> {
+        match self.get("api/v1/me").await {
+            Ok(res) => Ok(res.json::<MeData>().await?),
+            Err(e) => Err(e.into()),
+        }
+    }
+
+    /// Submit link
     pub async fn submit_link(
         &self,
         title: &str,
@@ -82,6 +88,7 @@ impl Me {
         self.post("api/submit", &form).await
     }
 
+    /// Submit text
     pub async fn submit_text(
         &self,
         title: &str,
@@ -98,6 +105,7 @@ impl Me {
         self.post("api/submit", &form).await
     }
 
+    /// Compose message
     pub async fn compose_message(
         &self,
         username: &str,
@@ -114,21 +122,21 @@ impl Me {
         self.post("api/compose", &form).await
     }
 
-    // Get user's submitted posts.
-    pub async fn inbox(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+    /// Get user's submitted posts.
+    pub async fn inbox(&self) -> Result<Inbox, RouxError> {
         Ok(self
             .get("message/inbox")
             .await?
-            .json::<BasicListing<InboxItem>>()
+            .json::<Inbox>()
             .await?)
     }
 
-    ///  Get users unread messages
-    pub async fn unread(&self) -> Result<BasicListing<InboxItem>, RouxError> {
+    /// Get users unread messages
+    pub async fn unread(&self) -> Result<Inbox, RouxError> {
         Ok(self
             .get("message/unread")
             .await?
-            .json::<BasicListing<InboxItem>>()
+            .json::<Inbox>()
             .await?)
     }
 
@@ -137,23 +145,26 @@ impl Me {
         let form = [("id", ids)];
         self.post("api/read_message", &form).await
     }
-    
+
     /// Mark messages as unread
     pub async fn mark_unread(&self, ids: &str) -> Result<Response, RouxError> {
         let form = [("id", ids)];
         self.post("api/unread_message", &form).await
     }
 
+    /// Comment
     pub async fn comment(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("parent", parent)];
         self.post("api/comment", &form).await
     }
 
+    /// Edit
     pub async fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("thing_id", parent)];
         self.post("api/editusertext", &form).await
     }
 
+    /// Logout
     pub async fn logout(self) -> Result<(), RouxError> {
         let url = "https://www.reddit.com/api/v1/revoke_token";
 

@@ -58,19 +58,24 @@ use serde::Deserialize;
 use reqwest::header::USER_AGENT;
 use reqwest::Client;
 
+mod config;
+
 /// Subreddit module.
 pub mod subreddit;
 pub use subreddit::Subreddit;
+
 /// User module.
 pub mod user;
 pub use user::User;
 
-mod config;
-mod me;
-mod responses;
+/// Me module.
+pub mod me;
+pub use me::Me;
+
+pub mod responses;
+
 /// Utils for requests.
 pub mod util;
-
 use util::url;
 
 /// Client to use OAuth with Reddit.

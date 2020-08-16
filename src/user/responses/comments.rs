@@ -1,14 +1,23 @@
+//! # User Comment Responses
 use crate::responses::BasicListing;
 use serde::Deserialize;
 
+/// UserCommentsData
 #[derive(Debug, Deserialize)]
-pub struct CommentsData {
+pub struct UserCommentsData {
+    /// Body
     pub body: String,
+    /// Body HTML
     pub body_html: String,
+    /// Link title
     pub link_title: String,
+    /// Link url
     pub link_url: String,
+    /// Subreddit
     pub subreddit: String,
+    /// Created
     pub created: f64,
 }
 
-pub type Comments = BasicListing<CommentsData>;
+/// UserComments
+pub type UserComments = BasicListing<UserCommentsData>;

@@ -1,8 +1,9 @@
+//! # Subreddit Responses
 pub mod moderators;
-pub use moderators::Moderators;
+pub use moderators::{Moderators, ModeratorsData};
 
 pub mod submissions;
-pub use submissions::Submissions;
+pub use submissions::{Submissions, SubmissionsData};
 
 pub mod comments;
-pub use comments::Comments;
+pub use comments::{SubredditComments, SubredditCommentsData};
