@@ -1,7 +1,9 @@
+//! # Subreddit Submussion Responses
 use crate::responses::BasicListing;
 use serde::Deserialize;
 use serde_json::Value;
 
+/// SubmissionsData
 #[derive(Debug, Deserialize)]
 pub struct SubmissionsData {
     /// The domain of the link (if link post) or self.subreddit (if self post).
@@ -123,11 +125,13 @@ pub struct SubmissionsData {
     pub title: String,
     /// A timestamp of the time when the post was created, in **UTC**.
     pub created_utc: f64,
+    /// Distinguished
     pub distinguished: Option<String>,
-    // This is `true` if the user has visited this link.
+    /// This is `true` if the user has visited this link.
     pub visited: bool,
-    // The number of reports, if the user is a moderator of this subreddit.
+    /// The number of reports, if the user is a moderator of this subreddit.
     pub num_reports: Option<u64>,
 }
 
+/// Submissions
 pub type Submissions = BasicListing<SubmissionsData>;

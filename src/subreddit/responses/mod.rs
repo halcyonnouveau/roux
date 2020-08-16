@@ -1,3 +1,4 @@
+//! # Subreddit Responses
 pub mod moderators;
 pub use moderators::Moderators;
 

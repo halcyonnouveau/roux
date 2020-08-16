@@ -20,7 +20,7 @@ extern crate serde_json;
 use crate::util::RouxError;
 use reqwest::Client;
 
-mod responses;
+pub mod responses;
 use responses::{Comments, Overview, Submitted};
 
 /// User.

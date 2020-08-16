@@ -45,7 +45,7 @@ extern crate serde_json;
 use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
-mod responses;
+pub mod responses;
 use responses::{Comments, Moderators, Submissions};
 
 /// Subreddit.
