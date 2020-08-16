@@ -8,12 +8,10 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::responses::BasicListing;
 use crate::util::{url, RouxError};
 
 pub mod responses;
-use responses::Inbox;
-use responses::MeData;
+use responses::{MeData, Inbox};
 
 /// Me
 pub struct Me {
@@ -129,7 +127,7 @@ impl Me {
         Ok(self
             .get("message/inbox")
             .await?
-            .json::<BasicListing<InboxItem>>()
+            .json::<Inbox>()
             .await?)
     }
 
@@ -138,7 +136,7 @@ impl Me {
         Ok(self
             .get("message/unread")
             .await?
-            .json::<BasicListing<InboxItem>>()
+            .json::<Inbox>()
             .await?)
     }
 
