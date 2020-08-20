@@ -4,10 +4,11 @@ version = "1.1.1-alpha.0"
 authors = ["Justin Duch <justin@justinduch.com>"]
 edition = "2018"
 license = "MIT"
-description = "Simple Async Reddit API Wrapper"
+description = "Simple and asyncronous Reddit API wrapper"
 readme = "README.md"
+documentation = "https://docs.rs/roux"
 repository = "https://github.com/halcyonnouveau/roux"
-keywords = ["reddit", "api"]
+keywords = ["reddit", "api", "async"]
 categories = ["authentication", "api-bindings", "network-programming"]
 exclude = [".circle/*", ".gitignore"]
 

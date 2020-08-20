@@ -102,6 +102,21 @@ pub struct SubredditCommentsData {
     pub subreddit_type: Option<String>,
     /// UPS?
     pub ups: Option<i32>,
+    /// Replies
+    pub replies: Option<SubredditReplies>,
+}
+
+/// Reply
+pub type Reply = BasicListing<Box<SubredditCommentsData>>;
+
+/// Replies can be more comments or an empty string
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+pub enum SubredditReplies {
+    /// Reply
+    Reply(Reply),
+    /// String
+    Str(String)
 }
 
 /// SubredditComments
