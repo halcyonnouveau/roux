@@ -70,4 +70,4 @@ or create a pull request.
 
 ## License
 
-Estoult is licensed under the MIT license (see [LICENSE file](/LICENSE)).
+Roux is licensed under the MIT license (see [LICENSE file](/LICENSE)).
