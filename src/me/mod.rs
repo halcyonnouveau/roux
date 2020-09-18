@@ -11,7 +11,8 @@ use crate::config::Config;
 use crate::util::{url, RouxError};
 
 pub mod responses;
-use responses::{MeData, Inbox};
+use crate::subreddit::responses::Submissions;
+use responses::{Inbox, MeData};
 
 /// Me
 pub struct Me {
@@ -124,20 +125,42 @@ impl Me {
 
     /// Get user's submitted posts.
     pub async fn inbox(&self) -> Result<Inbox, RouxError> {
-        Ok(self
-            .get("message/inbox")
-            .await?
-            .json::<Inbox>()
-            .await?)
+        Ok(self.get("message/inbox").await?.json::<Inbox>().await?)
+    }
+
+    /// Get saved
+    pub async fn saved(&self) -> Result<Submissions, RouxError> {
+        let url = format!(
+            "user/{}/saved/.json",
+            self.config.username.to_owned().unwrap()
+        );
+
+        Ok(self.get(&url).await?.json::<Submissions>().await?)
+    }
+
+    /// Get upvoted
+    pub async fn upvoted(&self) -> Result<Submissions, RouxError> {
+        let url = format!(
+            "user/{}/upvoted/.json",
+            self.config.username.to_owned().unwrap()
+        );
+
+        Ok(self.get(&url).await?.json::<Submissions>().await?)
+    }
+
+    /// Get downvoted
+    pub async fn downvoted(&self) -> Result<Submissions, RouxError> {
+        let url = format!(
+            "user/{}/downvoted/.json",
+            self.config.username.to_owned().unwrap()
+        );
+
+        Ok(self.get(&url).await?.json::<Submissions>().await?)
     }
 
     /// Get users unread messages
     pub async fn unread(&self) -> Result<Inbox, RouxError> {
-        Ok(self
-            .get("message/unread")
-            .await?
-            .json::<Inbox>()
-            .await?)
+        Ok(self.get("message/unread").await?.json::<Inbox>().await?)
     }
 
     /// Mark messages as read
