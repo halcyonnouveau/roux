@@ -65,4 +65,52 @@ impl FeedOption {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::FeedOption;
+
+    #[test]
+    fn test_build_url_after() {
+        let after = "some_after";
+        let options = FeedOption::new().after(after);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&after={}", after))
+    }
+
+    #[test]
+    fn test_build_url_before() {
+        let before = "some_before";
+        let options = FeedOption::new().before(before);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&before={}", before))
+    }
+
+    #[test]
+    fn test_build_url_count() {
+        let count = 100u32;
+        let options = FeedOption::new().count(count);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&count={}", count))
+    }
+
+    #[test]
+    #[should_panic(expected = "Cannot have an after and before param at the same time")]
+    fn test_feed_option_after_and_before() {
+        FeedOption::new().after("after").before("before");
+    }
+
+    #[test]
+    #[should_panic(expected = "Cannot have an after and before param at the same time")]
+    fn test_feed_option_before_and_after() {
+        FeedOption::new().before("before").after("after");
+    }
 }

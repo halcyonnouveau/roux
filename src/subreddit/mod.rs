@@ -232,6 +232,7 @@ impl Subreddit {
 #[cfg(test)]
 mod tests {
     use super::Subreddit;
+    use super::Subreddits;
     use tokio;
 
     #[tokio::test]
@@ -241,6 +242,11 @@ mod tests {
         // Test moderators
         let moderators = subreddit.moderators().await;
         assert!(moderators.is_ok());
+
+        let subreddits_limit = 3u32;
+        let subreddits = Subreddits::search("rust", Some(subreddits_limit), None).await;
+        assert!(subreddits.is_ok());
+        assert!(subreddits.unwrap().data.children.len() == subreddits_limit as usize);
 
         // Test feeds
         let hot = subreddit.hot(25, None).await;
