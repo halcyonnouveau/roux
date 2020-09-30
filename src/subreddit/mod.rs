@@ -46,7 +46,38 @@ use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
 pub mod responses;
-use responses::{SubredditComments, Moderators, Submissions};
+use responses::{Moderators, Submissions, SubredditComments, SubredditsListing};
+
+/// Access subreddits api
+pub struct Subreddits;
+
+impl Subreddits {
+    /// Search subreddits
+    pub async fn search(
+        name: &str,
+        limit: Option<u32>,
+        options: Option<FeedOption>,
+    ) -> Result<SubredditsListing, RouxError> {
+        let url = &mut format!("https://www.reddit.com/subreddits/search.json?q={}", name);
+
+        if let Some(limit) = limit {
+            url.push_str(&mut format!("&limit={}", limit));
+        }
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+
+        let client = Client::new();
+
+        Ok(client
+            .get(&url.to_owned())
+            .send()
+            .await?
+            .json::<SubredditsListing>()
+            .await?)
+    }
+}
 
 /// Subreddit.
 pub struct Subreddit {
@@ -86,22 +117,8 @@ impl Subreddit {
         options: Option<FeedOption>,
     ) -> Result<Submissions, RouxError> {
         let url = &mut format!("{}/{}.json?limit={}", self.url, ty, limit);
-
-        if !options.is_none() {
-            let option = options.unwrap();
-
-            if !option.after.is_none() {
-                url.push_str(&mut format!("&after={}", option.after.unwrap().to_owned()));
-            } else if !option.before.is_none() {
-                url.push_str(&mut format!(
-                    "&before={}",
-                    option.before.unwrap().to_owned()
-                ));
-            }
-
-            if !option.count.is_none() {
-                url.push_str(&mut format!("&count={}", option.count.unwrap()));
-            }
+        if let Some(options) = options {
+            options.build_url(url);
         }
 
         Ok(self
