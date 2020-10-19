@@ -2,41 +2,58 @@
 //! A read-only module to read data from a specific subreddit.
 //!
 //! # Basic Usage
-//! ```should_fail
+//! ```rust
 //! use roux::Subreddit;
-//! let subreddit = Subreddit::new("rust");
-//! // Now you are able to:
-//! // Get moderators.
-//! let moderators = subreddit.moderators().await;
-//! // Get hot posts with limit = 25.
-//! let hot = subreddit.hot(25, None).await;
-//! // Get rising posts with limit = 30.
-//! let rising = subreddit.rising(30, None).await;
-//! // Get top posts with limit = 10.
-//! let top = subreddit.top(10, None).await;
-//! // Get latest comments.
-//! // `depth` and `limit` are optional.
-//! let latest_comments = subreddit.latest_comments(None, Some(25)).await;
-//! // Get comments from a submission.
-//! let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
-//! let article_comments = subreddit.article_comments(article_id, None, Some(25));
+//! use tokio;
+//!
+//! #[tokio::main]
+//! async fn main() {
+//!     let subreddit = Subreddit::new("rust");
+//!     // Now you are able to:
+//!
+//!     // Get moderators.
+//!     let moderators = subreddit.moderators().await;
+//!
+//!     // Get hot posts with limit = 25.
+//!     let hot = subreddit.hot(25, None).await;
+//!
+//!     // Get rising posts with limit = 30.
+//!     let rising = subreddit.rising(30, None).await;
+//!
+//!     // Get top posts with limit = 10.
+//!     let top = subreddit.top(10, None).await;
+//!
+//!     // Get latest comments.
+//!     // `depth` and `limit` are optional.
+//!     let latest_comments = subreddit.latest_comments(None, Some(25)).await;
+//!
+//!     // Get comments from a submission.
+//!     let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
+//!     let article_comments = subreddit.article_comments(article_id, None, Some(25));
+//! }
 //! ```
+//!
 //! # Usage with feed options
-//! ```should_fail
+//!
+//! ```rust
 //! use roux::Subreddit;
 //! use roux::util::FeedOption;
+//! use tokio;
 //!
-//! let subreddit = Subreddit::new("astolfo");
+//! #[tokio::main]
+//! async fn main() {
+//!     let subreddit = Subreddit::new("astolfo");
 //!
-//! // Gets top 10
-//! let top = subreddit.top(10, None).await;
+//!     // Gets hot 10
+//!     let hot = subreddit.hot(25, None).await;
 //!
-//! // Get after param from `top`
-//! let after = top.unwrap().data.after.unwrap();
-//! let options = FeedOption::new().after(&after);
+//!     // Get after param from `hot`
+//!     let after = hot.unwrap().data.after.unwrap();
+//!     let options = FeedOption::new().after(&after);
 //!
-//! // Gets next 25
-//! let next_top = subreddit.top(25, Some(options)).await;
+//!     // Gets next 25
+//!     let next_hot = subreddit.hot(25, Some(options)).await;
+//! }
 //! ```
 
 extern crate reqwest;

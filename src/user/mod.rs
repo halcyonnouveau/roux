@@ -2,16 +2,24 @@
 //! A read-only module to read data from for a specific user.
 //!
 //! # Usage
-//! ```should_fail
+//! ```rust
 //! use roux::User;
-//! let user = User::new("beanpup_py");
-//! // Now you are able to:
-//! // Get overview
-//! let overview = user.overview().await;
-//! // Get submitted posts.
-//! let submitted = user.submitted().await;
-//! // Get comments.
-//! let comments = user.comments().await;
+//! use tokio;
+//!
+//! #[tokio::main]
+//! async fn main() {
+//!     let user = User::new("beanpup_py");
+//!     // Now you are able to:
+//!
+//!     // Get overview
+//!     let overview = user.overview().await;
+//!
+//!     // Get submitted posts.
+//!     let submitted = user.submitted().await;
+//!
+//!     // Get comments.
+//!     let comments = user.comments().await;
+//! }
 //! ```
 
 extern crate reqwest;
