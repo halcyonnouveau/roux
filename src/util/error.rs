@@ -1,3 +1,6 @@
+use std::error;
+use std::fmt;
+
 use reqwest;
 use serde_json;
 
@@ -22,5 +25,25 @@ impl From<reqwest::Error> for RouxError {
 impl From<serde_json::Error> for RouxError {
     fn from(e: serde_json::Error) -> Self {
         RouxError::Parse(e)
+    }
+}
+
+impl fmt::Display for RouxError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            RouxError::Status(ref err) => write!(f, "Status error: {}", err.status()),
+            RouxError::Network(ref err) => err.fmt(f),
+            RouxError::Parse(ref err) => err.fmt(f),
+        }
+    }
+}
+
+impl error::Error for RouxError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match *self {
+            RouxError::Status(_) => None,
+            RouxError::Network(ref err) => Some(err),
+            RouxError::Parse(ref err) => Some(err)
+        }
     }
 }
