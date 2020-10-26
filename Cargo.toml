@@ -1,7 +1,7 @@
 [package]
 name = "roux"
-version = "1.1.5-alpha.0"
-authors = ["Justin Duch <justin@justinduch.com>"]
+version = "1.2.0"
+authors = ["Justin Duch <justin@duch.me>"]
 edition = "2018"
 license = "MIT"
 description = "Simple and asyncronous Reddit API wrapper"
