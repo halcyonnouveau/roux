@@ -13,13 +13,28 @@ categories = ["authentication", "api-bindings", "network-programming"]
 exclude = [".circle/*", ".gitignore"]
 
 [dependencies]
-reqwest = {version = "0.10.7", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
+[dependencies.reqwest]
+version = "0.11"
+features = ["json"]
+optional = true
+
+[dependencies.reqwest_backcompat]
+version = "0.10"
+package = "reqwest"
+features = ["json"]
+optional = true
+
 [dev-dependencies]
 dotenv = "0.15.0"
-tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
+tokio = { version = "1.1.0", features = ["rt-multi-thread", "macros"] }
 
 [badges]
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
+
+[features]
+default = ["tokio_new"]
+tokio_new = ["reqwest"]
+tokio_back_compat = ["reqwest_backcompat"]

@@ -62,6 +62,10 @@ There are also read-only modules that don't need authentication:
 * [Subreddits](https://docs.rs/roux/1.1.4/roux/subreddit/index.html)
 * [Users](https://docs.rs/roux/1.1.4/roux/user/index.html)
 
+## Features
+* (Default)`tokio_new` - use tokio 1.1.0 based reqwest
+* `tokio_back_compat` - use tokio 0.2 based reqwest
+
 ## Contributing
 
 Roux is still being actively maintained and currently covers the most common and useful
