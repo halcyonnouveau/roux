@@ -30,6 +30,5 @@ mod tests {
         let me = client.unwrap();
 
         assert!(me.me().await.is_ok());
-        assert!(me.logout().await.is_ok());
     }
 }
