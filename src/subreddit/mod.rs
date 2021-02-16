@@ -119,6 +119,10 @@ impl Subreddit {
             if !option.count.is_none() {
                 url.push_str(&mut format!("&count={}", option.count.unwrap()));
             }
+
+            if !option.period.is_none(){
+                url.push_str(&mut format!("&t={}", option.period.unwrap().get_string_for_period()))
+            }
         }
 
         Ok(self
@@ -195,7 +199,6 @@ impl Subreddit {
         limit: u32,
         options: Option<FeedOption>,
     ) -> Result<Submissions, RouxError> {
-        // TODO: time filter
         self.get_feed("top", limit, options).await
     }
 
