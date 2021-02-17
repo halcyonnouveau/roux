@@ -37,22 +37,28 @@
 //!
 //! ```rust
 //! use roux::Subreddit;
-//! use roux::util::FeedOption;
+//! use roux::util::{FeedOption, TimePeriod};
 //! use tokio;
 //!
 //! #[tokio::main]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
 //!
+//!     // Gets top 10 posts from this month
+//!     let options = FeedOption::new().period(TimePeriod::ThisMonth);
+//!     let top = subreddit.top(25, Some(options)).await;
+//!
+//!     println!("{:?}", top);
+//!
 //!     // Gets hot 10
 //!     let hot = subreddit.hot(25, None).await;
 //!
 //!     // Get after param from `hot`
 //!     let after = hot.unwrap().data.after.unwrap();
-//!     let options = FeedOption::new().after(&after);
+//!     let after_options = FeedOption::new().after(&after);
 //!
 //!     // Gets next 25
-//!     let next_hot = subreddit.hot(25, Some(options)).await;
+//!     let next_hot = subreddit.hot(25, Some(after_options)).await;
 //! }
 //! ```
 
@@ -118,6 +124,10 @@ impl Subreddit {
 
             if !option.count.is_none() {
                 url.push_str(&mut format!("&count={}", option.count.unwrap()));
+            }
+
+            if !option.period.is_none(){
+                url.push_str(&mut format!("&t={}", option.period.unwrap().get_string_for_period()))
             }
         }
 
@@ -195,7 +205,6 @@ impl Subreddit {
         limit: u32,
         options: Option<FeedOption>,
     ) -> Result<Submissions, RouxError> {
-        // TODO: time filter
         self.get_feed("top", limit, options).await
     }
 
