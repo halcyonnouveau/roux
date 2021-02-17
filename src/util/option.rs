@@ -14,7 +14,7 @@ pub struct FeedOption {
     /// The number of items already seen in this listing.
     pub count: Option<u32>,
     /// What time period to request (only works on some requests, like top)
-    pub period: Option<TimePeriod>
+    pub period: Option<TimePeriod>,
 }
 
 impl FeedOption {
@@ -24,7 +24,7 @@ impl FeedOption {
             after: None,
             before: None,
             count: None,
-            period: None
+            period: None,
         }
     }
 
@@ -55,14 +55,14 @@ impl FeedOption {
     }
 
     /// Set period
-    pub fn period(mut self, period: TimePeriod) -> FeedOption{
+    pub fn period(mut self, period: TimePeriod) -> FeedOption {
         self.period = Some(period);
         self
     }
 }
 
 /// Allows you to request a certain time period. This only works in certain situations, like when asking for top of a subreddit
-pub enum TimePeriod{
+pub enum TimePeriod {
     /// Posts from very recently
     Now,
     /// Posts from today
@@ -74,19 +74,20 @@ pub enum TimePeriod{
     /// Posts from this year
     ThisYear,
     /// All posts
-    AllTime
+    AllTime,
 }
 
-impl TimePeriod{
+impl TimePeriod {
     /// Gets the request string for the period
-    pub fn get_string_for_period(&self) -> &str{
-        match self{
+    pub fn get_string_for_period(&self) -> &str {
+        match self {
             TimePeriod::Now => "now",
             TimePeriod::Today => "day",
             TimePeriod::ThisWeek => "week",
             TimePeriod::ThisMonth => "month",
             TimePeriod::ThisYear => "year",
-            TimePeriod::AllTime => "all"
+            TimePeriod::AllTime => "all",
         }
     }
 }
+
