@@ -48,8 +48,6 @@
 //!     let options = FeedOption::new().period(TimePeriod::ThisMonth);
 //!     let top = subreddit.top(25, Some(options)).await;
 //!
-//!     println!("{:?}", top);
-//!
 //!     // Gets hot 10
 //!     let hot = subreddit.hot(25, None).await;
 //!
