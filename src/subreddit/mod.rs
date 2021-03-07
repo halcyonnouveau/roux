@@ -67,7 +67,7 @@ use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
 pub mod responses;
-use responses::{SubredditComments, Moderators, Submissions};
+use responses::{Moderators, Submissions, SubredditComments, SubredditData, SubredditResponse};
 
 /// Subreddit.
 pub struct Subreddit {
@@ -100,6 +100,18 @@ impl Subreddit {
             .await?)
     }
 
+    /// Get subreddit data.
+    pub async fn about(&self) -> Result<SubredditData, RouxError> {
+        Ok(self
+            .client
+            .get(&format!("{}/about/.json", self.url))
+            .send()
+            .await?
+            .json::<SubredditResponse>()
+            .await?
+            .data)
+    }
+
     async fn get_feed(
         &self,
         ty: &str,
@@ -124,8 +136,11 @@ impl Subreddit {
                 url.push_str(&mut format!("&count={}", option.count.unwrap()));
             }
 
-            if !option.period.is_none(){
-                url.push_str(&mut format!("&t={}", option.period.unwrap().get_string_for_period()))
+            if !option.period.is_none() {
+                url.push_str(&mut format!(
+                    "&t={}",
+                    option.period.unwrap().get_string_for_period()
+                ))
             }
         }
 
@@ -265,5 +280,14 @@ mod tests {
         let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
         let article_comments = subreddit.article_comments(article_id, None, Some(25)).await;
         assert!(article_comments.is_ok());
+
+        // Test subreddit data.
+        let data_res = subreddit.about().await;
+        assert!(data_res.is_ok());
+        let data = data_res.unwrap();
+        assert!(data.title == Some(String::from("Rider of Black, Astolfo")));
+        assert!(data.subscribers.is_some());
+        assert!(data.subscribers.unwrap() > 1000);
+
     }
 }
