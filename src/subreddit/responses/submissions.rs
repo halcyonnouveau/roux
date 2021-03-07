@@ -1,4 +1,4 @@
-//! # Subreddit Submussion Responses
+//! # Subreddit Submission Responses
 use crate::responses::BasicListing;
 use serde::Deserialize;
 use serde_json::Value;
