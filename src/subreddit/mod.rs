@@ -288,6 +288,5 @@ mod tests {
         assert!(data.title == Some(String::from("Rider of Black, Astolfo")));
         assert!(data.subscribers.is_some());
         assert!(data.subscribers.unwrap() > 1000);
-
     }
 }
