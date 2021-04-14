@@ -6,6 +6,7 @@
 //! through the listing.
 
 /// Basic feed options
+#[derive(Clone, Debug)]
 pub struct FeedOption {
     /// `after` and `before` indicate the fullname of an item in the listing to use as the anchor point of the slice.
     pub after: Option<String>,
@@ -62,6 +63,7 @@ impl FeedOption {
 }
 
 /// Allows you to request a certain time period. This only works in certain situations, like when asking for top of a subreddit
+#[derive(Copy, Clone, Debug)]
 pub enum TimePeriod {
     /// Posts from very recently
     Now,
