@@ -67,9 +67,42 @@ use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
 pub mod responses;
-use responses::{Moderators, Submissions, SubredditComments, SubredditData, SubredditResponse};
+use responses::{
+    Moderators, Submissions, SubredditComments, SubredditData, SubredditResponse, SubredditsListing,
+};
 
-/// Subreddit.
+/// Access subreddits API
+pub struct Subreddits;
+
+impl Subreddits {
+    /// Search subreddits
+    pub async fn search(
+        name: &str,
+        limit: Option<u32>,
+        options: Option<FeedOption>,
+    ) -> Result<SubredditsListing, RouxError> {
+        let url = &mut format!("https://www.reddit.com/subreddits/search.json?q={}", name);
+
+        if let Some(limit) = limit {
+            url.push_str(&mut format!("&limit={}", limit));
+        }
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+
+        let client = Client::new();
+
+        Ok(client
+            .get(&url.to_owned())
+            .send()
+            .await?
+            .json::<SubredditsListing>()
+            .await?)
+    }
+}
+
+/// Subreddit
 pub struct Subreddit {
     /// Name of subreddit.
     pub name: String,
@@ -120,28 +153,8 @@ impl Subreddit {
     ) -> Result<Submissions, RouxError> {
         let url = &mut format!("{}/{}.json?limit={}", self.url, ty, limit);
 
-        if !options.is_none() {
-            let option = options.unwrap();
-
-            if !option.after.is_none() {
-                url.push_str(&mut format!("&after={}", option.after.unwrap().to_owned()));
-            } else if !option.before.is_none() {
-                url.push_str(&mut format!(
-                    "&before={}",
-                    option.before.unwrap().to_owned()
-                ));
-            }
-
-            if !option.count.is_none() {
-                url.push_str(&mut format!("&count={}", option.count.unwrap()));
-            }
-
-            if !option.period.is_none() {
-                url.push_str(&mut format!(
-                    "&t={}",
-                    option.period.unwrap().get_string_for_period()
-                ))
-            }
+        if let Some(options) = options {
+            options.build_url(url);
         }
 
         Ok(self
@@ -254,6 +267,7 @@ impl Subreddit {
 #[cfg(test)]
 mod tests {
     use super::Subreddit;
+    use super::Subreddits;
     use tokio;
 
     #[tokio::test]
@@ -284,9 +298,16 @@ mod tests {
         // Test subreddit data.
         let data_res = subreddit.about().await;
         assert!(data_res.is_ok());
+
         let data = data_res.unwrap();
         assert!(data.title == Some(String::from("Rider of Black, Astolfo")));
         assert!(data.subscribers.is_some());
         assert!(data.subscribers.unwrap() > 1000);
+
+        // Test subreddit search
+        let subreddits_limit = 3u32;
+        let subreddits = Subreddits::search("rust", Some(subreddits_limit), None).await;
+        assert!(subreddits.is_ok());
+        assert!(subreddits.unwrap().data.children.len() == subreddits_limit as usize);
     }
 }

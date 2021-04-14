@@ -6,7 +6,7 @@ pub mod submissions;
 pub use submissions::{Submissions, SubmissionsData};
 
 pub mod subreddits;
-pub use subreddits::{SubredditData, SubredditResponse};
+pub use subreddits::{SubredditData, SubredditResponse, SubredditsListing};
 
 pub mod comments;
 pub use comments::{SubredditComments, SubredditCommentsData};

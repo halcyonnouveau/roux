@@ -62,7 +62,7 @@ mod config;
 
 /// Subreddit module.
 pub mod subreddit;
-pub use subreddit::Subreddit;
+pub use subreddit::{Subreddit, Subreddits};
 
 /// User module.
 pub mod user;
