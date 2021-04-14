@@ -60,6 +60,23 @@ impl FeedOption {
         self.period = Some(period);
         self
     }
+
+    /// build a url from FeedOption
+    pub fn build_url(self, url: &mut String) {
+        if let Some(after) = self.after {
+            url.push_str(&mut format!("&after={}", after));
+        } else if let Some(before) = self.before {
+            url.push_str(&mut format!("&before={}", before));
+        }
+
+        if let Some(count) = self.count {
+            url.push_str(&mut format!("&count={}", count));
+        }
+
+        if let Some(period) = self.period {
+            url.push_str(&mut format!("&t={}", period.get_string_for_period()));
+        }
+    }
 }
 
 /// Allows you to request a certain time period. This only works in certain situations, like when asking for top of a subreddit
@@ -93,3 +110,40 @@ impl TimePeriod {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::FeedOption;
+
+    #[test]
+    fn test_build_url_after() {
+        let after = "some_after";
+        let options = FeedOption::new().after(after);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&after={}", after))
+    }
+
+    #[test]
+    fn test_build_url_before() {
+        let before = "some_before";
+        let options = FeedOption::new().before(before);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&before={}", before))
+    }
+
+    #[test]
+    fn test_build_url_count() {
+        let count = 100u32;
+        let options = FeedOption::new().count(count);
+
+        let url = &mut String::from("");
+        options.build_url(url);
+
+        assert!(*url == format!("&count={}", count))
+    }
+}
