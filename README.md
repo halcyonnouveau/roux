@@ -12,6 +12,7 @@ Roux is a simple, asynchronous Reddit API wrapper implemented in Rust.
 ### Using OAuth
 
 To create an OAuth client with the Reddit API, use the `Reddit` class.
+
 ```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -22,14 +23,17 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 
 let me = client.unwrap();
 ```
+
 It is important that you pick a good user agent. The ideal format is
 `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
 This will authticate you as the user given in the username function.
 
 ### Usage
+
 Using the OAuth client, you can:
 
 #### Submit A Text Post
+
 ```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -43,6 +47,7 @@ me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 ```
 
 #### Submit A Link Post
+
 ```rust
 use roux::Reddit;
 let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -59,18 +64,19 @@ me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 
 There are also read-only modules that don't need authentication:
 
-* [Subreddits](https://docs.rs/roux/1.1.4/roux/subreddit/index.html)
-* [Users](https://docs.rs/roux/1.1.4/roux/user/index.html)
+- [Subreddits](https://docs.rs/roux/1.1.4/roux/subreddit/index.html)
+- [Users](https://docs.rs/roux/1.1.4/roux/user/index.html)
 
 ## Features
-* (Default) `tokio_new` - use tokio 1.1.0 based reqwest
-* `tokio_back_compat` - use tokio 0.2 based reqwest
+
+- (Default) `tokio_new` - use tokio 1.1.0 based reqwest.
+- `tokio_back_compat` - use tokio 0.2 based reqwest.
 
 ## Contributing
 
-Roux is still being actively maintained and currently covers the most common and useful
-endpoints. If you see something missing or encounter a bug, feel free to open an issue
-or create a pull request.
+Roux is not in active development but is still being maintained and currently covers the
+most common and useful endpoints. If you see something missing or encounter a bug, feel
+free to open an issue or create a pull request.
 
 ## License
 
