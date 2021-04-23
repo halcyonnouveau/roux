@@ -15,10 +15,12 @@ exclude = [".circle/*", ".gitignore"]
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+maybe-async = "0.2.2"
 
 [dependencies.reqwest]
 version = "0.11"
 features = ["json"]
+default-features = false
 optional = true
 
 [dependencies.reqwest_backcompat]
@@ -36,5 +38,6 @@ circle-ci = { repository = "halcyonnouveau/roux.rs" }
 
 [features]
 default = ["tokio_new"]
-tokio_new = ["reqwest"]
+tokio_new = ["reqwest/default-tls"]
 tokio_back_compat = ["reqwest_backcompat"]
+rustls = ["reqwest/rustls"]
