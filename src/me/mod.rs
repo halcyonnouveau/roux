@@ -109,7 +109,7 @@ impl Me {
         self.post("api/submit", &form).await
     }
     ///Adds a friend to a subreddit with the specified type
-    pub async fn add_friend(
+    pub async fn add_subreddit_friend(
         &self,
         username: &str,
         typ: &str,
