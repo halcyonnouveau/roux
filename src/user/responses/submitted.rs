@@ -9,6 +9,8 @@ pub struct SubmittedData {
     pub subreddit: String,
     /// Title
     pub title: String,
+    /// Selftext
+    pub selftext: String,
     /// Thumbnail
     pub thumbnail: String,
     /// Score
