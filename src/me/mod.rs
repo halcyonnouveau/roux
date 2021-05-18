@@ -13,9 +13,7 @@ use crate::util::{url, RouxError};
 pub mod responses;
 
 use crate::subreddit::responses::Submissions;
-use responses::{Inbox, MeData};
-use crate::me::responses::me::Friend;
-use self::reqwest::{Body, Url};
+use responses::{Friend, Inbox, MeData};
 
 /// Me
 pub struct Me {
@@ -108,21 +106,39 @@ impl Me {
 
         self.post("api/submit", &form).await
     }
-    ///Adds a friend to a subreddit with the specified type
+
+    /// Adds a friend to a subreddit with the specified type
     pub async fn add_subreddit_friend(
         &self,
         username: &str,
         typ: &str,
         sub: &str,
     ) -> Result<bool, RouxError> {
-        let form = [
-            ("name", username),
-            ("type", typ),
-        ];
+        let form = [("name", username), ("type", typ)];
         Ok(self
             .post(format!("r/{}/api/friend", sub).as_str(), form)
-            .await?.json::<Friend>().await?.success)
+            .await?
+            .json::<Friend>()
+            .await?
+            .success)
     }
+
+    /// Removes a friend to a subreddit with the specified type
+    pub async fn remove_subreddit_friend(
+        &self,
+        username: &str,
+        typ: &str,
+        sub: &str,
+    ) -> Result<bool, RouxError> {
+        let form = [("name", username), ("type", typ)];
+        Ok(self
+            .post(format!("r/{}/api/unfriend", sub).as_str(), form)
+            .await?
+            .json::<Friend>()
+            .await?
+            .success)
+    }
+
     /// Compose message
     pub async fn compose_message(
         &self,
@@ -198,7 +214,7 @@ impl Me {
         self.post("api/comment", &form).await
     }
 
-    /// Edit
+    /// Edit a 'thing'
     pub async fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("thing_id", parent)];
         self.post("api/editusertext", &form).await
