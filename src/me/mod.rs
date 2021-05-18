@@ -11,8 +11,11 @@ use crate::config::Config;
 use crate::util::{url, RouxError};
 
 pub mod responses;
+
 use crate::subreddit::responses::Submissions;
 use responses::{Inbox, MeData};
+use crate::me::responses::me::Friend;
+use self::reqwest::{Body, Url};
 
 /// Me
 pub struct Me {
@@ -105,7 +108,21 @@ impl Me {
 
         self.post("api/submit", &form).await
     }
-
+    ///Adds a friend to a subreddit with the specified type
+    pub async fn add_subreddit_friend(
+        &self,
+        username: &str,
+        typ: &str,
+        sub: &str,
+    ) -> Result<bool, RouxError> {
+        let form = [
+            ("name", username),
+            ("type", typ),
+        ];
+        Ok(self
+            .post(format!("r/{}/api/friend", sub).as_str(), form)
+            .await?.json::<Friend>().await?.success)
+    }
     /// Compose message
     pub async fn compose_message(
         &self,
