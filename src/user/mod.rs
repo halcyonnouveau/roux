@@ -29,7 +29,8 @@ use crate::util::RouxError;
 use reqwest::Client;
 
 pub mod responses;
-use responses::{UserComments, Overview, Submitted};
+use responses::{ Overview};
+use crate::subreddit::responses::{SubredditComments, Submissions};
 
 /// User.
 pub struct User {
@@ -62,7 +63,7 @@ impl User {
     }
 
     /// Get user's submitted posts.
-    pub async fn submitted(&self) -> Result<Submitted, RouxError> {
+    pub async fn submitted(&self) -> Result<Submissions, RouxError> {
         Ok(self
             .client
             .get(&format!(
@@ -71,12 +72,12 @@ impl User {
             ))
             .send()
             .await?
-            .json::<Submitted>()
+            .json::<Submissions>()
             .await?)
     }
 
     /// Get user's submitted comments.
-    pub async fn comments(&self) -> Result<UserComments, RouxError> {
+    pub async fn comments(&self) -> Result<SubredditComments, RouxError> {
         Ok(self
             .client
             .get(&format!(
@@ -85,7 +86,7 @@ impl User {
             ))
             .send()
             .await?
-            .json::<UserComments>()
+            .json::<SubredditComments>()
             .await?)
     }
 }
