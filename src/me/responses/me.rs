@@ -40,7 +40,7 @@ pub struct MeData {
 
 /// The response from an add friend request
 #[derive(Debug, Deserialize)]
-pub struct Friend{
+pub struct Friend {
     /// Was the friend request a success
-    pub success: bool
+    pub success: bool,
 }

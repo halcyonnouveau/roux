@@ -43,7 +43,7 @@ impl error::Error for RouxError {
         match *self {
             RouxError::Status(_) => None,
             RouxError::Network(ref err) => Some(err),
-            RouxError::Parse(ref err) => Some(err)
+            RouxError::Parse(ref err) => Some(err),
         }
     }
 }

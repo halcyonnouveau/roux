@@ -1,6 +1,6 @@
 //! # Subreddit Responses
-use serde::Deserialize;
 use crate::responses::BasicListing;
+use serde::Deserialize;
 
 /// SubredditResponse
 #[derive(Debug, Deserialize)]

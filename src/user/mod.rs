@@ -29,8 +29,8 @@ use crate::util::RouxError;
 use reqwest::Client;
 
 pub mod responses;
-use responses::{ Overview};
-use crate::subreddit::responses::{SubredditComments, Submissions};
+use crate::subreddit::responses::{Submissions, SubredditComments};
+use responses::Overview;
 
 /// User.
 pub struct User {

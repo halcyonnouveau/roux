@@ -116,7 +116,7 @@ pub enum SubredditReplies {
     /// Reply
     Reply(Reply),
     /// String
-    Str(String)
+    Str(String),
 }
 
 /// SubredditComments
