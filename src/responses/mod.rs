@@ -4,7 +4,7 @@
 use serde::Deserialize;
 
 /// Basic structure of a Reddit response.
-/// See: https://github.com/reddit-archive/reddit/wiki/JSON
+/// See: <https://github.com/reddit-archive/reddit/wiki/JSON>
 #[derive(Deserialize, Debug)]
 pub struct BasicThing<T> {
     /// An identifier that specifies the type of object that this is.
