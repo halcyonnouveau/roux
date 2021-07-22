@@ -7,7 +7,9 @@
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```no_run
 //! use roux::Reddit;
+//! # use tokio_test;
 //!
+//! # tokio_test::block_on(async {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
@@ -15,6 +17,7 @@
 //!     .await;
 //!
 //! let me = client.unwrap();
+//! # })
 //! ```
 //! It is important that you pick a good user agent. The ideal format is
 //! `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
@@ -27,7 +30,9 @@
 //! ### Submit A Text Post
 //! ```no_run
 //! use roux::Reddit;
+//! # use tokio_test;
 //!
+//! # tokio_test::block_on(async {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
@@ -37,11 +42,15 @@
 //! let me = client.unwrap();
 //!
 //! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
+//! # })
 //! ```
+//!
 //! ### Submit A Link Post
 //! ```no_run
 //! use roux::Reddit;
+//! # use tokio_test;
 //!
+//! # tokio_test::block_on(async {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
@@ -51,6 +60,7 @@
 //! let me = client.unwrap();
 //!
 //! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+//! # })
 //! ```
 
 use serde::Deserialize;

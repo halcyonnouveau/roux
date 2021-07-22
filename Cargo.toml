@@ -30,6 +30,7 @@ optional = true
 [dev-dependencies]
 dotenv = "0.15.0"
 tokio = { version = "1.1.0", features = ["rt-multi-thread", "macros"] }
+tokio-test = "0.4"
 
 [badges]
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
