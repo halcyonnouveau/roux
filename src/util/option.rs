@@ -31,7 +31,7 @@ impl FeedOption {
 
     /// Set after param.
     pub fn after(mut self, ty: &str) -> FeedOption {
-        if !self.before.is_none() {
+        if self.before.is_some() {
             panic!("Cannot have an after and before param at the same time");
         }
 
@@ -41,7 +41,7 @@ impl FeedOption {
 
     /// Set before param.
     pub fn before(mut self, ty: &str) -> FeedOption {
-        if !self.after.is_none() {
+        if self.after.is_some() {
             panic!("Cannot have an after and before param at the same time");
         }
 
@@ -64,18 +64,24 @@ impl FeedOption {
     /// build a url from FeedOption
     pub fn build_url(self, url: &mut String) {
         if let Some(after) = self.after {
-            url.push_str(&mut format!("&after={}", after));
+            url.push_str(&format!("&after={}", after));
         } else if let Some(before) = self.before {
-            url.push_str(&mut format!("&before={}", before));
+            url.push_str(&format!("&before={}", before));
         }
 
         if let Some(count) = self.count {
-            url.push_str(&mut format!("&count={}", count));
+            url.push_str(&format!("&count={}", count));
         }
 
         if let Some(period) = self.period {
-            url.push_str(&mut format!("&t={}", period.get_string_for_period()));
+            url.push_str(&format!("&t={}", period.get_string_for_period()));
         }
+    }
+}
+
+impl Default for FeedOption {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

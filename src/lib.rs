@@ -5,7 +5,7 @@
 //!
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
-//! ```should_fail
+//! ```no_run
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -25,7 +25,7 @@
 //! Using the OAuth client, you can:
 //!
 //! ### Submit A Text Post
-//! ```should_fail
+//! ```no_run
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -39,7 +39,7 @@
 //! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 //! ```
 //! ### Submit A Link Post
-//! ```should_fail
+//! ```no_run
 //! use roux::Reddit;
 //!
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -93,7 +93,7 @@ impl Reddit {
     /// Creates a `Reddit` instance with user_agent, client_id, and client_secret.
     pub fn new(user_agent: &str, client_id: &str, client_secret: &str) -> Reddit {
         Reddit {
-            config: config::Config::new(&user_agent, &client_id, &client_secret),
+            config: config::Config::new(user_agent, client_id, client_secret),
             client: Client::new(),
         }
     }

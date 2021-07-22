@@ -84,7 +84,7 @@ impl Subreddits {
         let url = &mut format!("https://www.reddit.com/subreddits/search.json?q={}", name);
 
         if let Some(limit) = limit {
-            url.push_str(&mut format!("&limit={}", limit));
+            url.push_str(&format!("&limit={}", limit));
         }
 
         if let Some(options) = options {
@@ -175,12 +175,12 @@ impl Subreddit {
     ) -> Result<SubredditComments, RouxError> {
         let url = &mut format!("{}/{}.json?", self.url, ty);
 
-        if !depth.is_none() {
-            url.push_str(&mut format!("&depth={}", depth.unwrap()));
+        if let Some(depth) = depth {
+            url.push_str(&format!("&depth={}", depth));
         }
 
-        if !limit.is_none() {
-            url.push_str(&mut format!("&limit={}", limit.unwrap()));
+        if let Some(limit) = limit {
+            url.push_str(&format!("&limit={}", limit));
         }
 
         // This is one of the dumbest APIs I've ever seen.

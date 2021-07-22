@@ -69,7 +69,7 @@ impl Me {
     pub async fn me(&self) -> Result<MeData, RouxError> {
         match self.get("api/v1/me").await {
             Ok(res) => Ok(res.json::<MeData>().await?),
-            Err(e) => Err(e.into()),
+            Err(e) => Err(e),
         }
     }
 
