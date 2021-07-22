@@ -1,5 +1,5 @@
 //! # Subreddit Moderator Responses
-use crate::responses::{BasicThing, Listing};
+use crate::responses::BasicListing;
 use serde::Deserialize;
 
 /// ModeratorsData
@@ -14,4 +14,4 @@ pub struct ModeratorsData {
 }
 
 /// Moderators
-pub type Moderators = BasicThing<Listing<ModeratorsData>>;
+pub type Moderators = BasicListing<ModeratorsData>;

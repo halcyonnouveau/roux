@@ -124,6 +124,7 @@ impl Subreddit {
 
     /// Get moderators.
     pub async fn moderators(&self) -> Result<Moderators, RouxError> {
+        // TODO: getting moderators require you to be logged in now
         Ok(self
             .client
             .get(&format!("{}/about/moderators/.json", self.url))
@@ -273,10 +274,6 @@ mod tests {
     #[tokio::test]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
-
-        // Test moderators
-        let moderators = subreddit.moderators().await;
-        assert!(moderators.is_ok());
 
         // Test feeds
         let hot = subreddit.hot(25, None).await;
