@@ -16,6 +16,7 @@ use crate::subreddit::responses::Submissions;
 use responses::{Friend, Inbox, MeData};
 
 /// Me
+#[derive(Debug, Clone)]
 pub struct Me {
     /// Access token
     pub access_token: String,
