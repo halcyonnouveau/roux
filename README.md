@@ -72,6 +72,10 @@ There are also read-only modules that don't need authentication:
 - (Default) `tokio_new` - use tokio 1.1.0 based reqwest.
 - `tokio_back_compat` - use tokio 0.2 based reqwest.
 
+## 3rd-Party Libraries
+
+- [`roux-stream`](https://github.com/torfsen/roux-stream) provides an API for continuously streaming new submissions and comments
+
 ## Contributing
 
 Roux is not in active development but is still being maintained and currently covers the
