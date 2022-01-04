@@ -13,7 +13,7 @@ use crate::util::{url, RouxError};
 pub mod responses;
 
 use crate::subreddit::responses::Submissions;
-use responses::{Friend, Inbox, MeData};
+use responses::{Friend, Inbox, MeData, Saved};
 
 /// Me
 #[derive(Debug, Clone)]
@@ -163,13 +163,13 @@ impl Me {
     }
 
     /// Get saved
-    pub async fn saved(&self) -> Result<Submissions, RouxError> {
+    pub async fn saved(&self) -> Result<Saved, RouxError> {
         let url = format!(
             "user/{}/saved/.json",
             self.config.username.to_owned().unwrap()
         );
 
-        Ok(self.get(&url).await?.json::<Submissions>().await?)
+        Ok(self.get(&url).await?.json::<Saved>().await?)
     }
 
     /// Get upvoted
