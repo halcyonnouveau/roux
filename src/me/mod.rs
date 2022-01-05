@@ -8,7 +8,7 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::util::{url, RouxError};
+use crate::util::{url, RouxError, FeedOption};
 
 pub mod responses;
 
@@ -163,31 +163,43 @@ impl Me {
     }
 
     /// Get saved
-    pub async fn saved(&self) -> Result<Saved, RouxError> {
-        let url = format!(
+    pub async fn saved(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
+        let url = &mut format!(
             "user/{}/saved/.json",
             self.config.username.to_owned().unwrap()
         );
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
 
         Ok(self.get(&url).await?.json::<Saved>().await?)
     }
 
     /// Get upvoted
-    pub async fn upvoted(&self) -> Result<Submissions, RouxError> {
-        let url = format!(
+    pub async fn upvoted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+        let url = &mut format!(
             "user/{}/upvoted/.json",
             self.config.username.to_owned().unwrap()
         );
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
 
         Ok(self.get(&url).await?.json::<Submissions>().await?)
     }
 
     /// Get downvoted
-    pub async fn downvoted(&self) -> Result<Submissions, RouxError> {
-        let url = format!(
+    pub async fn downvoted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+        let url = &mut format!(
             "user/{}/downvoted/.json",
             self.config.username.to_owned().unwrap()
         );
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
 
         Ok(self.get(&url).await?.json::<Submissions>().await?)
     }
