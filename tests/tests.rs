@@ -8,9 +8,11 @@ extern crate tokio;
 mod tests {
 
     use roux::Reddit;
+    use roux::me::responses::SavedData;
+    use roux::util::FeedOption;
     use tokio;
 
-    static USER_AGENT: &str = "macos:roux:v0.3.0 (by /u/beanpup_py)";
+    static USER_AGENT: &str = "macos:roux:v1.4.0 (by /u/beanpup_py)";
 
     #[tokio::test]
     async fn test_oauth() {
@@ -30,5 +32,23 @@ mod tests {
         let me = client.unwrap();
 
         assert!(me.me().await.is_ok());
+
+        let options = FeedOption::new().limit(5);
+
+        // Assert FeedOption works
+        let saved1 = me.saved(None).await.unwrap();
+        let last_child_id1 = match &saved1.data.children.last().unwrap().data {
+            SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
+            SavedData::Submission(submissions_data) => &submissions_data.id,
+        };
+
+        let saved2 = me.saved(Some(options.after(&saved1.data.after.unwrap()))).await.unwrap();
+        let last_child_id2 = match &saved2.data.children.last().unwrap().data {
+            SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
+            SavedData::Submission(submissions_data) => &submissions_data.id,
+        };
+
+        assert_ne!(last_child_id1, last_child_id2);
+        assert_eq!(saved2.data.children.len(), 5);
     }
 }

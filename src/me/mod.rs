@@ -177,7 +177,7 @@ impl Me {
     }
 
     /// Get upvoted
-    pub async fn upvoted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+    pub async fn upvoted(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
         let url = &mut format!(
             "user/{}/upvoted/.json",
             self.config.username.to_owned().unwrap()
@@ -187,11 +187,11 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Submissions>().await?)
+        Ok(self.get(&url).await?.json::<Saved>().await?)
     }
 
     /// Get downvoted
-    pub async fn downvoted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+    pub async fn downvoted(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
         let url = &mut format!(
             "user/{}/downvoted/.json",
             self.config.username.to_owned().unwrap()
@@ -201,7 +201,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Submissions>().await?)
+        Ok(self.get(&url).await?.json::<Saved>().await?)
     }
 
     /// Get users unread messages

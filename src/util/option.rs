@@ -12,6 +12,8 @@ pub struct FeedOption {
     pub after: Option<String>,
     /// Only one should be specified.
     pub before: Option<String>,
+    /// The many items can be in this listing.
+    pub limit: Option<u32>,
     /// The number of items already seen in this listing.
     pub count: Option<u32>,
     /// What time period to request (only works on some requests, like top)
@@ -25,6 +27,7 @@ impl FeedOption {
             after: None,
             before: None,
             count: None,
+            limit: None,
             period: None,
         }
     }
@@ -55,6 +58,12 @@ impl FeedOption {
         self
     }
 
+    /// Set limit param.
+    pub fn limit(mut self, ty: u32) -> FeedOption {
+        self.limit = Some(ty);
+        self
+    }
+
     /// Set period
     pub fn period(mut self, period: TimePeriod) -> FeedOption {
         self.period = Some(period);
@@ -63,6 +72,9 @@ impl FeedOption {
 
     /// build a url from FeedOption
     pub fn build_url(self, url: &mut String) {
+        // Add a fake url attr so I don't have to parse things
+        url.push_str(&String::from("?"));
+
         if let Some(after) = self.after {
             url.push_str(&format!("&after={}", after));
         } else if let Some(before) = self.before {
@@ -73,9 +85,19 @@ impl FeedOption {
             url.push_str(&format!("&count={}", count));
         }
 
+        if let Some(limit) = self.limit {
+            url.push_str(&format!("&limit={}", limit));
+        }
+
         if let Some(period) = self.period {
             url.push_str(&format!("&t={}", period.get_string_for_period()));
         }
+
+        // BUG: the previous option won't work if this isn't added for some reason
+        // Eg. &after={} won't return correct page
+        // Eg. &after={}&limit={} returns correct page but won't return correct limit
+        // I have no idea why.
+        url.push_str(&String::from("&"));
     }
 }
 
@@ -128,7 +150,7 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("&after={}", after))
+        assert!(*url == format!("?&after={}&", after))
     }
 
     #[test]
@@ -139,7 +161,7 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("&before={}", before))
+        assert!(*url == format!("?&before={}&", before))
     }
 
     #[test]
@@ -150,6 +172,6 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("&count={}", count))
+        assert!(*url == format!("?&count={}&", count))
     }
 }
