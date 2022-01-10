@@ -8,10 +8,13 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CLIENT_ID: {{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: {{ secrets.CLIENT_SECRET }}
+  USERNAME: {{ secrets.USERNAME }}
+  PASSWORD: {{ secrets.PASSWORD }}
 
 jobs:
   build:
-    environment: oauth-tests
     runs-on: ubuntu-latest
 
     steps:
