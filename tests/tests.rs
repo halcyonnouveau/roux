@@ -6,6 +6,7 @@ extern crate tokio;
 
 #[cfg(test)]
 mod tests {
+    use std::env;
 
     use roux::Reddit;
     use roux::me::responses::SavedData;
@@ -16,10 +17,12 @@ mod tests {
 
     #[tokio::test]
     async fn test_oauth() {
-        let client_id = dotenv::var("CLIENT_ID").unwrap();
-        let client_secret = dotenv::var("CLIENT_SECRET").unwrap();
-        let username = dotenv::var("USERNAME").unwrap();
-        let password = dotenv::var("PASSWORD").unwrap();
+        dotenv::dotenv().ok();
+
+        let client_id = env::var("CLIENT_ID").unwrap();
+        let client_secret = env::var("CLIENT_SECRET").unwrap();
+        let username = env::var("USERNAME").unwrap();
+        let password = env::var("PASSWORD").unwrap();
 
         let client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
             .username(&username)
