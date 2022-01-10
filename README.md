@@ -1,6 +1,6 @@
 # Roux
 
-[![CircleCI](https://circleci.com/gh/halcyonnouveau/roux.svg?style=svg)](https://circleci.com/gh/halcyonnouveau/roux)
+[![Build](https://github.com/halcyonnouveau/roux/actions/workflows/rust.yml/badge.svg)](https://github.com/halcyonnouveau/roux/actions/workflows/rust.yml)
 [![Documentation](https://img.shields.io/badge/documentation-available-green.svg)](https://docs.rs/roux)
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
 ![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.svg)
