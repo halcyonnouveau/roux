@@ -847,7 +847,7 @@ dependencies = [
 
 [[package]]
 name = "roux"
-version = "1.3.10-alpha.0"
+version = "1.3.10"
 dependencies = [
  "dotenv",
  "reqwest 0.10.10",
