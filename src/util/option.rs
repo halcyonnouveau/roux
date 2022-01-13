@@ -12,7 +12,7 @@ pub struct FeedOption {
     pub after: Option<String>,
     /// Only one should be specified.
     pub before: Option<String>,
-    /// The many items can be in this listing.
+    /// The number of items that can be in this listing.
     pub limit: Option<u32>,
     /// The number of items already seen in this listing.
     pub count: Option<u32>,
@@ -70,7 +70,7 @@ impl FeedOption {
         self
     }
 
-    /// build a url from FeedOption
+    /// Build a url from `FeedOption`
     pub fn build_url(self, url: &mut String) {
         // Add a fake url attr so I don't have to parse things
         url.push_str(&String::from("?"));
