@@ -49,45 +49,105 @@ impl User {
     }
 
     /// Get user's overview.
-    pub async fn overview(&self) -> Result<Overview, RouxError> {
-        Ok(self
-            .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/overview/.json",
-                self.user
-            ))
-            .send()
-            .await?
-            .json::<Overview>()
-            .await?)
+    pub async fn overview(&self) -> Result<Vec<Overview>, RouxError> {
+        let url = |user: &String, limit: u8, after: &String| {
+            format!(
+                "https://www.reddit.com/user/{}/overview/.json?sort=new&t=all&limit={}&after={}",
+                user, limit, after
+            )
+        };
+        let mut after = String::from("");
+        let mut overviews: Vec<Overview> = vec![];
+
+        loop {
+            let over = self
+                .client
+                .get(&url(&self.user, 100, &after))
+                .send()
+                .await?
+                .json::<Overview>()
+                .await?;
+
+            match &over.data.after {
+                Some(a) => {
+                    after = a.to_string();
+                    overviews.push(over);
+                }
+                None => {
+                    overviews.push(over);
+                    break;
+                }
+            }
+        }
+        Ok(overviews)
     }
 
     /// Get user's submitted posts.
-    pub async fn submitted(&self) -> Result<Submissions, RouxError> {
-        Ok(self
-            .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/submitted/.json",
-                self.user
-            ))
-            .send()
-            .await?
-            .json::<Submissions>()
-            .await?)
+    pub async fn submitted(&self) -> Result<Vec<Submissions>, RouxError> {
+        let url = |user: &String, limit: u8, after: &String| {
+            format!(
+                "https://www.reddit.com/user/{}/submitted/.json?sort=new&t=all&limit={}&after={}",
+                user, limit, after
+            )
+        };
+        let mut after = String::from("");
+        let mut submissions: Vec<Submissions> = vec![];
+
+        loop {
+            let subs = self
+                .client
+                .get(&url(&self.user, 100, &after))
+                .send()
+                .await?
+                .json::<Submissions>()
+                .await?;
+
+            match &subs.data.after {
+                Some(a) => {
+                    after = a.to_string();
+                    submissions.push(subs);
+                }
+                None => {
+                    submissions.push(subs);
+                    break;
+                }
+            }
+        }
+        Ok(submissions)
     }
 
     /// Get user's submitted comments.
-    pub async fn comments(&self) -> Result<SubredditComments, RouxError> {
-        Ok(self
-            .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/comments/.json",
-                self.user
-            ))
-            .send()
-            .await?
-            .json::<SubredditComments>()
-            .await?)
+    pub async fn comments(&self) -> Result<Vec<SubredditComments>, RouxError> {
+        let url = |user: &String, limit: u8, after: &String| {
+            format!(
+                "https://www.reddit.com/user/{}/comments/.json?sort=new&t=all&limit={}&after={}",
+                user, limit, after
+            )
+        };
+        let mut after = String::from("");
+        let mut comments: Vec<SubredditComments> = vec![];
+
+        loop {
+            let comms = self
+                .client
+                .get(&url(&self.user, 100, &after))
+                .send()
+                .await?
+                .json::<SubredditComments>()
+                .await?;
+
+            match &comms.data.after {
+                Some(a) => {
+                    after = a.to_string();
+                    comments.push(comms);
+                }
+                None => {
+                    comments.push(comms);
+                    break;
+                }
+            }
+        }
+        Ok(comments)
     }
 }
 

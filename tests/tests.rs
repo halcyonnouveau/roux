@@ -8,9 +8,9 @@ extern crate tokio;
 mod tests {
     use std::env;
 
-    use roux::Reddit;
     use roux::me::responses::SavedData;
     use roux::util::FeedOption;
+    use roux::Reddit;
     use tokio;
 
     static USER_AGENT: &str = "macos:roux:v1.4.0 (by /u/beanpup_py)";
@@ -45,7 +45,10 @@ mod tests {
             SavedData::Submission(submissions_data) => &submissions_data.id,
         };
 
-        let saved2 = me.saved(Some(options.after(&saved1.data.after.unwrap()))).await.unwrap();
+        let saved2 = me
+            .saved(Some(options.after(&saved1.data.after.unwrap())))
+            .await
+            .unwrap();
         let last_child_id2 = match &saved2.data.children.last().unwrap().data {
             SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
             SavedData::Submission(submissions_data) => &submissions_data.id,

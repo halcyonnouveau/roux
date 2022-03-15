@@ -8,11 +8,10 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::util::{url, RouxError, FeedOption};
+use crate::util::{url, FeedOption, RouxError};
 
 pub mod responses;
 
-use crate::subreddit::responses::Submissions;
 use responses::{Friend, Inbox, MeData, Saved};
 
 /// Me
@@ -173,7 +172,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get upvoted
@@ -187,7 +186,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get downvoted
@@ -201,7 +200,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get users unread messages
