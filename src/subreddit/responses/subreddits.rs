@@ -24,6 +24,7 @@ pub enum AccountsActive {
 
 /// If the API user has user flair in this subreddit, and its user_flair_type is richtext,
 /// this will be an array containing two string elements which define the user's flair.
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 pub struct RichtextFlair {
     /// contains the string text

@@ -12,7 +12,6 @@ use crate::util::{url, RouxError, FeedOption};
 
 pub mod responses;
 
-use crate::subreddit::responses::Submissions;
 use responses::{Friend, Inbox, MeData, Saved};
 
 /// Me

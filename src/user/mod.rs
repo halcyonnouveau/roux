@@ -4,28 +4,29 @@
 //! # Usage
 //! ```rust
 //! use roux::User;
+//! use roux::util::FeedOption;
 //! use tokio;
 //!
 //! #[tokio::main]
 //! async fn main() {
-//!     let user = User::new("beanpup_py");
+//!     let user = User::new("kasuporo");
 //!     // Now you are able to:
 //!
 //!     // Get overview
-//!     let overview = user.overview().await;
+//!     let overview = user.overview(None).await;
 //!
 //!     // Get submitted posts.
-//!     let submitted = user.submitted().await;
+//!     let submitted = user.submitted(None).await;
 //!
 //!     // Get comments.
-//!     let comments = user.comments().await;
+//!     let comments = user.comments(None).await;
 //! }
 //! ```
 
 extern crate reqwest;
 extern crate serde_json;
 
-use crate::util::RouxError;
+use crate::util::{FeedOption, RouxError};
 use reqwest::Client;
 
 pub mod responses;
@@ -49,13 +50,16 @@ impl User {
     }
 
     /// Get user's overview.
-    pub async fn overview(&self) -> Result<Overview, RouxError> {
+    pub async fn overview(&self, options: Option<FeedOption>) -> Result<Overview, RouxError> {
+        let url = &mut format!("https://www.reddit.com/user/{}/overview/.json", self.user);
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+
         Ok(self
             .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/overview/.json",
-                self.user
-            ))
+            .get(&url.to_owned())
             .send()
             .await?
             .json::<Overview>()
@@ -63,13 +67,16 @@ impl User {
     }
 
     /// Get user's submitted posts.
-    pub async fn submitted(&self) -> Result<Submissions, RouxError> {
+    pub async fn submitted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
+        let url = &mut format!("https://www.reddit.com/user/{}/submitted/.json", self.user);
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+
         Ok(self
             .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/submitted/.json",
-                self.user
-            ))
+            .get(&url.to_owned())
             .send()
             .await?
             .json::<Submissions>()
@@ -77,13 +84,19 @@ impl User {
     }
 
     /// Get user's submitted comments.
-    pub async fn comments(&self) -> Result<SubredditComments, RouxError> {
+    pub async fn comments(
+        &self,
+        options: Option<FeedOption>,
+    ) -> Result<SubredditComments, RouxError> {
+        let url = &mut format!("https://www.reddit.com/user/{}/comments/.json", self.user);
+
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+
         Ok(self
             .client
-            .get(&format!(
-                "https://www.reddit.com/user/{}/comments/.json",
-                self.user
-            ))
+            .get(&url.to_owned())
             .send()
             .await?
             .json::<SubredditComments>()
@@ -94,6 +107,7 @@ impl User {
 #[cfg(test)]
 mod tests {
     use super::User;
+    use crate::util::FeedOption;
     use tokio;
 
     #[tokio::test]
@@ -101,15 +115,21 @@ mod tests {
         let user = User::new("beneater");
 
         // Test overview
-        let overview = user.overview().await;
+        let overview = user.overview(None).await;
         assert!(overview.is_ok());
 
         // Test submitted
-        let submitted = user.submitted().await;
+        let submitted = user.submitted(None).await;
         assert!(submitted.is_ok());
 
         // Test comments
-        let comments = user.comments().await;
+        let comments = user.comments(None).await;
         assert!(comments.is_ok());
+
+        // Test feed options
+        let after = comments.unwrap().data.after.unwrap();
+        let after_options = FeedOption::new().after(&after);
+        let next_comments = user.comments(Some(after_options)).await;
+        assert!(next_comments.is_ok());
     }
 }

@@ -1,8 +1,8 @@
 //! # Me Responses
-use serde::Deserialize;
 use crate::responses::BasicListing;
-use crate::subreddit::responses::SubmissionsData;
 use crate::subreddit::responses::comments::SubredditCommentsData;
+use crate::subreddit::responses::SubmissionsData;
+use serde::Deserialize;
 
 /// MeData
 #[derive(Debug, Deserialize)]
@@ -51,7 +51,7 @@ pub struct Friend {
 /// A saved item can be a comment or post
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]
-pub enum SavedData{
+pub enum SavedData {
     /// Post
     Submission(SubmissionsData),
     /// Comment
