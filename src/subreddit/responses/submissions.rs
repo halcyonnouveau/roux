@@ -84,6 +84,8 @@ pub struct SubmissionsData {
     pub downs: f64,
     /// The number of upvotes (fuzzed; see `score` for further explanation)
     pub ups: f64,
+    /// The ratio of upvotes to total votes. Equal to upvotes/(upvotes+downvotes) (fuzzed; see `score` for further explanation)
+    pub upvote_ratio: f64,
     // TODO: skipped secure_media_embed
     /// True if the logged-in user has saved this submission.
     pub saved: bool,
