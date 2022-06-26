@@ -109,11 +109,10 @@ impl User {
         options: Option<FeedOption>,
     ) -> Result<About, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/about/.json", self.user);
-
+        println!("{}",self.user);
         if let Some(options) = options {
             options.build_url(url);
         }
-
         Ok(self
             .client
             .get(&url.to_owned())
