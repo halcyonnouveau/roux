@@ -20,7 +20,7 @@ pub struct AboutData {
     pub pref_geopopular: Option<String>,
     /// pref show trending
     pub pref_show_trending: Option<bool>,
-    /// subreddit 
+    /// subreddit
     ///pub subreddit: Option<SubredditData>,
     /// pref show presence
     pub pref_show_presence: Option<bool>,
@@ -83,7 +83,7 @@ pub struct AboutData {
     /// pref nightmode
     pub pref_nightmode: Option<bool>,
     /// awardee karma
-    pub awardee_karma:Option<i32>,
+    pub awardee_karma: Option<i32>,
     /// hide from robots
     pub hide_from_robots: Option<bool>,
     /// password set
@@ -129,7 +129,7 @@ pub struct AboutData {
     /// has subscribed
     pub has_subscribed: Option<bool>,
     /// accept pms
-    pub accept_pms: Option<bool>
+    pub accept_pms: Option<bool>,
 }
 
 /// Overview
