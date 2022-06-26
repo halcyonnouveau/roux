@@ -8,7 +8,7 @@ use reqwest::{header, Client, Response};
 use serde::Serialize;
 
 use crate::config::Config;
-use crate::util::{url, RouxError, FeedOption};
+use crate::util::{url, FeedOption, RouxError};
 
 pub mod responses;
 

@@ -31,7 +31,7 @@ use reqwest::Client;
 
 pub mod responses;
 use crate::subreddit::responses::{Submissions, SubredditComments};
-use responses::Overview;
+use responses::{About, Overview};
 
 /// User.
 pub struct User {
@@ -102,6 +102,22 @@ impl User {
             .json::<SubredditComments>()
             .await?)
     }
+
+    /// Get user's about page
+    pub async fn about(&self, options: Option<FeedOption>) -> Result<About, RouxError> {
+        let url = &mut format!("https://www.reddit.com/user/{}/about/.json", self.user);
+        println!("{}", self.user);
+        if let Some(options) = options {
+            options.build_url(url);
+        }
+        Ok(self
+            .client
+            .get(&url.to_owned())
+            .send()
+            .await?
+            .json::<About>()
+            .await?)
+    }
 }
 
 #[cfg(test)]
@@ -125,6 +141,10 @@ mod tests {
         // Test comments
         let comments = user.comments(None).await;
         assert!(comments.is_ok());
+
+        // Test about
+        let about = user.about(None).await;
+        assert!(about.is_ok());
 
         // Test feed options
         let after = comments.unwrap().data.after.unwrap();
