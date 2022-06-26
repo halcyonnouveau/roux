@@ -21,7 +21,7 @@ pub struct AboutData {
     /// pref show trending
     pub pref_show_trending: Option<bool>,
     /// subreddit
-    ///pub subreddit: Option<SubredditData>,
+    pub subreddit: Option<SubredditData>,
     /// pref show presence
     pub pref_show_presence: Option<bool>,
     /// snoovatar img

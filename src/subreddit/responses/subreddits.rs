@@ -231,7 +231,7 @@ pub struct SubredditData {
     pub emojis_custom_size: Option<Vec<u64>>,
     /// The contents of public_description converted to HTML entities.
     /// If no public description has been configured, an empty string is returned.
-    pub public_description_html: String,
+    pub public_description_html: Option<String>,
     /// Whether or not this subreddit has the "allow video uploads" option enabled.
     pub allow_videos: Option<bool>,
     /// Whether or not this subreddit has the "Allow crossposting of posts" preference enabled.
