@@ -66,9 +66,11 @@
 use serde::Deserialize;
 
 use reqwest::header::USER_AGENT;
-use reqwest::Client;
 
 mod config;
+
+mod client;
+use client::{Client};
 
 /// Subreddit module.
 pub mod subreddit;
@@ -121,6 +123,7 @@ impl Reddit {
     }
 
     /// Login as a user.
+    #[maybe_async::maybe_async]
     pub async fn login(self) -> Result<me::Me, util::RouxError> {
         let url = &url::build_url("api/v1/access_token")[..];
         let form = [

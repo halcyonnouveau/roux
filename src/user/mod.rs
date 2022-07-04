@@ -23,11 +23,10 @@
 //! }
 //! ```
 
-extern crate reqwest;
 extern crate serde_json;
 
 use crate::util::{FeedOption, RouxError};
-use reqwest::Client;
+use crate::client::Client;
 
 pub mod responses;
 use crate::subreddit::responses::{Submissions, SubredditComments};
@@ -50,6 +49,7 @@ impl User {
     }
 
     /// Get user's overview.
+    #[maybe_async::maybe_async]
     pub async fn overview(&self, options: Option<FeedOption>) -> Result<Overview, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/overview/.json", self.user);
 
@@ -67,6 +67,7 @@ impl User {
     }
 
     /// Get user's submitted posts.
+    #[maybe_async::maybe_async]
     pub async fn submitted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/submitted/.json", self.user);
 
@@ -84,6 +85,7 @@ impl User {
     }
 
     /// Get user's submitted comments.
+    #[maybe_async::maybe_async]
     pub async fn comments(
         &self,
         options: Option<FeedOption>,
@@ -104,6 +106,7 @@ impl User {
     }
 
     /// Get user's about page
+    #[maybe_async::maybe_async]
     pub async fn about(&self, options: Option<FeedOption>) -> Result<About, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/about/.json", self.user);
 

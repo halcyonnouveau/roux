@@ -60,11 +60,10 @@
 //! }
 //! ```
 
-extern crate reqwest;
 extern crate serde_json;
 
 use crate::util::{FeedOption, RouxError};
-use reqwest::Client;
+use crate::client::Client;
 
 pub mod responses;
 use responses::{
@@ -76,6 +75,7 @@ pub struct Subreddits;
 
 impl Subreddits {
     /// Search subreddits
+    #[maybe_async::maybe_async]
     pub async fn search(
         name: &str,
         limit: Option<u32>,
@@ -123,6 +123,7 @@ impl Subreddit {
     }
 
     /// Get moderators.
+    #[maybe_async::maybe_async]
     pub async fn moderators(&self) -> Result<Moderators, RouxError> {
         // TODO: getting moderators require you to be logged in now
         Ok(self
@@ -135,6 +136,7 @@ impl Subreddit {
     }
 
     /// Get subreddit data.
+    #[maybe_async::maybe_async]
     pub async fn about(&self) -> Result<SubredditData, RouxError> {
         Ok(self
             .client
@@ -146,6 +148,7 @@ impl Subreddit {
             .data)
     }
 
+    #[maybe_async::maybe_async]
     async fn get_feed(
         &self,
         ty: &str,
@@ -167,6 +170,7 @@ impl Subreddit {
             .await?)
     }
 
+    #[maybe_async::maybe_async]
     async fn get_comment_feed(
         &self,
         ty: &str,
@@ -209,6 +213,7 @@ impl Subreddit {
     }
 
     /// Get hot posts.
+    #[maybe_async::maybe_async]
     pub async fn hot(
         &self,
         limit: u32,
@@ -218,6 +223,7 @@ impl Subreddit {
     }
 
     /// Get rising posts.
+    #[maybe_async::maybe_async]
     pub async fn rising(
         &self,
         limit: u32,
@@ -227,6 +233,7 @@ impl Subreddit {
     }
 
     /// Get top posts.
+    #[maybe_async::maybe_async]
     pub async fn top(
         &self,
         limit: u32,
@@ -236,6 +243,7 @@ impl Subreddit {
     }
 
     /// Get latest posts.
+    #[maybe_async::maybe_async]
     pub async fn latest(
         &self,
         limit: u32,
@@ -245,6 +253,7 @@ impl Subreddit {
     }
 
     /// Get latest comments.
+    #[maybe_async::maybe_async]
     pub async fn latest_comments(
         &self,
         depth: Option<u32>,
@@ -254,6 +263,7 @@ impl Subreddit {
     }
 
     /// Get comments from article.
+    #[maybe_async::maybe_async]
     pub async fn article_comments(
         &self,
         article: &str,
