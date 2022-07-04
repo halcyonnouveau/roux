@@ -2,11 +2,13 @@
 //! A read-only module to read data from a specific subreddit.
 //!
 //! # Basic Usage
-//! ```rust
+//! ```no_run
 //! use roux::Subreddit;
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("rust");
 //!     // Now you are able to:
@@ -35,12 +37,14 @@
 //!
 //! # Usage with feed options
 //!
-//! ```rust
+//! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
 //!
@@ -279,9 +283,12 @@ impl Subreddit {
 mod tests {
     use super::Subreddit;
     use super::Subreddits;
-    use tokio;
+    
 
-    #[tokio::test]
+    #[maybe_async::test(
+        feature="blocking",
+        async(not(feature="blocking"), tokio::test)
+    )]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
 

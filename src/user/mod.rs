@@ -2,12 +2,14 @@
 //! A read-only module to read data from for a specific user.
 //!
 //! # Usage
-//! ```rust
+//! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let user = User::new("kasuporo");
 //!     // Now you are able to:
@@ -128,9 +130,11 @@ impl User {
 mod tests {
     use super::User;
     use crate::util::FeedOption;
-    use tokio;
 
-    #[tokio::test]
+    #[maybe_async::test(
+        feature="blocking",
+        async(not(feature="blocking"), tokio::test)
+    )]
     async fn test_no_auth() {
         let user = User::new("beneater");
 

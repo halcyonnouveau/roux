@@ -37,7 +37,7 @@ tokio-test = "0.4"
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
 
 [features]
-default = ["tokio_new"]
-tokio_new = ["reqwest"]
+default = ["async"]
+async = ["reqwest"]
 tokio_back_compat = ["reqwest_backcompat"]
 blocking = ["maybe-async/is_sync", "reqwest/blocking"]
