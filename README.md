@@ -66,11 +66,11 @@ There are also read-only modules that don't need authentication:
 
 ## Blocking Client
 
-You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature:
+You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature. Note that you'll have to disable default features since both `async` and `blocking` can't be enabled at the same time.
 
 ```toml
 [dependencies]
-roux = { version = "2", features = ["blocking"] }
+roux = { version = "2", default-features = false, features = ["blocking"] }
 ```
 
 ```rust
