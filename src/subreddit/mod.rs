@@ -2,11 +2,13 @@
 //! A read-only module to read data from a specific subreddit.
 //!
 //! # Basic Usage
-//! ```rust
+//! ```no_run
 //! use roux::Subreddit;
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("rust");
 //!     // Now you are able to:
@@ -35,12 +37,14 @@
 //!
 //! # Usage with feed options
 //!
-//! ```rust
+//! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
 //!
@@ -60,11 +64,10 @@
 //! }
 //! ```
 
-extern crate reqwest;
 extern crate serde_json;
 
 use crate::util::{FeedOption, RouxError};
-use reqwest::Client;
+use crate::client::Client;
 
 pub mod responses;
 use responses::{
@@ -76,6 +79,7 @@ pub struct Subreddits;
 
 impl Subreddits {
     /// Search subreddits
+    #[maybe_async::maybe_async]
     pub async fn search(
         name: &str,
         limit: Option<u32>,
@@ -123,6 +127,7 @@ impl Subreddit {
     }
 
     /// Get moderators.
+    #[maybe_async::maybe_async]
     pub async fn moderators(&self) -> Result<Moderators, RouxError> {
         // TODO: getting moderators require you to be logged in now
         Ok(self
@@ -135,6 +140,7 @@ impl Subreddit {
     }
 
     /// Get subreddit data.
+    #[maybe_async::maybe_async]
     pub async fn about(&self) -> Result<SubredditData, RouxError> {
         Ok(self
             .client
@@ -146,6 +152,7 @@ impl Subreddit {
             .data)
     }
 
+    #[maybe_async::maybe_async]
     async fn get_feed(
         &self,
         ty: &str,
@@ -167,6 +174,7 @@ impl Subreddit {
             .await?)
     }
 
+    #[maybe_async::maybe_async]
     async fn get_comment_feed(
         &self,
         ty: &str,
@@ -209,6 +217,7 @@ impl Subreddit {
     }
 
     /// Get hot posts.
+    #[maybe_async::maybe_async]
     pub async fn hot(
         &self,
         limit: u32,
@@ -218,6 +227,7 @@ impl Subreddit {
     }
 
     /// Get rising posts.
+    #[maybe_async::maybe_async]
     pub async fn rising(
         &self,
         limit: u32,
@@ -227,6 +237,7 @@ impl Subreddit {
     }
 
     /// Get top posts.
+    #[maybe_async::maybe_async]
     pub async fn top(
         &self,
         limit: u32,
@@ -236,6 +247,7 @@ impl Subreddit {
     }
 
     /// Get latest posts.
+    #[maybe_async::maybe_async]
     pub async fn latest(
         &self,
         limit: u32,
@@ -245,6 +257,7 @@ impl Subreddit {
     }
 
     /// Get latest comments.
+    #[maybe_async::maybe_async]
     pub async fn latest_comments(
         &self,
         depth: Option<u32>,
@@ -254,6 +267,7 @@ impl Subreddit {
     }
 
     /// Get comments from article.
+    #[maybe_async::maybe_async]
     pub async fn article_comments(
         &self,
         article: &str,
@@ -269,9 +283,12 @@ impl Subreddit {
 mod tests {
     use super::Subreddit;
     use super::Subreddits;
-    use tokio;
+    
 
-    #[tokio::test]
+    #[maybe_async::test(
+        feature="blocking",
+        async(not(feature="blocking"), tokio::test)
+    )]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
 

@@ -2,12 +2,14 @@
 //! A read-only module to read data from for a specific user.
 //!
 //! # Usage
-//! ```rust
+//! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
+//! #[cfg(feature = "async")]
 //! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let user = User::new("kasuporo");
 //!     // Now you are able to:
@@ -23,11 +25,10 @@
 //! }
 //! ```
 
-extern crate reqwest;
 extern crate serde_json;
 
 use crate::util::{FeedOption, RouxError};
-use reqwest::Client;
+use crate::client::Client;
 
 pub mod responses;
 use crate::subreddit::responses::{Submissions, SubredditComments};
@@ -50,6 +51,7 @@ impl User {
     }
 
     /// Get user's overview.
+    #[maybe_async::maybe_async]
     pub async fn overview(&self, options: Option<FeedOption>) -> Result<Overview, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/overview/.json", self.user);
 
@@ -67,6 +69,7 @@ impl User {
     }
 
     /// Get user's submitted posts.
+    #[maybe_async::maybe_async]
     pub async fn submitted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/submitted/.json", self.user);
 
@@ -84,6 +87,7 @@ impl User {
     }
 
     /// Get user's submitted comments.
+    #[maybe_async::maybe_async]
     pub async fn comments(
         &self,
         options: Option<FeedOption>,
@@ -104,6 +108,7 @@ impl User {
     }
 
     /// Get user's about page
+    #[maybe_async::maybe_async]
     pub async fn about(&self, options: Option<FeedOption>) -> Result<About, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/about/.json", self.user);
 
@@ -125,9 +130,11 @@ impl User {
 mod tests {
     use super::User;
     use crate::util::FeedOption;
-    use tokio;
 
-    #[tokio::test]
+    #[maybe_async::test(
+        feature="blocking",
+        async(not(feature="blocking"), tokio::test)
+    )]
     async fn test_no_auth() {
         let user = User::new("beneater");
 

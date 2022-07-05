@@ -71,6 +71,7 @@ There are also read-only modules that don't need authentication:
 
 - (Default) `tokio_new` - use tokio 1.1.0 based reqwest.
 - `tokio_back_compat` - use tokio 0.2 based reqwest.
+- `blocking` - Use a blocking (sync) API instead of tokio. Note that `no-default-features` must be set along with `blocking`.
 
 ## 3rd-Party Libraries
 
