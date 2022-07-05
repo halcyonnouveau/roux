@@ -4,11 +4,9 @@
 //! # Basic Usage
 //! ```no_run
 //! use roux::Subreddit;
-//! #[cfg(feature = "async")]
-//! use tokio;
+//! # use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
-//! #[maybe_async::maybe_async]
+//! #[tokio::main]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("rust");
 //!     // Now you are able to:
@@ -40,11 +38,9 @@
 //! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
-//! #[cfg(feature = "async")]
-//! use tokio;
+//! # use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
-//! #[maybe_async::maybe_async]
+//! #[tokio::main]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
 //!
@@ -66,8 +62,8 @@
 
 extern crate serde_json;
 
-use crate::util::{FeedOption, RouxError};
 use crate::client::Client;
+use crate::util::{FeedOption, RouxError};
 
 pub mod responses;
 use responses::{
@@ -283,12 +279,8 @@ impl Subreddit {
 mod tests {
     use super::Subreddit;
     use super::Subreddits;
-    
 
-    #[maybe_async::test(
-        feature="blocking",
-        async(not(feature="blocking"), tokio::test)
-    )]
+    #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
 

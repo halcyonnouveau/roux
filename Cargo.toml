@@ -1,32 +1,22 @@
 [package]
 name = "roux"
-version = "1.4.0"
+version = "2.0.0"
 authors = ["Justin Duch <justin@duch.me>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
-description = "Simple and asyncronous Reddit API wrapper"
+description = "Simple and (a)syncronous Reddit API wrapper"
 readme = "README.md"
 documentation = "https://docs.rs/roux"
 repository = "https://github.com/halcyonnouveau/roux"
 keywords = ["reddit", "api", "async"]
 categories = ["authentication", "api-bindings", "network-programming"]
-exclude = [".circle/*", ".gitignore"]
+exclude = [".github/*", ".gitignore"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 maybe-async = "0.2.6"
-
-[dependencies.reqwest]
-version = "0.11"
-features = ["json"]
-optional = true
-
-[dependencies.reqwest_backcompat]
-version = "0.10"
-package = "reqwest"
-features = ["json"]
-optional = true
+reqwest = { version = "0.11", features = ["json"] }
 
 [dev-dependencies]
 dotenv = "0.15.0"
@@ -37,7 +27,5 @@ tokio-test = "0.4"
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
 
 [features]
-default = ["async"]
-async = ["reqwest"]
-tokio_back_compat = ["reqwest_backcompat"]
+default = []
 blocking = ["maybe-async/is_sync", "reqwest/blocking"]

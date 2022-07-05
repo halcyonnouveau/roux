@@ -4,8 +4,8 @@
 extern crate reqwest;
 extern crate serde_json;
 
-use reqwest::{header};
 use crate::client::{Client, Response};
+use reqwest::header;
 use serde::Serialize;
 
 use crate::config::Config;

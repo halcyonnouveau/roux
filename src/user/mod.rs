@@ -5,11 +5,9 @@
 //! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
-//! #[cfg(feature = "async")]
-//! use tokio;
+//! # use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
-//! #[maybe_async::maybe_async]
+//! #[tokio::main]
 //! async fn main() {
 //!     let user = User::new("kasuporo");
 //!     // Now you are able to:
@@ -27,8 +25,8 @@
 
 extern crate serde_json;
 
-use crate::util::{FeedOption, RouxError};
 use crate::client::Client;
+use crate::util::{FeedOption, RouxError};
 
 pub mod responses;
 use crate::subreddit::responses::{Submissions, SubredditComments};
@@ -131,10 +129,7 @@ mod tests {
     use super::User;
     use crate::util::FeedOption;
 
-    #[maybe_async::test(
-        feature="blocking",
-        async(not(feature="blocking"), tokio::test)
-    )]
+    #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
     async fn test_no_auth() {
         let user = User::new("beneater");
 

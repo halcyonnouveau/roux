@@ -5,7 +5,7 @@
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
 ![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.svg)
 
-Roux is a simple, asynchronous Reddit API wrapper implemented in Rust.
+Roux is a simple, (a)synchronous Reddit API wrapper implemented in Rust.
 
 ## Usage
 
@@ -69,9 +69,8 @@ There are also read-only modules that don't need authentication:
 
 ## Features
 
-- (Default) `tokio_new` - use tokio 1.1.0 based reqwest.
-- `tokio_back_compat` - use tokio 0.2 based reqwest.
-- `blocking` - Use a blocking (sync) API instead of tokio. Note that `no-default-features` must be set along with `blocking`.
+- (Default) `async` - Use tokio based reqwest.
+- `blocking` - Use a blocking (synchronous) API instead of tokio.
 
 ## 3rd-Party Libraries
 
