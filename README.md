@@ -23,10 +23,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 
 let me = client.unwrap();
 ```
-
-It is important that you pick a good user agent. The ideal format is
-`platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
-This will authticate you as the user given in the username function.
+It is important that you pick a good user agent. The ideal format is `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v2.0.0 (by /u/beanpup_py)`. This will authticate you as the user given in the username function.
 
 ### Usage
 
@@ -67,10 +64,25 @@ There are also read-only modules that don't need authentication:
 - [Subreddits](https://docs.rs/roux/latest/roux/subreddit/index.html)
 - [Users](https://docs.rs/roux/latest/roux/user/index.html)
 
-## Features
+## Blocking Client
 
-- (Default) `async` - Use tokio based reqwest.
-- `blocking` - Use a blocking (synchronous) API instead of tokio.
+You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature:
+
+```
+[dependencies]
+roux = { version = "2", features = ["blocking"] }
+```
+
+```rust
+use roux::Reddit;
+let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+    .username("USERNAME")
+    .password("PASSWORD")
+    .login();
+
+let me = client.unwrap();
+me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+```
 
 ## 3rd-Party Libraries
 
@@ -78,9 +90,7 @@ There are also read-only modules that don't need authentication:
 
 ## Contributing
 
-Roux is not in active development but is still being maintained and currently covers the
-most common and useful endpoints. If you see something missing or encounter a bug, feel
-free to open an issue or create a pull request.
+Roux is not in active development but is still being maintained and currently covers the most common and useful endpoints. If you see something missing or encounter a bug, feel free to open an issue or create a pull request.
 
 ## License
 
