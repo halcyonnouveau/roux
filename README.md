@@ -68,7 +68,7 @@ There are also read-only modules that don't need authentication:
 
 You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature:
 
-```
+```toml
 [dependencies]
 roux = { version = "2", features = ["blocking"] }
 ```
