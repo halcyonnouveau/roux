@@ -1,7 +1,7 @@
 extern crate dotenv;
 extern crate roux;
 
-#[cfg(all(feature = "async", test))]
+#[cfg(all(not(feature = "blocking"), test))]
 extern crate tokio;
 
 #[cfg(test)]
@@ -11,7 +11,7 @@ mod tests {
     use roux::models::saved::SavedData;
     use roux::util::FeedOption;
     use roux::Reddit;
-    #[cfg(feature = "async")]
+    #[cfg(not(feature = "blocking"))]
     use tokio;
 
     static USER_AGENT: &str = "macos:roux:v1.4.0 (by /u/beanpup_py)";

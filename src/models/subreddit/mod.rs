@@ -70,10 +70,7 @@ use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
 
-use crate::models::moderator::Moderators;
-use crate::models::submission::Submissions;
-
-use crate::models::comment::Comments;
+use crate::models::{Moderators, Submissions, Comments};
 
 /// Access subreddits API
 pub struct Subreddits;

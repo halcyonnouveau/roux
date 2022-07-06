@@ -28,10 +28,7 @@ extern crate serde_json;
 use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
-use crate::models::submission::Submissions;
-use crate::models::comment::Comments;
-use crate::models::about::About;
-use crate::models::overview::Overview;
+use crate::models::{Submissions, Comments, About, Overview};
 
 /// User.
 pub struct User {

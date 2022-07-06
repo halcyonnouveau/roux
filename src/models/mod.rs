@@ -11,3 +11,16 @@ pub mod saved;
 pub mod submission;
 pub mod subreddit;
 pub mod user;
+
+pub use about::About;
+pub use comment::Comments;
+pub use friend::Friend;
+pub use inbox::Inbox;
+pub use me::Me;
+pub use moderator::Moderators;
+pub use overview::Overview;
+pub use reply::{Replies, MaybeReplies};
+pub use saved::Saved;
+pub use submission::Submissions;
+pub use subreddit::{Subreddit, Subreddits};
+pub use user::User;
