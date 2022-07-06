@@ -8,7 +8,7 @@ extern crate tokio;
 mod tests {
     use std::env;
 
-    use roux::models::saved::SavedData;
+    use roux::saved::SavedData;
     use roux::util::FeedOption;
     use roux::Reddit;
     #[cfg(not(feature = "blocking"))]

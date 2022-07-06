@@ -74,8 +74,8 @@ mod client;
 use client::Client;
 
 /// Subreddit module.
-pub mod models;
-use models::*;
+mod models;
+pub use models::*;
 
 /// Utils for requests.
 pub mod util;
