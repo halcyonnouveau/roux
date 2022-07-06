@@ -1,5 +1,5 @@
 //! # Subreddit Responses
-use crate::responses::BasicListing;
+use crate::models::response::BasicListing;
 use serde::Deserialize;
 
 /// SubredditResponse

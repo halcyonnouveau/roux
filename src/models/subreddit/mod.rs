@@ -65,10 +65,16 @@ extern crate serde_json;
 use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
-pub mod responses;
-use responses::{
-    Moderators, Submissions, SubredditComments, SubredditData, SubredditResponse, SubredditsListing,
+pub mod response;
+
+use response::{
+    SubredditData, SubredditResponse, SubredditsListing,
 };
+
+use crate::models::moderator::Moderators;
+use crate::models::submission::Submissions;
+
+use crate::models::comment::Comments;
 
 /// Access subreddits API
 pub struct Subreddits;
@@ -176,7 +182,7 @@ impl Subreddit {
         ty: &str,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<SubredditComments, RouxError> {
+    ) -> Result<Comments, RouxError> {
         let url = &mut format!("{}/{}.json?", self.url, ty);
 
         if let Some(depth) = depth {
@@ -197,7 +203,7 @@ impl Subreddit {
                 .get(&url.to_owned())
                 .send()
                 .await?
-                .json::<Vec<SubredditComments>>()
+                .json::<Vec<Comments>>()
                 .await?;
 
             Ok(comments.pop().unwrap())
@@ -207,7 +213,7 @@ impl Subreddit {
                 .get(&url.to_owned())
                 .send()
                 .await?
-                .json::<SubredditComments>()
+                .json::<Comments>()
                 .await?)
         }
     }
@@ -258,7 +264,7 @@ impl Subreddit {
         &self,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<SubredditComments, RouxError> {
+    ) -> Result<Comments, RouxError> {
         self.get_comment_feed("comments", depth, limit).await
     }
 
@@ -269,7 +275,7 @@ impl Subreddit {
         article: &str,
         depth: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<SubredditComments, RouxError> {
+    ) -> Result<Comments, RouxError> {
         self.get_comment_feed(&format!("comments/{}", article), depth, limit)
             .await
     }

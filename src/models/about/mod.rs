@@ -1,6 +1,6 @@
 //! # User Overview Responses
-use crate::responses::BasicThing;
-use crate::subreddit::responses::SubredditData;
+use crate::models::response::BasicThing;
+use crate::models::subreddit::response::SubredditData;
 use serde::Deserialize;
 
 /// AboutData

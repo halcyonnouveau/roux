@@ -8,7 +8,7 @@ extern crate tokio;
 mod tests {
     use std::env;
 
-    use roux::me::responses::SavedData;
+    use roux::models::saved::SavedData;
     use roux::util::FeedOption;
     use roux::Reddit;
     #[cfg(feature = "async")]

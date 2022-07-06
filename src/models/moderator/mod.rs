@@ -1,10 +1,10 @@
 //! # Subreddit Moderator Responses
-use crate::responses::BasicListing;
+use crate::models::response::BasicListing;
 use serde::Deserialize;
 
 /// ModeratorsData
 #[derive(Debug, Deserialize)]
-pub struct ModeratorsData {
+pub struct ModeratorData {
     /// The ID of the moderator
     pub id: String,
     /// The name of the moderator
@@ -14,4 +14,4 @@ pub struct ModeratorsData {
 }
 
 /// Moderators
-pub type Moderators = BasicListing<ModeratorsData>;
+pub type Moderators = BasicListing<ModeratorData>;
