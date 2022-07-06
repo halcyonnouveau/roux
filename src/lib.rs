@@ -5,64 +5,72 @@
 //!
 //! ## Using OAuth
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
-//! ```no_run
+//! ```no_run 
 //! use roux::Reddit;
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
-//!     let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
-//!         .username("USERNAME")
-//!         .password("PASSWORD")
-//!         .login()
-//!         .await;
-//!     let me = client.unwrap();
+//! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .username("USERNAME")
+//!     .password("PASSWORD")
+//!     .login()
+//!     .await;
+//! let me = client.unwrap();
 //! }
 //! ```
-//!
+//! 
 //! It is important that you pick a good user agent. The ideal format is
 //! `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
 //!
 //! This will authticate you as the user given in the username function.
 //!
+//! 
 //! ## Usage
 //! Using the OAuth client, you can:
 //!
 //! ### Submit A Text Post
-//! ```no_run
+//! ```no_run 
 //! use roux::Reddit;
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
-//!     let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
-//!         .username("USERNAME")
-//!         .password("PASSWORD")
-//!         .login()
-//!         .await;
-//!     let me = client.unwrap();
-//!
-//!     me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
+//! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .username("USERNAME")
+//!     .password("PASSWORD")
+//!     .login()
+//!     .await;
+//! let me = client.unwrap();
+//! 
+//! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
 //! }
 //! ```
 //!
 //! ### Submit A Link Post
 //! ```no_run
 //! use roux::Reddit;
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
-//!     let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
-//!         .username("USERNAME")
-//!         .password("PASSWORD")
-//!         .login()
-//!         .await;
-//!     let me = client.unwrap();
-//!
-//!     me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
-//! }
+//! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .username("USERNAME")
+//!     .password("PASSWORD")
+//!     .login()
+//!     .await;
+//! let me = client.unwrap();
+//! 
+//! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+//! } 
 //! ```
+
 
 use serde::Deserialize;
 

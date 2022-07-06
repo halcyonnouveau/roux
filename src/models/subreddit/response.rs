@@ -326,4 +326,4 @@ pub struct SubredditData {
 }
 
 /// Subreddits
-pub type SubredditsListing = BasicListing<SubredditData>;
+pub type SubredditsData = BasicListing<SubredditData>;

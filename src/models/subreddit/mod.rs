@@ -4,9 +4,11 @@
 //! # Basic Usage
 //! ```no_run
 //! use roux::Subreddit;
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("rust");
 //!     // Now you are able to:
@@ -38,9 +40,11 @@
 //! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
 //!
@@ -63,7 +67,7 @@ pub mod response;
 extern crate serde_json;
 
 use crate::models::subreddit::response::{
-    SubredditData, SubredditResponse, SubredditsListing,
+    SubredditData, SubredditResponse, SubredditsData,
 };
 
 use crate::client::Client;
@@ -82,7 +86,7 @@ impl Subreddits {
         name: &str,
         limit: Option<u32>,
         options: Option<FeedOption>,
-    ) -> Result<SubredditsListing, RouxError> {
+    ) -> Result<SubredditsData, RouxError> {
         let url = &mut format!("https://www.reddit.com/subreddits/search.json?q={}", name);
 
         if let Some(limit) = limit {
@@ -99,7 +103,7 @@ impl Subreddits {
             .get(&url.to_owned())
             .send()
             .await?
-            .json::<SubredditsListing>()
+            .json::<SubredditsData>()
             .await?)
     }
 }

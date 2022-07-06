@@ -5,9 +5,11 @@
 //! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
-//! # use tokio;
+//! #[cfg(feature = "async")]
+//! use tokio;
 //!
-//! #[tokio::main]
+//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let user = User::new("kasuporo");
 //!     // Now you are able to:
