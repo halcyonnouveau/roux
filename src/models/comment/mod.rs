@@ -1,6 +1,7 @@
 //! # Subreddit Comment Responses
-use crate::models::{response::BasicListing, reply::MaybeReplies};
 use serde::Deserialize;
+
+use crate::models::{response::BasicListing, reply::MaybeReplies};
 
 /// SubredditCommentsData
 /// Everything is an option to deal with both `latest_comments` and `article_comments`

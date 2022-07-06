@@ -1,7 +1,8 @@
 //! # Subreddit Submission Responses
-use crate::models::response::BasicListing;
 use serde::Deserialize;
 use serde_json::Value;
+
+use crate::models::response::BasicListing;
 
 /// SubmissionsData
 #[derive(Debug, Deserialize)]

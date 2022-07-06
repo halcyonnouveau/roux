@@ -1,6 +1,7 @@
-//! # Subreddit Moderator Responses
-use crate::models::response::BasicListing;
+//! # Subreddit Moderator Responses 
 use serde::Deserialize;
+
+use crate::models::response::BasicListing;
 
 /// ModeratorsData
 #[derive(Debug, Deserialize)]

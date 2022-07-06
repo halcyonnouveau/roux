@@ -10,12 +10,11 @@ use serde::Serialize;
 
 use crate::client::{Client, Response};
 use crate::config::Config;
-use crate::util::{url, FeedOption, RouxError};
-
+use crate::models::friend::Friend;
+use crate::models::inbox::Inbox;
 use crate::models::me::response::{MeData};
 use crate::models::saved::Saved;
-use crate::models::inbox::Inbox;
-use crate::models::friend::Friend;
+use crate::util::{url, FeedOption, RouxError};
 
 /// Me
 #[derive(Debug, Clone)]

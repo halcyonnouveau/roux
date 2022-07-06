@@ -1,7 +1,8 @@
 //! # Subreddit Comment Responses
+use serde::Deserialize;
+
 use crate::models::response::BasicListing;
 use crate::models::comment::CommentData;
-use serde::Deserialize;
 
 /// Doc
 pub type Replies = BasicListing<Box<CommentData>>;

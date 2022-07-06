@@ -59,17 +59,16 @@
 //!     let next_hot = subreddit.hot(25, Some(after_options)).await;
 //! }
 //! ```
-
+pub mod response;
 extern crate serde_json;
+
+use crate::models::subreddit::response::{
+    SubredditData, SubredditResponse, SubredditsListing,
+};
 
 use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
-pub mod response;
-
-use response::{
-    SubredditData, SubredditResponse, SubredditsListing,
-};
 
 use crate::models::moderator::Moderators;
 use crate::models::submission::Submissions;

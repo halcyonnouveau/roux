@@ -1,7 +1,8 @@
 //! # User Overview Responses
+use serde::Deserialize;
+
 use crate::models::{response::BasicListing};
 use crate::util::defaults::default_string;
-use serde::Deserialize;
 
 /// OverviewData
 #[derive(Debug, Deserialize)]
