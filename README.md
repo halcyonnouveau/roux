@@ -66,7 +66,7 @@ There are also read-only modules that don't need authentication:
 
 ## Blocking Client
 
-You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature:
+You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature.
 
 ```toml
 [dependencies]

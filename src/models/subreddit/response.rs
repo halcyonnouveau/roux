@@ -1,6 +1,7 @@
 //! # Subreddit Responses
-use crate::responses::BasicListing;
 use serde::Deserialize;
+
+use crate::models::response::BasicListing;
 
 /// SubredditResponse
 #[derive(Debug, Deserialize)]
@@ -325,4 +326,4 @@ pub struct SubredditData {
 }
 
 /// Subreddits
-pub type SubredditsListing = BasicListing<SubredditData>;
+pub type SubredditsData = BasicListing<SubredditData>;

@@ -1,19 +1,18 @@
 //! # Me
 //! Me module.
 
+pub mod response;
+
 extern crate reqwest;
 extern crate serde_json;
-
-use crate::client::{Client, Response};
 use reqwest::header;
 use serde::Serialize;
 
+use crate::client::{Client, Response};
 use crate::config::Config;
+use crate::models::{Friend, Inbox, Saved};
+use crate::models::me::response::{MeData};
 use crate::util::{url, FeedOption, RouxError};
-
-pub mod responses;
-
-use responses::{Friend, Inbox, MeData, Saved};
 
 /// Me
 #[derive(Debug, Clone)]

@@ -1,11 +1,12 @@
 //! # Subreddit Submission Responses
-use crate::responses::BasicListing;
 use serde::Deserialize;
 use serde_json::Value;
 
+use crate::models::response::BasicListing;
+
 /// SubmissionsData
 #[derive(Debug, Deserialize)]
-pub struct SubmissionsData {
+pub struct SubmissionData {
     /// The domain of the link (if link post) or self.subreddit (if self post).
     /// Domains do not include a protocol, e.g. `i.redd.it` or `self.learnprogramming`
     pub domain: String,
@@ -136,4 +137,4 @@ pub struct SubmissionsData {
 }
 
 /// Submissions
-pub type Submissions = BasicListing<SubmissionsData>;
+pub type Submissions = BasicListing<SubmissionData>;
