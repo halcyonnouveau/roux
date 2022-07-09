@@ -1,11 +1,12 @@
 //! # Subreddit Submission Responses
-use crate::responses::BasicListing;
 use serde::Deserialize;
 use serde_json::Value;
 
+use crate::models::response::BasicListing;
+
 /// SubmissionsData
 #[derive(Debug, Deserialize)]
-pub struct SubmissionsData {
+pub struct SubmissionData {
     /// The domain of the link (if link post) or self.subreddit (if self post).
     /// Domains do not include a protocol, e.g. `i.redd.it` or `self.learnprogramming`
     pub domain: String,
@@ -84,6 +85,8 @@ pub struct SubmissionsData {
     pub downs: f64,
     /// The number of upvotes (fuzzed; see `score` for further explanation)
     pub ups: f64,
+    /// The ratio of upvotes to total votes. Equal to upvotes/(upvotes+downvotes) (fuzzed; see `score` for further explanation)
+    pub upvote_ratio: f64,
     // TODO: skipped secure_media_embed
     /// True if the logged-in user has saved this submission.
     pub saved: bool,
@@ -134,4 +137,4 @@ pub struct SubmissionsData {
 }
 
 /// Submissions
-pub type Submissions = BasicListing<SubmissionsData>;
+pub type Submissions = BasicListing<SubmissionData>;

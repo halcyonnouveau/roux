@@ -1,11 +1,11 @@
 # Roux
 
-[![CircleCI](https://circleci.com/gh/halcyonnouveau/roux.svg?style=svg)](https://circleci.com/gh/halcyonnouveau/roux)
+[![Build](https://github.com/halcyonnouveau/roux/actions/workflows/rust.yml/badge.svg)](https://github.com/halcyonnouveau/roux/actions/workflows/rust.yml)
 [![Documentation](https://img.shields.io/badge/documentation-available-green.svg)](https://docs.rs/roux)
 [![Crate](https://img.shields.io/crates/v/roux.svg)](https://crates.io/crates/roux)
 ![GitHub](https://img.shields.io/github/license/halcyonnouveau/roux.svg)
 
-Roux is a simple, asynchronous Reddit API wrapper implemented in Rust.
+Roux is a simple, (a)synchronous Reddit API wrapper implemented in Rust.
 
 ## Usage
 
@@ -23,10 +23,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 
 let me = client.unwrap();
 ```
-
-It is important that you pick a good user agent. The ideal format is
-`platform:program:version (by /u/yourname)`, e.g. `macos:roux:v0.3.0 (by /u/beanpup_py)`.
-This will authticate you as the user given in the username function.
+It is important that you pick a good user agent. The ideal format is `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v2.0.0 (by /u/beanpup_py)`. This will authticate you as the user given in the username function.
 
 ### Usage
 
@@ -64,19 +61,36 @@ me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
 
 There are also read-only modules that don't need authentication:
 
-- [Subreddits](https://docs.rs/roux/1.1.4/roux/subreddit/index.html)
-- [Users](https://docs.rs/roux/1.1.4/roux/user/index.html)
+- [Subreddits](https://docs.rs/roux/latest/roux/subreddit/index.html)
+- [Users](https://docs.rs/roux/latest/roux/user/index.html)
 
-## Features
+## Blocking Client
 
-- (Default) `tokio_new` - use tokio 1.1.0 based reqwest.
-- `tokio_back_compat` - use tokio 0.2 based reqwest.
+You can use a blocking (synchronous) API instead of tokio by enabling the `blocking` feature.
+
+```toml
+[dependencies]
+roux = { version = "2", features = ["blocking"] }
+```
+
+```rust
+use roux::Reddit;
+let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+    .username("USERNAME")
+    .password("PASSWORD")
+    .login();
+
+let me = client.unwrap();
+me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+```
+
+## 3rd-Party Libraries
+
+- [`roux-stream`](https://github.com/torfsen/roux-stream) provides an API for continuously streaming new submissions and comments
 
 ## Contributing
 
-Roux is not in active development but is still being maintained and currently covers the
-most common and useful endpoints. If you see something missing or encounter a bug, feel
-free to open an issue or create a pull request.
+Roux is not in active development but is still being maintained and currently covers the most common and useful endpoints. If you see something missing or encounter a bug, feel free to open an issue or create a pull request.
 
 ## License
 

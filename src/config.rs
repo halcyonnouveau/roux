@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub struct Config {
     pub user_agent: String,
     pub client_id: String,

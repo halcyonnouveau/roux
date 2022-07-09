@@ -1,11 +1,12 @@
 //! # Subreddit Comment Responses
-use crate::responses::BasicListing;
 use serde::Deserialize;
+
+use crate::models::{response::BasicListing, reply::MaybeReplies};
 
 /// SubredditCommentsData
 /// Everything is an option to deal with both `latest_comments` and `article_comments`
 #[derive(Debug, Deserialize)]
-pub struct SubredditCommentsData {
+pub struct CommentData {
     /// Total awards
     pub total_awards_received: Option<i32>,
     /// Approved at (UTC)
@@ -103,21 +104,8 @@ pub struct SubredditCommentsData {
     /// UPS?
     pub ups: Option<i32>,
     /// Replies
-    pub replies: Option<SubredditReplies>,
-}
-
-/// Reply
-pub type Reply = BasicListing<Box<SubredditCommentsData>>;
-
-/// Replies can be more comments or an empty string
-#[derive(Debug, Deserialize)]
-#[serde(untagged)]
-pub enum SubredditReplies {
-    /// Reply
-    Reply(Reply),
-    /// String
-    Str(String)
+    pub replies: Option<MaybeReplies>,
 }
 
 /// SubredditComments
-pub type SubredditComments = BasicListing<SubredditCommentsData>;
+pub type Comments = BasicListing<CommentData>;

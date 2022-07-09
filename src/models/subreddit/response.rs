@@ -1,6 +1,7 @@
 //! # Subreddit Responses
 use serde::Deserialize;
-use crate::responses::BasicListing;
+
+use crate::models::response::BasicListing;
 
 /// SubredditResponse
 #[derive(Debug, Deserialize)]
@@ -24,6 +25,7 @@ pub enum AccountsActive {
 
 /// If the API user has user flair in this subreddit, and its user_flair_type is richtext,
 /// this will be an array containing two string elements which define the user's flair.
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 pub struct RichtextFlair {
     /// contains the string text
@@ -83,7 +85,7 @@ pub struct SubredditData {
     /// Unknown
     pub allow_galleries: Option<bool>,
     /// If an icon_img has been configured for this subreddit,
-    /// this will be an array containing two integer elements that define the image's width and height, e.g. [256,256].
+    /// this will be an array containing two integer elements that define the image's width and height, e.g. `[256, 256]`.
     /// If no icon image is configured, this will be null.
     pub icon_size: Option<Vec<u64>>,
     /// The base36 internal Reddit identifier for this subreddit, e.g. 2qpqw.
@@ -178,7 +180,7 @@ pub struct SubredditData {
     /// This field may be populated even if header_img is null, as an artifact from that field being previously set.
     pub header_title: Option<String>,
     /// If a header_img has been configured for this subreddit, this will be an array containing two integer elements
-    /// that define the image's width and height, e.g. [16,16]. If no header image is configured, this will be null.
+    /// that define the image's width and height, e.g. `[16, 16]`. If no header image is configured, this will be null.
     pub header_size: Option<Vec<u64>>,
     /// The CSS position of user flair in this subreddit, relative to the username,
     /// i.e. left or right. If user flair is not configured, an empty string is returned.
@@ -225,12 +227,12 @@ pub struct SubredditData {
     /// Whether or not this subreddit has the "collapse deleted and removed comments" option enabled.
     pub collapse_deleted_comments: Option<bool>,
     /// If "Custom sized emojis" has been configured for this subreddit,
-    /// this will be an array containing two integer elements that define the emoji width and height, e.g. [16,16].
+    /// this will be an array containing two integer elements that define the emoji width and height, e.g. `[16, 16]`.
     /// If no custom emoji size is configured, this will be null.
     pub emojis_custom_size: Option<Vec<u64>>,
     /// The contents of public_description converted to HTML entities.
     /// If no public description has been configured, an empty string is returned.
-    pub public_description_html: String,
+    pub public_description_html: Option<String>,
     /// Whether or not this subreddit has the "allow video uploads" option enabled.
     pub allow_videos: Option<bool>,
     /// Whether or not this subreddit has the "Allow crossposting of posts" preference enabled.
@@ -315,7 +317,7 @@ pub struct SubredditData {
     /// but the fractional part is always zero.
     pub created_utc: Option<f64>,
     /// If banner_img is set, this will be an array containing two integer elements that define the image's width and height,
-    /// e.g. [1280,384]. If no banner image is configured, this will be null.
+    /// e.g. `[1280, 384]`. If no banner image is configured, this will be null.
     pub banner_size: Option<Vec<u64>>,
     /// The URL to this subreddit's mobile banner image. If no mobile banner is configured, an empty string is returned.
     pub mobile_banner_image: Option<String>,
@@ -324,4 +326,4 @@ pub struct SubredditData {
 }
 
 /// Subreddits
-pub type SubredditsListing = BasicListing<SubredditData>;
+pub type SubredditsData = BasicListing<SubredditData>;

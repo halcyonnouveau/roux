@@ -1,43 +1,33 @@
 [package]
 name = "roux"
-version = "1.3.6-alpha.0"
+version = "2.0.0"
 authors = ["Justin Duch <justin@duch.me>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
-description = "Simple and asyncronous Reddit API wrapper"
+description = "Simple and (a)syncronous Reddit API wrapper"
 readme = "README.md"
 documentation = "https://docs.rs/roux"
 repository = "https://github.com/halcyonnouveau/roux"
 keywords = ["reddit", "api", "async"]
 categories = ["authentication", "api-bindings", "network-programming"]
-exclude = [".circle/*", ".gitignore"]
+exclude = [".github/*", ".gitignore"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-maybe-async = "0.2.2"
-
-[dependencies.reqwest]
-version = "0.11"
-features = ["json"]
-default-features = false
-optional = true
-
-[dependencies.reqwest_backcompat]
-version = "0.10"
-package = "reqwest"
-features = ["json"]
-optional = true
+maybe-async = "0.2.6"
+reqwest = { version = "0.11", default-features = false, features = ["json"] }
 
 [dev-dependencies]
 dotenv = "0.15.0"
-tokio = { version = "1.1.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.8.4", features = ["rt-multi-thread", "macros"] }
+tokio-test = "0.4"
 
 [badges]
 circle-ci = { repository = "halcyonnouveau/roux.rs" }
 
 [features]
-default = ["tokio_new"]
-tokio_new = ["reqwest/default-tls"]
-tokio_back_compat = ["reqwest_backcompat"]
+default = ["native-tls"]
 rustls = ["reqwest/rustls"]
+native-tls = ["reqwest/native-tls"]
+blocking = ["maybe-async/is_sync", "reqwest/blocking"]
