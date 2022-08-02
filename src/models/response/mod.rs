@@ -19,7 +19,7 @@ pub struct BasicThing<T> {
 pub struct Listing<T> {
     /// Modhash
     pub modhash: Option<String>,
-    /// I dunno what this is
+    /// The number of children in the listing.
     pub dist: Option<i32>,
     /// The fullname of the listing that follows after this page.
     pub after: Option<String>,
