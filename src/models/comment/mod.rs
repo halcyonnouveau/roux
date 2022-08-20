@@ -1,11 +1,11 @@
 //! # Subreddit Comment Responses
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::models::{response::BasicListing, reply::MaybeReplies};
 
 /// SubredditCommentsData
 /// Everything is an option to deal with both `latest_comments` and `article_comments`
-#[derive(Debug, Deserialize)]
+#[derive(Serialize, Debug, Deserialize)]
 pub struct CommentData {
     /// Total awards
     pub total_awards_received: Option<i32>,

@@ -1,5 +1,5 @@
 //! # Subreddit Comment Responses
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::models::response::BasicListing;
 use crate::models::comment::CommentData;
@@ -8,7 +8,7 @@ use crate::models::comment::CommentData;
 pub type Replies = BasicListing<Box<CommentData>>;
 
 /// Replies can be more comments or an empty string
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum MaybeReplies {
     /// Reply
