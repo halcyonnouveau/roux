@@ -1,11 +1,11 @@
 //! # Responses
 //! Base responses
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Basic structure of a Reddit response.
 /// See: <https://github.com/reddit-archive/reddit/wiki/JSON>
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BasicThing<T> {
     /// An identifier that specifies the type of object that this is.
     pub kind: String,
@@ -15,7 +15,7 @@ pub struct BasicThing<T> {
 }
 
 /// JSON list response.
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Listing<T> {
     /// Modhash
     pub modhash: Option<String>,
