@@ -1,4 +1,4 @@
-//! # Subreddit Moderator Responses 
+//! # Subreddit Moderator Responses
 use serde::Deserialize;
 
 use crate::models::response::BasicListing;

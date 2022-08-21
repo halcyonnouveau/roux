@@ -5,45 +5,29 @@ pub mod response;
 
 extern crate reqwest;
 extern crate serde_json;
-use reqwest::header;
 use serde::Serialize;
 
 use crate::client::{Client, Response};
 use crate::config::Config;
+use crate::models::me::response::MeData;
 use crate::models::{Friend, Inbox, Saved};
-use crate::models::me::response::{MeData};
 use crate::util::{url, FeedOption, RouxError};
 
 /// Me
 #[derive(Debug, Clone)]
 pub struct Me {
-    /// Access token
-    pub access_token: String,
-    client: Client,
-    config: Config,
+    /// Config
+    pub config: Config,
+    /// Client
+    pub client: Client,
 }
 
 impl Me {
     /// Create a new `me`
-    pub fn new(access_token: &str, config: Config) -> Me {
-        let mut headers = header::HeaderMap::new();
-
-        headers.insert(
-            header::AUTHORIZATION,
-            header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap(),
-        );
-
-        headers.insert(
-            header::USER_AGENT,
-            header::HeaderValue::from_str(&config.user_agent[..]).unwrap(),
-        );
-
-        let client = Client::builder().default_headers(headers).build().unwrap();
-
+    pub fn new(config: &Config, client: &Client) -> Me {
         Me {
-            access_token: access_token.to_owned(),
-            config,
-            client,
+            config: config.to_owned(),
+            client: client.to_owned(),
         }
     }
 
@@ -254,7 +238,7 @@ impl Me {
     pub async fn logout(self) -> Result<(), RouxError> {
         let url = "https://www.reddit.com/api/v1/revoke_token";
 
-        let form = [("access_token", self.access_token.to_owned())];
+        let form = [("access_token", self.config.access_token.to_owned())];
 
         let response = self
             .client

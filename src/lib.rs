@@ -73,6 +73,7 @@
 
 use serde::Deserialize;
 
+use reqwest::header;
 use reqwest::header::USER_AGENT;
 
 mod config;
@@ -80,7 +81,6 @@ mod config;
 mod client;
 use client::Client;
 
-/// Subreddit module.
 mod models;
 pub use models::*;
 
@@ -120,9 +120,8 @@ impl Reddit {
         self
     }
 
-    /// Login as a user.
     #[maybe_async::maybe_async]
-    pub async fn login(self) -> Result<me::Me, util::RouxError> {
+    async fn create_client(mut self) -> Result<Reddit, util::RouxError> {
         let url = &url::build_url("api/v1/access_token")[..];
         let form = [
             ("grant_type", "password"),
@@ -141,9 +140,39 @@ impl Reddit {
 
         if response.status() == 200 {
             let auth_data = response.json::<AuthData>().await.unwrap();
-            Ok(me::Me::new(&auth_data.access_token, self.config))
+            let access_token = auth_data.access_token;
+            let mut headers = header::HeaderMap::new();
+
+            headers.insert(
+                header::AUTHORIZATION,
+                header::HeaderValue::from_str(&format!("Bearer {}", access_token)).unwrap(),
+            );
+
+            headers.insert(
+                header::USER_AGENT,
+                header::HeaderValue::from_str(&self.config.user_agent[..]).unwrap(),
+            );
+
+            self.config.access_token = Some(access_token);
+            self.client = Client::builder().default_headers(headers).build().unwrap();
+
+            Ok(self)
         } else {
             Err(util::RouxError::Status(response))
         }
+    }
+
+    /// Login as a user.
+    #[maybe_async::maybe_async]
+    pub async fn login(self) -> Result<me::Me, util::RouxError> {
+        let reddit = self.create_client().await?;
+        Ok(me::Me::new(&reddit.config, &reddit.client))
+    }
+
+    /// Create a new authenticated `Subreddit` instance.
+    #[maybe_async::maybe_async]
+    pub async fn subreddit(self, name: &str) -> Result<models::Subreddit, util::RouxError> {
+        let reddit = self.create_client().await?;
+        Ok(models::Subreddit::new_oauth(name, &reddit.client))
     }
 }

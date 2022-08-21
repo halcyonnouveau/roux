@@ -1,4 +1,4 @@
-//! # User Overview Responses 
+//! # User Overview Responses
 use serde::Deserialize;
 
 use crate::models::response::BasicThing;

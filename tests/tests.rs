@@ -58,6 +58,16 @@ mod tests {
 
         assert_ne!(last_child_id1, last_child_id2);
         assert_eq!(saved2.data.children.len(), 5);
+
+        let new_client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .username(&username)
+            .password(&password)
+            .subreddit("astolfo")
+            .await;
+
+        let top = new_client.unwrap().top(10, None).await;
+
+        assert!(top.is_ok());
     }
 
     #[maybe_async::sync_impl]
@@ -99,5 +109,14 @@ mod tests {
 
         assert_ne!(last_child_id1, last_child_id2);
         assert_eq!(saved2.data.children.len(), 5);
+
+        let new_client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .username(&username)
+            .password(&password)
+            .subreddit("astolfo");
+
+        let top = new_client.unwrap().top(10, None);
+
+        assert!(top.is_ok());
     }
 }

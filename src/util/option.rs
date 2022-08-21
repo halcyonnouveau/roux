@@ -93,7 +93,7 @@ impl FeedOption {
             url.push_str(&format!("&t={}", period.get_string_for_period()));
         }
 
-        // BUG: the previous option won't work if this isn't added for some reason
+        // HACK : the previous option won't work if a '&' isn't appended for some reason
         // Eg. &after={} won't return correct page
         // Eg. &after={}&limit={} returns correct page but won't return correct limit
         // I have no idea why.

@@ -66,15 +66,12 @@
 pub mod response;
 extern crate serde_json;
 
-use crate::models::subreddit::response::{
-    SubredditData, SubredditResponse, SubredditsData,
-};
+use crate::models::subreddit::response::{SubredditData, SubredditResponse, SubredditsData};
 
 use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
-
-use crate::models::{Moderators, Submissions, Comments};
+use crate::models::{Comments, Moderators, Submissions};
 
 /// Access subreddits API
 pub struct Subreddits;
@@ -128,10 +125,21 @@ impl Subreddit {
         }
     }
 
-    /// Get moderators.
+    /// Create a new authenticated `Subreddit` instance using an oauth client
+    /// from the `Reddit` module.
+    pub fn new_oauth(name: &str, client: &Client) -> Subreddit {
+        let subreddit_url = format!("https://oauth.reddit.com/r/{}", name);
+
+        Subreddit {
+            name: name.to_owned(),
+            url: subreddit_url,
+            client: client.to_owned(),
+        }
+    }
+
+    /// Get moderators (requires authentication)
     #[maybe_async::maybe_async]
     pub async fn moderators(&self) -> Result<Moderators, RouxError> {
-        // TODO: getting moderators require you to be logged in now
         Ok(self
             .client
             .get(&format!("{}/about/moderators/.json", self.url))

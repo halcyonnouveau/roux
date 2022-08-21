@@ -19,7 +19,7 @@ pub use inbox::Inbox;
 pub use me::Me;
 pub use moderator::Moderators;
 pub use overview::Overview;
-pub use reply::{Replies, MaybeReplies};
+pub use reply::{MaybeReplies, Replies};
 pub use saved::Saved;
 pub use submission::Submissions;
 pub use subreddit::{Subreddit, Subreddits};

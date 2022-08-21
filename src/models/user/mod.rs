@@ -30,7 +30,7 @@ extern crate serde_json;
 use crate::client::Client;
 use crate::util::{FeedOption, RouxError};
 
-use crate::models::{Submissions, Comments, About, Overview};
+use crate::models::{About, Comments, Overview, Submissions};
 
 /// User.
 pub struct User {
@@ -86,10 +86,7 @@ impl User {
 
     /// Get user's submitted comments.
     #[maybe_async::maybe_async]
-    pub async fn comments(
-        &self,
-        options: Option<FeedOption>,
-    ) -> Result<Comments, RouxError> {
+    pub async fn comments(&self, options: Option<FeedOption>) -> Result<Comments, RouxError> {
         let url = &mut format!("https://www.reddit.com/user/{}/comments/.json", self.user);
 
         if let Some(options) = options {
