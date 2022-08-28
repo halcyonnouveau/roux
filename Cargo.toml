@@ -25,6 +25,6 @@ tokio-test = "0.4"
 
 [features]
 default = ["native-tls"]
-rustls = ["reqwest/rustls"]
+rustls = ["reqwest/rustls-tls"]
 native-tls = ["reqwest/native-tls"]
 blocking = ["maybe-async/is_sync", "reqwest/blocking"]
