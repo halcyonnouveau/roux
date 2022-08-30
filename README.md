@@ -40,7 +40,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .await;
 
 let me = client.unwrap();
-me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
+me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT").await?;
 ```
 
 #### Submit A Link Post
@@ -54,7 +54,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .await;
 
 let me = client.unwrap();
-me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT").await?;
 ```
 
 ### Read-Only Modules
