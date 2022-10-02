@@ -95,8 +95,10 @@ pub struct Reddit {
 }
 
 #[derive(Deserialize, Debug)]
-struct AuthData {
-    pub access_token: String,
+#[serde(untagged)]
+enum AuthResponse {
+    AuthData { access_token: String },
+    ErrorData { error: String },
 }
 
 impl Reddit {
@@ -139,8 +141,12 @@ impl Reddit {
         let response = request.send().await?;
 
         if response.status() == 200 {
-            let auth_data = response.json::<AuthData>().await.unwrap();
-            let access_token = auth_data.access_token;
+            let auth_data = response.json::<AuthResponse>().await?;
+
+            let access_token = match auth_data {
+                AuthResponse::AuthData { access_token } => access_token,
+                AuthResponse::ErrorData { error } => return Err(util::RouxError::Auth(error)),
+            };
             let mut headers = header::HeaderMap::new();
 
             headers.insert(
