@@ -15,6 +15,8 @@ pub enum RouxError {
     Network(client::Error),
     /// Occurs if serde could not Deserialize the response.
     Parse(serde_json::Error),
+    /// Occurs if there is a grant error.
+    Auth(String),
 }
 
 impl From<client::Error> for RouxError {
@@ -35,6 +37,7 @@ impl fmt::Display for RouxError {
             RouxError::Status(ref err) => write!(f, "Status error: {}", err.status()),
             RouxError::Network(ref err) => err.fmt(f),
             RouxError::Parse(ref err) => err.fmt(f),
+            RouxError::Auth(ref err) => write!(f, "Auth error: {}", err),
         }
     }
 }
@@ -43,6 +46,7 @@ impl error::Error for RouxError {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match *self {
             RouxError::Status(_) => None,
+            RouxError::Auth(_) => None,
             RouxError::Network(ref err) => Some(err),
             RouxError::Parse(ref err) => Some(err),
         }
