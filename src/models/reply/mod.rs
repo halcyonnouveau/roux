@@ -5,7 +5,7 @@ use crate::models::comment::CommentData;
 use crate::models::response::BasicListing;
 
 /// Doc
-pub type Replies = BasicListing<Box<CommentData>>;
+pub type Replies = BasicListing<CommentData>;
 
 /// Replies can be more comments or an empty string
 #[derive(Debug, Serialize, Deserialize)]
