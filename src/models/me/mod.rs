@@ -96,6 +96,24 @@ impl Me {
         self.post("api/submit", &form).await
     }
 
+    /// Submit richtext
+    #[maybe_async::maybe_async]
+    pub async fn submit_richtext(
+        &self,
+        title: &str,
+        richtext: &str,
+        sr: &str,
+    ) -> Result<Response, RouxError> {
+        let form = [
+            ("kind", "self"),
+            ("title", title),
+            ("richtext_json", richtext),
+            ("sr", sr),
+        ];
+
+        self.post("api/submit", &form).await
+    }
+
     /// Adds a friend to a subreddit with the specified type
     #[maybe_async::maybe_async]
     pub async fn add_subreddit_friend(
