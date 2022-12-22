@@ -9,7 +9,7 @@ use crate::models::response::BasicListing;
 pub struct SubmissionData {
     /// The domain of the link (if link post) or self.subreddit (if self post).
     /// Domains do not include a protocol, e.g. `i.redd.it` or `self.learnprogramming`
-    pub domain: String,
+    pub domain: Option<String>,
     /// Contains the name of the moderator who banned this, if the logged-in user is a moderator
     /// of this subreddit and this is banned.
     pub banned_by: Option<String>,

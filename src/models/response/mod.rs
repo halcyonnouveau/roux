@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BasicThing<T> {
     /// An identifier that specifies the type of object that this is.
-    pub kind: String,
+    pub kind: Option<String>,
     /// The data contained by this struct. This will vary depending on the type parameter
     /// because each endpoint returns different contents.
     pub data: T,
