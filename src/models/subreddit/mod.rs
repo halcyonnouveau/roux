@@ -69,6 +69,7 @@ extern crate serde_json;
 use crate::models::subreddit::response::{SubredditData, SubredditResponse, SubredditsData};
 
 use crate::client::Client;
+use crate::util::defaults::default_client;
 use crate::util::{FeedOption, RouxError};
 
 use crate::models::{Comments, Moderators, Submissions};
@@ -94,7 +95,7 @@ impl Subreddits {
             options.build_url(url);
         }
 
-        let client = Client::new();
+        let client = default_client();
 
         Ok(client
             .get(&url.to_owned())
@@ -121,7 +122,7 @@ impl Subreddit {
         Subreddit {
             name: name.to_owned(),
             url: subreddit_url,
-            client: Client::new(),
+            client: default_client(),
         }
     }
 

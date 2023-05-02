@@ -28,6 +28,7 @@
 extern crate serde_json;
 
 use crate::client::Client;
+use crate::util::defaults::default_client;
 use crate::util::{FeedOption, RouxError};
 
 use crate::models::{About, Comments, Overview, Submissions};
@@ -44,7 +45,7 @@ impl User {
     pub fn new(user: &str) -> User {
         User {
             user: user.to_owned(),
-            client: Client::new(),
+            client: default_client(),
         }
     }
 
