@@ -61,6 +61,8 @@ pub struct SubmissionData {
     pub approved_by: Option<String>,
     /// This is `true` if the 'nsfw' option has been selected for this submission.
     pub over_18: bool,
+    /// This is `true` if the 'spoiler' option has been selected for this submission.
+    pub spoiler: bool,
     /// This is `true` if the logged-in user has clicked 'hide' on this post.
     pub hidden: bool,
     // TODO: skipped preview
