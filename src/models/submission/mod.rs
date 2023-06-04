@@ -65,7 +65,8 @@ pub struct SubmissionData {
     pub spoiler: bool,
     /// This is `true` if the logged-in user has clicked 'hide' on this post.
     pub hidden: bool,
-    // TODO: skipped preview
+    /// Object with different sizes of the preview image.
+    pub preview: Option<SubmissionDataPreview>,
     /// The number of comment replies to this submission.
     pub num_comments: u64,
     /// The URL to the link thumbnail. This is "self" if this is a self post, or "default" if
@@ -136,6 +137,38 @@ pub struct SubmissionData {
     pub visited: bool,
     /// The number of reports, if the user is a moderator of this subreddit.
     pub num_reports: Option<u64>,
+}
+
+/// SubmissionDataPreview
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SubmissionDataPreview {
+    /// List of preview images.
+    pub images: Vec<SubmissionDataPreviewImage>,
+    /// This is `true` if the preview is enabled.
+    pub enabled: bool,
+}
+
+/// SubmissionDataPreviewImage
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SubmissionDataPreviewImage {
+    /// Object for the main preview image containing URL, width and height.
+    pub source: SubmissionDataPreviewImageSource,
+    /// List of objects describing all available resolutions of the preview image.
+    pub resolutions: Vec<SubmissionDataPreviewImageSource>,
+    // TODO: skipped variants
+    /// Preview Image ID
+    pub id: String,
+}
+
+/// SubmissionDataPreviewImageSource
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SubmissionDataPreviewImageSource {
+    /// URL
+    pub url: String,
+    /// Width
+    pub width: u64,
+    /// Height
+    pub height: u64,
 }
 
 /// Submissions
