@@ -641,7 +641,7 @@ dependencies = [
 
 [[package]]
 name = "roux"
-version = "2.2.8"
+version = "2.2.9"
 dependencies = [
  "dotenv",
  "maybe-async",
