@@ -12,6 +12,7 @@ use crate::config::Config;
 use crate::models::me::response::MeData;
 use crate::models::{Friend, Inbox, Saved};
 use crate::util::{url, FeedOption, RouxError};
+use crate::Submissions;
 
 /// Me
 #[derive(Debug, Clone)]
@@ -249,6 +250,17 @@ impl Me {
     pub async fn edit(&self, text: &str, parent: &str) -> Result<Response, RouxError> {
         let form = [("text", text), ("thing_id", parent)];
         self.post("api/editusertext", &form).await
+    }
+
+    /// Get submissions by id
+    ///
+    /// # Arguments
+    ///
+    /// * `ids` - the fullnames of submisions to get, comma seperated
+    pub async fn get_submissions(&self, ids: &str) -> Result<Submissions, RouxError> {
+        let url = format!("/by_id/{ids}");
+
+        Ok(self.get(&url).await?.json::<Submissions>().await?)
     }
 
     /// Logout
