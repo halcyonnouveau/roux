@@ -1,4 +1,4 @@
-//! # Inbox Reponses
+//! # Inbox Responses
 use serde::Deserialize;
 /// The response from an add friend request
 #[derive(Debug, Deserialize)]

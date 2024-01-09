@@ -24,7 +24,7 @@ pub struct SubmissionData {
     /// This is `Some(true)` if the logged-in user has upvoted this submission, `Some(false)` if
     /// the user has downvoted this submission or `None` if the user has not voted.
     pub likes: Option<bool>,
-    /// If a specifc sort method is suggested, this is set to the string name of it, otherwise
+    /// If a specific sort method is suggested, this is set to the string name of it, otherwise
     /// it is `None`.
     /// # Possible values
     /// - top

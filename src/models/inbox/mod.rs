@@ -1,4 +1,4 @@
-//! # Inbox Reponses
+//! # Inbox Responses
 use serde::Deserialize;
 
 use crate::models::response::BasicListing;
