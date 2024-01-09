@@ -5,24 +5,24 @@
 //! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
-//!     let user = User::new("kasuporo");
-//!     // Now you are able to:
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
+//! let user = User::new("kasuporo");
+//! // Now you are able to:
 //!
-//!     // Get overview
-//!     let overview = user.overview(None).await;
+//! // Get overview
+//! let overview = user.overview(None).await;
 //!
-//!     // Get submitted posts.
-//!     let submitted = user.submitted(None).await;
+//! // Get submitted posts.
+//! let submitted = user.submitted(None).await;
 //!
-//!     // Get comments.
-//!     let comments = user.comments(None).await;
-//! }
+//! // Get comments.
+//! let comments = user.comments(None).await;
+//! # }
 //! ```
 
 extern crate serde_json;

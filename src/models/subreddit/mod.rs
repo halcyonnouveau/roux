@@ -4,35 +4,35 @@
 //! # Basic Usage
 //! ```no_run
 //! use roux::Subreddit;
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
-//!     let subreddit = Subreddit::new("rust");
-//!     // Now you are able to:
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
+//! let subreddit = Subreddit::new("rust");
+//! // Now you are able to:
 //!
-//!     // Get moderators.
-//!     let moderators = subreddit.moderators().await;
+//! // Get moderators.
+//! let moderators = subreddit.moderators().await;
 //!
-//!     // Get hot posts with limit = 25.
-//!     let hot = subreddit.hot(25, None).await;
+//! // Get hot posts with limit = 25.
+//! let hot = subreddit.hot(25, None).await;
 //!
-//!     // Get rising posts with limit = 30.
-//!     let rising = subreddit.rising(30, None).await;
+//! // Get rising posts with limit = 30.
+//! let rising = subreddit.rising(30, None).await;
 //!
-//!     // Get top posts with limit = 10.
-//!     let top = subreddit.top(10, None).await;
+//! // Get top posts with limit = 10.
+//! let top = subreddit.top(10, None).await;
 //!
-//!     // Get latest comments.
-//!     // `depth` and `limit` are optional.
-//!     let latest_comments = subreddit.latest_comments(None, Some(25)).await;
+//! // Get latest comments.
+//! // `depth` and `limit` are optional.
+//! let latest_comments = subreddit.latest_comments(None, Some(25)).await;
 //!
-//!     // Get comments from a submission.
-//!     let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
-//!     let article_comments = subreddit.article_comments(article_id, None, Some(25));
-//! }
+//! // Get comments from a submission.
+//! let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
+//! let article_comments = subreddit.article_comments(article_id, None, Some(25));
+//! # }
 //! ```
 //!
 //! # Usage with feed options
@@ -40,28 +40,28 @@
 //! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
-//!     let subreddit = Subreddit::new("astolfo");
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
+//! let subreddit = Subreddit::new("astolfo");
 //!
-//!     // Gets top 10 posts from this month
-//!     let options = FeedOption::new().period(TimePeriod::ThisMonth);
-//!     let top = subreddit.top(25, Some(options)).await;
+//! // Gets top 10 posts from this month
+//! let options = FeedOption::new().period(TimePeriod::ThisMonth);
+//! let top = subreddit.top(25, Some(options)).await;
 //!
-//!     // Gets hot 10
-//!     let hot = subreddit.hot(25, None).await;
+//! // Gets hot 10
+//! let hot = subreddit.hot(25, None).await;
 //!
-//!     // Get after param from `hot`
-//!     let after = hot.unwrap().data.after.unwrap();
-//!     let after_options = FeedOption::new().after(&after);
+//! // Get after param from `hot`
+//! let after = hot.unwrap().data.after.unwrap();
+//! let after_options = FeedOption::new().after(&after);
 //!
-//!     // Gets next 25
-//!     let next_hot = subreddit.hot(25, Some(after_options)).await;
-//! }
+//! // Gets next 25
+//! let next_hot = subreddit.hot(25, Some(after_options)).await;
+//! # }
 //! ```
 pub mod response;
 extern crate serde_json;

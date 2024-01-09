@@ -7,19 +7,19 @@
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
 //!     .login()
 //!     .await;
 //! let me = client.unwrap();
-//! }
+//! # }
 //! ```
 //!
 //! It is important that you pick a good user agent. The ideal format is
@@ -34,12 +34,12 @@
 //! ### Submit A Text Post
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
@@ -48,18 +48,18 @@
 //! let me = client.unwrap();
 //!
 //! me.submit_text("TEXT_TITLE", "TEXT_BODY", "SUBREDDIT");
-//! }
+//! # }
 //! ```
 //!
 //! ### Submit A Link Post
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(not(feature = "blocking"))]
-//! use tokio;
+//! # #[cfg(not(feature = "blocking"))]
+//! # use tokio;
 //!
-//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
-//! #[maybe_async::maybe_async]
-//! async fn main() {
+//! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
+//! # #[maybe_async::maybe_async]
+//! # async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 //!     .username("USERNAME")
 //!     .password("PASSWORD")
@@ -67,8 +67,8 @@
 //!     .await;
 //! let me = client.unwrap();
 //!
-//! me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
-//! }
+//! # me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT");
+//! # }
 //! ```
 
 use serde::Deserialize;
