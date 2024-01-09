@@ -184,7 +184,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get upvoted
@@ -199,7 +199,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get downvoted
@@ -214,7 +214,7 @@ impl Me {
             options.build_url(url);
         }
 
-        Ok(self.get(&url).await?.json::<Saved>().await?)
+        Ok(self.get(url).await?.json::<Saved>().await?)
     }
 
     /// Get users unread messages
