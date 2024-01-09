@@ -19,7 +19,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install latest nightly
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: nightly
+        override: true
+        default: true
+
     - name: Build
       run: cargo build --verbose
+
     - name: Run tests
-      run: RUST_BACKTRACE=1 cargo test --all-features --verbose
+      run: cargo test --all-features --verbose

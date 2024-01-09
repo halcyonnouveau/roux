@@ -295,7 +295,8 @@ mod tests {
     use super::Subreddit;
     use super::Subreddits;
 
-    #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
+    // #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
+    #[maybe_async::async_impl]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
 

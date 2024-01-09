@@ -127,7 +127,8 @@ mod tests {
     use super::User;
     use crate::util::FeedOption;
 
-    #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
+    // #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
+    #[maybe_async::async_impl]
     async fn test_no_auth() {
         let user = User::new("beneater");
 

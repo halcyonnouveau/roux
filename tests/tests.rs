@@ -14,6 +14,7 @@ mod tests {
     #[cfg(not(feature = "blocking"))]
     use tokio;
 
+    #[allow(dead_code)]
     static USER_AGENT: &str = "macos:roux:v1.4.0 (by /u/beanpup_py)";
 
     #[maybe_async::async_impl]
@@ -70,6 +71,7 @@ mod tests {
         assert!(top.is_ok());
     }
 
+    #[allow(dead_code)]
     #[maybe_async::sync_impl]
     fn test_oauth() {
         dotenv::dotenv().ok();
