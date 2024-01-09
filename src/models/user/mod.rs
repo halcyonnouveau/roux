@@ -5,10 +5,10 @@
 //! ```no_run
 //! use roux::User;
 //! use roux::util::FeedOption;
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let user = User::new("kasuporo");
@@ -127,8 +127,6 @@ mod tests {
     use super::User;
     use crate::util::FeedOption;
 
-    // TODO: fix this in gha
-    // #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
     #[maybe_async::async_impl]
     #[tokio::test]
     async fn test_no_auth() {

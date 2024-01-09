@@ -4,10 +4,10 @@
 //! # Basic Usage
 //! ```no_run
 //! use roux::Subreddit;
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("rust");
@@ -40,10 +40,10 @@
 //! ```no_run
 //! use roux::Subreddit;
 //! use roux::util::{FeedOption, TimePeriod};
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //!     let subreddit = Subreddit::new("astolfo");
@@ -295,8 +295,6 @@ mod tests {
     use super::Subreddit;
     use super::Subreddits;
 
-    // TODO: fix this in gha
-    // #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
     #[maybe_async::async_impl]
     #[tokio::test]
     async fn test_no_auth() {

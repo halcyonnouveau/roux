@@ -7,10 +7,10 @@
 //! To create an OAuth client with the reddit API, use the `Reddit` class.
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -34,10 +34,10 @@
 //! ### Submit A Text Post
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
@@ -54,10 +54,10 @@
 //! ### Submit A Link Post
 //! ```no_run
 //! use roux::Reddit;
-//! #[cfg(feature = "async")]
+//! #[cfg(not(feature = "blocking"))]
 //! use tokio;
 //!
-//! #[cfg_attr(feature = "async", tokio::main)]
+//! #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! #[maybe_async::maybe_async]
 //! async fn main() {
 //! let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
