@@ -257,6 +257,7 @@ impl Me {
     /// # Arguments
     ///
     /// * `ids` - the fullnames of submisions to get, comma seperated
+    #[maybe_async::maybe_async]
     pub async fn get_submissions(&self, ids: &str) -> Result<Submissions, RouxError> {
         let url = format!("/by_id/{ids}");
 
