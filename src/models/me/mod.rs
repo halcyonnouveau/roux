@@ -253,14 +253,10 @@ impl Me {
     }
 
     /// Get submissions by id
-    ///
-    /// # Arguments
-    ///
-    /// * `ids` - the fullnames of submisions to get, comma seperated
+    /// `ids`: the fullnames of submisions to get, comma seperated
     #[maybe_async::maybe_async]
     pub async fn get_submissions(&self, ids: &str) -> Result<Submissions, RouxError> {
         let url = format!("/by_id/{ids}");
-
         Ok(self.get(&url).await?.json::<Submissions>().await?)
     }
 

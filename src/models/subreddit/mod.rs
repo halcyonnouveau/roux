@@ -295,8 +295,10 @@ mod tests {
     use super::Subreddit;
     use super::Subreddits;
 
+    // TODO: fix this in gha
     // #[maybe_async::test(feature = "blocking", async(not(feature = "blocking"), tokio::test))]
     #[maybe_async::async_impl]
+    #[tokio::test]
     async fn test_no_auth() {
         let subreddit = Subreddit::new("astolfo");
 
