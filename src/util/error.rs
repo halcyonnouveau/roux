@@ -17,6 +17,8 @@ pub enum RouxError {
     Parse(serde_json::Error),
     /// Occurs if there is a grant error.
     Auth(String),
+    /// Occurs if [`Reddit::create_client`] is called before [`Reddit::username`] and [`Reddit::password`].
+    CredentialsNotSet,
 }
 
 impl From<client::Error> for RouxError {
@@ -38,6 +40,7 @@ impl fmt::Display for RouxError {
             RouxError::Network(ref err) => err.fmt(f),
             RouxError::Parse(ref err) => err.fmt(f),
             RouxError::Auth(ref err) => write!(f, "Auth error: {}", err),
+            RouxError::CredentialsNotSet => write!(f, "Must set username and password before calling create_client"),
         }
     }
 }
@@ -47,6 +50,7 @@ impl error::Error for RouxError {
         match *self {
             RouxError::Status(_) => None,
             RouxError::Auth(_) => None,
+            RouxError::CredentialsNotSet => None,
             RouxError::Network(ref err) => Some(err),
             RouxError::Parse(ref err) => Some(err),
         }

@@ -127,8 +127,8 @@ impl Reddit {
         let url = &url::build_url("api/v1/access_token")[..];
         let form = [
             ("grant_type", "password"),
-            ("username", &self.config.username.to_owned().unwrap()),
-            ("password", &self.config.password.to_owned().unwrap()),
+            ("username", &self.config.username.to_owned().ok_or(util::RouxError::CredentialsNotSet)?),
+            ("password", &self.config.password.to_owned().ok_or(util::RouxError::CredentialsNotSet)?),
         ];
 
         let request = self
