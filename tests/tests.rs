@@ -118,7 +118,7 @@ mod tests {
             .subreddit("astolfo")
             .unwrap();
 
-        assert!(new_client.top(10, None).await.is_ok());
-        assert!(new_client.moderators().await.is_ok());
+        assert!(new_client.top(10, None).is_ok());
+        assert!(new_client.moderators().is_ok());
     }
 }
