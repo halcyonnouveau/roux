@@ -19,6 +19,8 @@ pub enum RouxError {
     Auth(String),
     /// Occurs if [`Reddit::create_client`] is called before [`Reddit::username`] and [`Reddit::password`].
     CredentialsNotSet,
+    /// Occurs if endpoint requires OAuth
+    OAuthClientRequired,
 }
 
 impl From<client::Error> for RouxError {
@@ -40,7 +42,13 @@ impl fmt::Display for RouxError {
             RouxError::Network(ref err) => err.fmt(f),
             RouxError::Parse(ref err) => err.fmt(f),
             RouxError::Auth(ref err) => write!(f, "Auth error: {}", err),
-            RouxError::CredentialsNotSet => write!(f, "Must set username and password before calling create_client"),
+            RouxError::CredentialsNotSet => write!(
+                f,
+                "Must set username and password before calling create_client"
+            ),
+            RouxError::OAuthClientRequired => {
+                write!(f, "Endpoint requires authentication with OAuth")
+            }
         }
     }
 }
@@ -50,9 +58,10 @@ impl error::Error for RouxError {
         match *self {
             RouxError::Status(_) => None,
             RouxError::Auth(_) => None,
-            RouxError::CredentialsNotSet => None,
             RouxError::Network(ref err) => Some(err),
             RouxError::Parse(ref err) => Some(err),
+            RouxError::CredentialsNotSet => None,
+            RouxError::OAuthClientRequired => None,
         }
     }
 }

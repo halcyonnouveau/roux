@@ -112,6 +112,7 @@ pub struct Subreddit {
     pub name: String,
     url: String,
     client: Client,
+    is_oauth: bool,
 }
 
 impl Subreddit {
@@ -123,6 +124,7 @@ impl Subreddit {
             name: name.to_owned(),
             url: subreddit_url,
             client: default_client(),
+            is_oauth: false,
         }
     }
 
@@ -135,19 +137,24 @@ impl Subreddit {
             name: name.to_owned(),
             url: subreddit_url,
             client: client.to_owned(),
+            is_oauth: true,
         }
     }
 
     /// Get moderators (requires authentication)
     #[maybe_async::maybe_async]
     pub async fn moderators(&self) -> Result<Moderators, RouxError> {
-        Ok(self
-            .client
-            .get(&format!("{}/about/moderators/.json", self.url))
-            .send()
-            .await?
-            .json::<Moderators>()
-            .await?)
+        if self.is_oauth {
+            Ok(self
+                .client
+                .get(&format!("{}/about/moderators/.json", self.url))
+                .send()
+                .await?
+                .json::<Moderators>()
+                .await?)
+        } else {
+            Err(RouxError::OAuthClientRequired)
+        }
     }
 
     /// Get subreddit data.
@@ -325,6 +332,8 @@ mod tests {
         assert!(data.title == Some(String::from("Rider of Black, Astolfo")));
         assert!(data.subscribers.is_some());
         assert!(data.subscribers.unwrap() > 1000);
+
+        assert!(subreddit.moderators().await.is_err());
 
         // Test subreddit search
         let subreddits_limit = 3u32;

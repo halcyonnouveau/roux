@@ -41,7 +41,6 @@ mod tests {
 
         let options = FeedOption::new().limit(5);
 
-        // Assert FeedOption works
         let saved1 = me.saved(None).await.unwrap();
         let last_child_id1 = match &saved1.data.children.last().unwrap().data {
             SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
@@ -52,6 +51,7 @@ mod tests {
             .saved(Some(options.after(&saved1.data.after.unwrap())))
             .await
             .unwrap();
+
         let last_child_id2 = match &saved2.data.children.last().unwrap().data {
             SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
             SavedData::Submission(submissions_data) => &submissions_data.id,
@@ -64,11 +64,11 @@ mod tests {
             .username(&username)
             .password(&password)
             .subreddit("astolfo")
-            .await;
+            .await
+            .unwrap();
 
-        let top = new_client.unwrap().top(10, None).await;
-
-        assert!(top.is_ok());
+        assert!(new_client.top(10, None).await.is_ok());
+        assert!(new_client.moderators().await.is_ok());
     }
 
     #[allow(dead_code)]
@@ -94,7 +94,6 @@ mod tests {
 
         let options = FeedOption::new().limit(5);
 
-        // Assert FeedOption works
         let saved1 = me.saved(None).unwrap();
         let last_child_id1 = match &saved1.data.children.last().unwrap().data {
             SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
@@ -104,6 +103,7 @@ mod tests {
         let saved2 = me
             .saved(Some(options.after(&saved1.data.after.unwrap())))
             .unwrap();
+
         let last_child_id2 = match &saved2.data.children.last().unwrap().data {
             SavedData::Comment(comments_data) => comments_data.id.as_ref().unwrap(),
             SavedData::Submission(submissions_data) => &submissions_data.id,
@@ -115,10 +115,10 @@ mod tests {
         let new_client = Reddit::new(&USER_AGENT, &client_id, &client_secret)
             .username(&username)
             .password(&password)
-            .subreddit("astolfo");
+            .subreddit("astolfo")
+            .unwrap();
 
-        let top = new_client.unwrap().top(10, None);
-
-        assert!(top.is_ok());
+        assert!(new_client.top(10, None).await.is_ok());
+        assert!(new_client.moderators().await.is_ok());
     }
 }
