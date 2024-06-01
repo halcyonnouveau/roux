@@ -177,7 +177,7 @@ impl Me {
     #[maybe_async::maybe_async]
     pub async fn saved(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
         let url = &mut format!(
-            "user/{}/saved/.json",
+            "user/{}/saved/.json?",
             self.config.username.to_owned().unwrap()
         );
 
@@ -192,7 +192,7 @@ impl Me {
     #[maybe_async::maybe_async]
     pub async fn upvoted(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
         let url = &mut format!(
-            "user/{}/upvoted/.json",
+            "user/{}/upvoted/.json?",
             self.config.username.to_owned().unwrap()
         );
 
@@ -207,7 +207,7 @@ impl Me {
     #[maybe_async::maybe_async]
     pub async fn downvoted(&self, options: Option<FeedOption>) -> Result<Saved, RouxError> {
         let url = &mut format!(
-            "user/{}/downvoted/.json",
+            "user/{}/downvoted/.json?",
             self.config.username.to_owned().unwrap()
         );
 
