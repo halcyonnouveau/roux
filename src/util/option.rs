@@ -72,9 +72,6 @@ impl FeedOption {
 
     /// Build a url from `FeedOption`
     pub fn build_url(self, url: &mut String) {
-        // Add a fake url attr so I don't have to parse things
-        url.push_str(&String::from("?"));
-
         if let Some(after) = self.after {
             url.push_str(&format!("&after={}", after));
         } else if let Some(before) = self.before {
@@ -150,7 +147,7 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("?&after={}&", after))
+        assert!(*url == format!("&after={}&", after))
     }
 
     #[test]
@@ -161,7 +158,7 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("?&before={}&", before))
+        assert!(*url == format!("&before={}&", before))
     }
 
     #[test]
@@ -172,6 +169,6 @@ mod tests {
         let url = &mut String::from("");
         options.build_url(url);
 
-        assert!(*url == format!("?&count={}&", count))
+        assert!(*url == format!("&count={}&", count))
     }
 }
