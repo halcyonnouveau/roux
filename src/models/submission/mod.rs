@@ -79,6 +79,8 @@ pub struct SubmissionData {
     /// This is `false` if the submission is not edited and is the edit timestamp if it is edited.
     /// Access through the functions of `Submission` instead.
     pub edited: Value,
+    /// A Vector of FlairRichText objects, which can be either text or emoji.
+    pub link_flair_richtext: Option<Vec<FlairRichText>>,
     /// The CSS class set for the link's flair (if available), otherwise `None`.
     pub link_flair_css_class: Option<String>,
     /// The CSS class set for the author's flair (if available). If there is no flair, this is
@@ -169,6 +171,28 @@ pub struct SubmissionDataPreviewImageSource {
     pub width: u64,
     /// Height
     pub height: u64,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+/// FlairRichText
+pub enum FlairRichText {
+    /// Emoji
+    Emoji {
+        ///The emoji name always starts and ends with :
+        a: String,
+        /// The emoji URL, can be used to request an image of the emoji.
+        u: String,
+        /// The type, in this case always `emoji`.
+        e: String,
+    },
+    /// Text
+    Text {
+        /// The text of the flair.
+        e: String,
+        /// The type, in this case always `text`.
+        t: String,
+    },
 }
 
 /// Submissions
