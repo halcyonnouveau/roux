@@ -66,6 +66,7 @@
 pub mod response;
 extern crate serde_json;
 
+use crate::link_flair::LinkFlairData;
 use crate::models::subreddit::response::{SubredditData, SubredditResponse, SubredditsData};
 
 use crate::client::Client;
@@ -294,6 +295,20 @@ impl Subreddit {
     ) -> Result<Comments, RouxError> {
         self.get_comment_feed(&format!("comments/{}", article), depth, limit)
             .await
+    }
+
+    /// Return list of available link flair for the current subreddit.
+    //Will not return flair if the user cannot set their own link flair and they are not a moderator that can set flair.
+    pub async fn link_flairs(&self) -> Result<Vec<LinkFlairData>, RouxError> {
+        let url = format!("{}/api/link_flair_v2.json", self.url);
+
+        Ok(self
+            .client
+            .get(&url)
+            .send()
+            .await?
+            .json::<Vec<LinkFlairData>>()
+            .await?)
     }
 }
 
