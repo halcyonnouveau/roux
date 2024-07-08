@@ -222,7 +222,7 @@ impl Subreddit {
                 .await?
                 .json::<Vec<Comments>>()
                 .await?;
-
+            //first item in vec is just the link/ comment itself (from which the articles where requested)
             Ok(comments.pop().unwrap())
         } else {
             Ok(self

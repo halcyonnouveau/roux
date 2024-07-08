@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use crate::models::response::BasicListing;
 
-/// SubmissionsData
+/// SubmissionsData, kind: t3
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SubmissionData {
     /// The domain of the link (if link post) or self.subreddit (if self post).
