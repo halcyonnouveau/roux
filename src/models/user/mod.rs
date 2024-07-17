@@ -52,7 +52,7 @@ impl User {
     /// Get user's overview.
     #[maybe_async::maybe_async]
     pub async fn overview(&self, options: Option<FeedOption>) -> Result<Overview, RouxError> {
-        let url = &mut format!("https://www.reddit.com/user/{}/overview/.json", self.user);
+        let url = &mut format!("https://www.reddit.com/user/{}/overview/.json?", self.user);
 
         if let Some(options) = options {
             options.build_url(url);
@@ -70,7 +70,7 @@ impl User {
     /// Get user's submitted posts.
     #[maybe_async::maybe_async]
     pub async fn submitted(&self, options: Option<FeedOption>) -> Result<Submissions, RouxError> {
-        let url = &mut format!("https://www.reddit.com/user/{}/submitted/.json", self.user);
+        let url = &mut format!("https://www.reddit.com/user/{}/submitted/.json?", self.user);
 
         if let Some(options) = options {
             options.build_url(url);
@@ -88,7 +88,7 @@ impl User {
     /// Get user's submitted comments.
     #[maybe_async::maybe_async]
     pub async fn comments(&self, options: Option<FeedOption>) -> Result<Comments, RouxError> {
-        let url = &mut format!("https://www.reddit.com/user/{}/comments/.json", self.user);
+        let url = &mut format!("https://www.reddit.com/user/{}/comments/.json?", self.user);
 
         if let Some(options) = options {
             options.build_url(url);
@@ -106,7 +106,7 @@ impl User {
     /// Get user's about page
     #[maybe_async::maybe_async]
     pub async fn about(&self, options: Option<FeedOption>) -> Result<About, RouxError> {
-        let url = &mut format!("https://www.reddit.com/user/{}/about/.json", self.user);
+        let url = &mut format!("https://www.reddit.com/user/{}/about/.json?", self.user);
 
         if let Some(options) = options {
             options.build_url(url);
