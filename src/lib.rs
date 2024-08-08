@@ -89,6 +89,7 @@ pub mod util;
 use util::url;
 
 /// Client to use OAuth with Reddit.
+#[derive(Clone)]
 pub struct Reddit {
     config: config::Config,
     client: Client,
