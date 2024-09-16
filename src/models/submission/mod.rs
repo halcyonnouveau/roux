@@ -96,7 +96,14 @@ pub struct SubmissionData {
     /// The reason for the post removal, if you are a moderator **and** this post has been
     /// removed.
     pub removal_reason: Option<String>,
-    // TODO: skipped post_hint
+    /// The hint for the type of content in the post.
+    /// This field is not present for all submissions, and could be disabled for some subreddits.
+    /// Text posts do not provide a `post_hint`, check `is_self` instead.
+    /// Common values include:
+    /// - "link": external link post
+    /// - "image": image post
+    /// - "hosted:video": video post
+    pub post_hint: Option<String>,
     /// This is `true` if this submission is stickied (an 'annoucement' thread)
     pub stickied: bool,
     // TODO: skipped from
