@@ -1,6 +1,6 @@
 [package]
 name = "roux"
-version = "2.2.12"
+version = "2.2.13"
 authors = ["Justin Duch <justin@duch.me>"]
 edition = "2021"
 license = "MIT"
