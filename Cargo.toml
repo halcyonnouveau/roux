@@ -1,6 +1,6 @@
 [package]
 name = "roux"
-version = "2.2.13"
+version = "2.2.14"
 authors = ["Justin Duch <justin@duch.me>"]
 edition = "2021"
 license = "MIT"
@@ -20,7 +20,7 @@ reqwest = { version = "0.11", default-features = false, features = ["json"] }
 
 [dev-dependencies]
 dotenv = "0.15"
-tokio = { version = "1.8.4", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.8", features = ["rt-multi-thread", "macros"] }
 tokio-test = "0.4"
 
 [features]
