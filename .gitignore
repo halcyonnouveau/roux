@@ -1,6 +1,7 @@
 .env
 tags
 
+Cargo.lock
 /target
 **/*.rs.bk
 .vscode
