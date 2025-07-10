@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/halcyonnouveau/roux/refs/heads/main/assets/roux.png" alt="dutch oven" style="max-width: 100%;">
+
 # Roux
 
 [![Build](https://github.com/halcyonnouveau/roux/actions/workflows/main.yml/badge.svg)](https://github.com/halcyonnouveau/roux/actions/workflows/main.yml)
