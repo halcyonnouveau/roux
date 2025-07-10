@@ -11,6 +11,7 @@ pub mod saved;
 pub mod submission;
 pub mod subreddit;
 pub mod user;
+pub mod link_flair;
 
 pub use about::About;
 pub use comment::Comments;

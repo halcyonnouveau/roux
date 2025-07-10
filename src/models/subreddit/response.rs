@@ -1,7 +1,7 @@
 //! # Subreddit Responses
 use serde::Deserialize;
 
-use crate::models::response::BasicListing;
+use crate::{link_flair::LinkFlairData, models::response::BasicListing};
 
 /// SubredditResponse
 #[derive(Debug, Deserialize)]
@@ -115,7 +115,7 @@ pub struct SubredditData {
     /// containing two string elements which define the user's flair. The first element, named e, contains the string text.
     /// The second element, named t, contains the literal string that comprises the user's flair. For example:
     /// [{"e":"text","t":"Proud Shitposter"}]
-    pub user_flair_richtext: Option<Vec<RichtextFlair>>,
+    pub user_flair_richtext: Option<Vec<LinkFlairData>>,
     /// Unknown. If set, the value appears to max out at 100.
     pub videostream_links_count: Option<u8>,
     /// The fullname identifier of this subreddit. This is a combination of the thing kind (t5) and the id,
