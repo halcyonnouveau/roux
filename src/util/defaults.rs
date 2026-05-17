@@ -14,9 +14,17 @@ pub fn default_headers() -> HeaderMap {
 }
 
 /// Default client
+///
+/// Compression is explicitly disabled to avoid Reddit's anti-bot fingerprinting,
+/// which can flag the `Accept-Encoding` header that reqwest auto-adds when a
+/// feature is enabled transitively by another dependency.
 pub fn default_client() -> Client {
     ClientBuilder::new()
         .default_headers(default_headers())
+        .no_gzip()
+        .no_brotli()
+        .no_deflate()
+        .no_zstd()
         .build()
         .expect("Error creating default client ")
 }
