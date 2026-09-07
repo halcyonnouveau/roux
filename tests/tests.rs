@@ -71,6 +71,59 @@ mod tests {
         assert!(new_client.moderators().await.is_ok());
     }
 
+    #[maybe_async::async_impl]
+    #[tokio::test]
+    async fn test_app_only() {
+        dotenv::dotenv().ok();
+
+        let client_id = env::var("CLIENT_ID").unwrap();
+        let client_secret = env::var("CLIENT_SECRET").unwrap();
+
+        // No username or password: the client_credentials grant is used.
+        let subreddit = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .subreddit("rust")
+            .await
+            .unwrap();
+
+        let hot = subreddit.hot(5, None).await.unwrap();
+        assert_eq!(hot.data.children.len(), 5);
+        assert!(subreddit.about().await.is_ok());
+        assert!(subreddit.latest_comments(None, Some(5)).await.is_ok());
+
+        let article_id = hot.data.children.first().unwrap().data.id.clone();
+        assert!(subreddit
+            .article_comments(&article_id, None, Some(5))
+            .await
+            .is_ok());
+
+        let user = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .user("spez")
+            .await
+            .unwrap();
+
+        assert!(user.about(None).await.is_ok());
+        let comments = user
+            .comments(Some(FeedOption::new().limit(5)))
+            .await
+            .unwrap();
+        assert!(!comments.data.children.is_empty());
+
+        let subreddits = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .search_subreddits("rust", Some(3), None)
+            .await
+            .unwrap();
+        assert_eq!(subreddits.data.children.len(), 3);
+
+        // login() must keep requiring user credentials.
+        let login = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .login()
+            .await;
+        assert!(matches!(
+            login,
+            Err(roux::util::RouxError::CredentialsNotSet)
+        ));
+    }
+
     #[allow(dead_code)]
     #[maybe_async::sync_impl]
     fn test_oauth() {
@@ -120,5 +173,49 @@ mod tests {
 
         assert!(new_client.top(10, None).is_ok());
         assert!(new_client.moderators().is_ok());
+    }
+
+    #[maybe_async::sync_impl]
+    #[test]
+    fn test_app_only() {
+        dotenv::dotenv().ok();
+
+        let client_id = env::var("CLIENT_ID").unwrap();
+        let client_secret = env::var("CLIENT_SECRET").unwrap();
+
+        // No username or password: the client_credentials grant is used.
+        let subreddit = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .subreddit("rust")
+            .unwrap();
+
+        let hot = subreddit.hot(5, None).unwrap();
+        assert_eq!(hot.data.children.len(), 5);
+        assert!(subreddit.about().is_ok());
+        assert!(subreddit.latest_comments(None, Some(5)).is_ok());
+
+        let article_id = hot.data.children.first().unwrap().data.id.clone();
+        assert!(subreddit
+            .article_comments(&article_id, None, Some(5))
+            .is_ok());
+
+        let user = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .user("spez")
+            .unwrap();
+
+        assert!(user.about(None).is_ok());
+        let comments = user.comments(Some(FeedOption::new().limit(5))).unwrap();
+        assert!(!comments.data.children.is_empty());
+
+        let subreddits = Reddit::new(&USER_AGENT, &client_id, &client_secret)
+            .search_subreddits("rust", Some(3), None)
+            .unwrap();
+        assert_eq!(subreddits.data.children.len(), 3);
+
+        // login() must keep requiring user credentials.
+        let login = Reddit::new(&USER_AGENT, &client_id, &client_secret).login();
+        assert!(matches!(
+            login,
+            Err(roux::util::RouxError::CredentialsNotSet)
+        ));
     }
 }

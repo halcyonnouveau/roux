@@ -25,7 +25,7 @@ let client = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
 
 let me = client.unwrap();
 ```
-It is important that you pick a good user agent. The ideal format is `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v2.0.0 (by /u/beanpup_py)`. This will authticate you as the user given in the username function.
+It is important that you pick a good user agent. The ideal format is `platform:program:version (by /u/yourname)`, e.g. `macos:roux:v2.0.0 (by /u/beanpup_py)`. This will authenticate you as the user given in the username function.
 
 ### Usage
 
@@ -59,12 +59,34 @@ let me = client.unwrap();
 me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT").await?;
 ```
 
-### Read-Only Modules
+### Read-Only Access Without A User
 
-There are also read-only modules that don't need authentication:
+Reddit no longer serves its JSON endpoints to unauthenticated clients, so the read-only
+[Subreddit](https://docs.rs/roux/latest/roux/subreddit/index.html) and
+[User](https://docs.rs/roux/latest/roux/user/index.html) modules need a token too.
+If you don't set a username and password, an application-only token is requested with the
+`client_credentials` grant using just the client id and secret of your Reddit app.
 
-- [Subreddits](https://docs.rs/roux/latest/roux/subreddit/index.html)
-- [Users](https://docs.rs/roux/latest/roux/user/index.html)
+```rust
+use roux::Reddit;
+
+let subreddit = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+    .subreddit("rust")
+    .await?;
+let hot = subreddit.hot(25, None).await?;
+
+let user = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+    .user("spez")
+    .await?;
+let overview = user.overview(None).await?;
+
+let subreddits = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+    .search_subreddits("rust", Some(10), None)
+    .await?;
+```
+
+The unauthenticated constructors `Subreddit::new`, `User::new` and `Subreddits::search` are
+deprecated and will most likely return a 403 from Reddit.
 
 ## Blocking Client
 

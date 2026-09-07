@@ -1,16 +1,24 @@
 //! # Subreddit
 //! A read-only module to read data from a specific subreddit.
 //!
+//! Reddit no longer serves these endpoints to unauthenticated clients, so a
+//! `Subreddit` should be created through
+//! [`Reddit::subreddit`](crate::Reddit::subreddit), which authenticates with
+//! an application-only token when no username and password are set.
+//!
 //! # Basic Usage
 //! ```no_run
-//! use roux::Subreddit;
+//! use roux::Reddit;
 //! # #[cfg(not(feature = "blocking"))]
 //! # use tokio;
 //!
 //! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! # #[maybe_async::maybe_async]
 //! # async fn main() {
-//! let subreddit = Subreddit::new("rust");
+//! let subreddit = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .subreddit("rust")
+//!     .await
+//!     .unwrap();
 //! // Now you are able to:
 //!
 //! // Get moderators.
@@ -38,7 +46,7 @@
 //! # Usage with feed options
 //!
 //! ```no_run
-//! use roux::Subreddit;
+//! use roux::Reddit;
 //! use roux::util::{FeedOption, TimePeriod};
 //! # #[cfg(not(feature = "blocking"))]
 //! # use tokio;
@@ -46,7 +54,10 @@
 //! # #[cfg_attr(not(feature = "blocking"), tokio::main)]
 //! # #[maybe_async::maybe_async]
 //! # async fn main() {
-//! let subreddit = Subreddit::new("astolfo");
+//! let subreddit = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
+//!     .subreddit("astolfo")
+//!     .await
+//!     .unwrap();
 //!
 //! // Gets top 10 posts from this month
 //! let options = FeedOption::new().period(TimePeriod::ThisMonth);
@@ -78,14 +89,46 @@ use crate::models::{Comments, Moderators, Submissions};
 pub struct Subreddits;
 
 impl Subreddits {
-    /// Search subreddits
+    /// Search subreddits without authentication.
+    ///
+    /// Reddit blocks unauthenticated requests to this endpoint, so this will
+    /// almost certainly fail with a 403. Use
+    /// [`Reddit::search_subreddits`](crate::Reddit::search_subreddits) or
+    /// [`Subreddits::search_oauth`] instead.
+    #[deprecated(
+        since = "2.3.0",
+        note = "Reddit blocks unauthenticated API access; use `Reddit::search_subreddits` instead"
+    )]
     #[maybe_async::maybe_async]
     pub async fn search(
         name: &str,
         limit: Option<u32>,
         options: Option<FeedOption>,
     ) -> Result<SubredditsData, RouxError> {
-        let url = &mut format!("https://www.reddit.com/subreddits/search.json?q={}", name);
+        let url = format!("https://www.reddit.com/subreddits/search.json?q={}", name);
+        Self::search_with(url, limit, options, &default_client()).await
+    }
+
+    /// Search subreddits using an oauth client from the `Reddit` module.
+    #[maybe_async::maybe_async]
+    pub async fn search_oauth(
+        name: &str,
+        limit: Option<u32>,
+        options: Option<FeedOption>,
+        client: &Client,
+    ) -> Result<SubredditsData, RouxError> {
+        let url = format!("https://oauth.reddit.com/subreddits/search.json?q={}", name);
+        Self::search_with(url, limit, options, client).await
+    }
+
+    #[maybe_async::maybe_async]
+    async fn search_with(
+        mut url: String,
+        limit: Option<u32>,
+        options: Option<FeedOption>,
+        client: &Client,
+    ) -> Result<SubredditsData, RouxError> {
+        let url = &mut url;
 
         if let Some(limit) = limit {
             url.push_str(&format!("&limit={}", limit));
@@ -94,8 +137,6 @@ impl Subreddits {
         if let Some(options) = options {
             options.build_url(url);
         }
-
-        let client = default_client();
 
         Ok(client
             .get(&url.to_owned())
@@ -116,7 +157,15 @@ pub struct Subreddit {
 }
 
 impl Subreddit {
-    /// Create a new `Subreddit` instance.
+    /// Create a new unauthenticated `Subreddit` instance.
+    ///
+    /// Reddit blocks unauthenticated requests to these endpoints, so this
+    /// will almost certainly fail with a 403. Use
+    /// [`Reddit::subreddit`](crate::Reddit::subreddit) instead.
+    #[deprecated(
+        since = "2.3.0",
+        note = "Reddit blocks unauthenticated API access; use `Reddit::subreddit` instead"
+    )]
     pub fn new(name: &str) -> Subreddit {
         let subreddit_url = format!("https://www.reddit.com/r/{}", name);
 
@@ -294,51 +343,5 @@ impl Subreddit {
     ) -> Result<Comments, RouxError> {
         self.get_comment_feed(&format!("comments/{}", article), depth, limit)
             .await
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::Subreddit;
-    use super::Subreddits;
-
-    #[maybe_async::async_impl]
-    #[tokio::test]
-    async fn test_no_auth() {
-        let subreddit = Subreddit::new("astolfo");
-
-        // Test feeds
-        let hot = subreddit.hot(25, None).await;
-        assert!(hot.is_ok());
-
-        let rising = subreddit.rising(25, None).await;
-        assert!(rising.is_ok());
-
-        let top = subreddit.top(25, None).await;
-        assert!(top.is_ok());
-
-        let latest_comments = subreddit.latest_comments(None, Some(25)).await;
-        assert!(latest_comments.is_ok());
-
-        let article_id = &hot.unwrap().data.children.first().unwrap().data.id.clone();
-        let article_comments = subreddit.article_comments(article_id, None, Some(25)).await;
-        assert!(article_comments.is_ok());
-
-        // Test subreddit data.
-        let data_res = subreddit.about().await;
-        assert!(data_res.is_ok());
-
-        let data = data_res.unwrap();
-        assert!(data.title == Some(String::from("Rider of Black, Astolfo")));
-        assert!(data.subscribers.is_some());
-        assert!(data.subscribers.unwrap() > 1000);
-
-        assert!(subreddit.moderators().await.is_err());
-
-        // Test subreddit search
-        let subreddits_limit = 3u32;
-        let subreddits = Subreddits::search("rust", Some(subreddits_limit), None).await;
-        assert!(subreddits.is_ok());
-        assert!(subreddits.unwrap().data.children.len() == subreddits_limit as usize);
     }
 }
