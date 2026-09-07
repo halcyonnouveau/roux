@@ -17,6 +17,14 @@ mod tests {
     #[allow(dead_code)]
     static USER_AGENT: &str = "macos:roux:v1.4.0 (by /u/beanpup_py)";
 
+    /// Returns the app credentials, or `None` if either is missing or empty.
+    #[allow(dead_code)]
+    fn app_credentials() -> Option<(String, String)> {
+        let client_id = env::var("CLIENT_ID").ok().filter(|v| !v.is_empty())?;
+        let client_secret = env::var("CLIENT_SECRET").ok().filter(|v| !v.is_empty())?;
+        Some((client_id, client_secret))
+    }
+
     #[maybe_async::async_impl]
     #[tokio::test]
     async fn test_oauth() {
@@ -76,8 +84,12 @@ mod tests {
     async fn test_app_only() {
         dotenv::dotenv().ok();
 
-        let client_id = env::var("CLIENT_ID").unwrap();
-        let client_secret = env::var("CLIENT_SECRET").unwrap();
+        // Secrets are absent on forks and dependabot PRs, where GitHub sets
+        // them to empty strings, so skip rather than fail there.
+        let Some((client_id, client_secret)) = app_credentials() else {
+            eprintln!("skipping test_app_only: CLIENT_ID and CLIENT_SECRET not set");
+            return;
+        };
 
         // No username or password: the client_credentials grant is used.
         let subreddit = Reddit::new(&USER_AGENT, &client_id, &client_secret)
@@ -180,8 +192,12 @@ mod tests {
     fn test_app_only() {
         dotenv::dotenv().ok();
 
-        let client_id = env::var("CLIENT_ID").unwrap();
-        let client_secret = env::var("CLIENT_SECRET").unwrap();
+        // Secrets are absent on forks and dependabot PRs, where GitHub sets
+        // them to empty strings, so skip rather than fail there.
+        let Some((client_id, client_secret)) = app_credentials() else {
+            eprintln!("skipping test_app_only: CLIENT_ID and CLIENT_SECRET not set");
+            return;
+        };
 
         // No username or password: the client_credentials grant is used.
         let subreddit = Reddit::new(&USER_AGENT, &client_id, &client_secret)
