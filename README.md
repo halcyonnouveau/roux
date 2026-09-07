@@ -59,34 +59,42 @@ let me = client.unwrap();
 me.submit_link("LINK_TITLE", "LINK", "SUBREDDIT").await?;
 ```
 
-### Read-Only Access Without A User
+### Read-Only Modules
 
-Reddit no longer serves its JSON endpoints to unauthenticated clients, so the read-only
-[Subreddit](https://docs.rs/roux/latest/roux/subreddit/index.html) and
-[User](https://docs.rs/roux/latest/roux/user/index.html) modules need a token too.
-If you don't set a username and password, an application-only token is requested with the
-`client_credentials` grant using just the client id and secret of your Reddit app.
+Reddit no longer serves its JSON endpoints to unauthenticated clients, so the read-only [Subreddit](https://docs.rs/roux/latest/roux/subreddit/index.html) and [User](https://docs.rs/roux/latest/roux/user/index.html) modules need a token too. If you don't set a username and password, an application-only token is requested using just the client id and secret of your Reddit app. `Subreddit::new`, `User::new` and `Subreddits::search` are deprecated and will most likely return a 403 from Reddit.
+
+#### Get Subreddit Posts
 
 ```rust
 use roux::Reddit;
-
 let subreddit = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .subreddit("rust")
-    .await?;
-let hot = subreddit.hot(25, None).await?;
+    .await
+    .unwrap();
 
+let hot = subreddit.hot(25, None).await?;
+```
+
+#### Get User Overview
+
+```rust
+use roux::Reddit;
 let user = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .user("spez")
-    .await?;
-let overview = user.overview(None).await?;
+    .await
+    .unwrap();
 
+let overview = user.overview(None).await?;
+```
+
+#### Search Subreddits
+
+```rust
+use roux::Reddit;
 let subreddits = Reddit::new("USER_AGENT", "CLIENT_ID", "CLIENT_SECRET")
     .search_subreddits("rust", Some(10), None)
     .await?;
 ```
-
-The unauthenticated constructors `Subreddit::new`, `User::new` and `Subreddits::search` are
-deprecated and will most likely return a 403 from Reddit.
 
 ## Blocking Client
 
